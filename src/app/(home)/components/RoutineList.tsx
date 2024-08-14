@@ -48,7 +48,7 @@ const RoutineList = () => {
 
 export default RoutineList;
 
-const RoutineData: any[] = [
+const RoutineData = [
   {
     id: 1,
     title: '무분할 상체 루틴',

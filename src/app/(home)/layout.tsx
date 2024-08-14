@@ -1,4 +1,5 @@
-import Header from '@/components/layouts/header';
+import Footer from '@/components/layouts/Footer';
+import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import { PropsWithChildren } from 'react';
 
@@ -10,6 +11,7 @@ export default function HomeLayout({ children }: PropsWithChildren<{}>) {
         right={<Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />}
       />
       {children}
+      <Footer />
     </>
   );
 }
