@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import RoutineList from './components/RoutineList';
+import PlusRoutineBtn from './components/PlusRoutineBtn';
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       </div>
       <h4 className="text-[18px] font-semibold leading-[26px] py-2 pl-5 text-[#EDEDED]">내 루틴</h4>
       <RoutineList />
+      <PlusRoutineBtn />
     </div>
   );
 }
