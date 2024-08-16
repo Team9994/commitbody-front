@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+// TODO : 추후 공통 컴포넌트로 이동
 const PlusRoutineBtn = () => {
   return (
     <button className="fixed bottom-[74px] right-4 flex justify-center items-center w-14 h-14 bg-backgrounds-blue rounded-16">
