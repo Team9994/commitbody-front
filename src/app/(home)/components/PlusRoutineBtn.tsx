@@ -3,7 +3,7 @@ import React from 'react';
 
 const PlusRoutineBtn = () => {
   return (
-    <button className="fixed bottom-[74px] right-[16px] flex justify-center items-center w-[56px] h-[56px] bg-[#198DF7] rounded-[16px]">
+    <button className="fixed bottom-[74px] right-4 flex justify-center items-center w-14 h-14 bg-backgrounds-blue rounded-16">
       <Image src="./assets/routinePlus.svg" width={24} height={24} alt="추가하기" />
     </button>
   );

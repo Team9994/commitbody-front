@@ -7,7 +7,7 @@ const Footer = () => {
   const currentPath = window.location.pathname;
 
   return (
-    <nav className="bg-[#292C33] font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-[16px]">
+    <nav className="bg-[#292C33] font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-16">
       <ul className="flex justify-around h-full items-center">
         {navItems.map((item) => {
           const isActive = currentPath === item.href;
@@ -26,7 +26,7 @@ const Footer = () => {
               />
               <Link
                 href={item.href}
-                className={`leading-[16px] text-center ${
+                className={`leading-4 text-center ${
                   isActive ? 'text-[#198DF7]' : 'text-[#787B82]'
                 }`}
               >

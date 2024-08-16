@@ -10,7 +10,7 @@ interface HeaderProps {
 const Header = ({ left, right, center, className }: HeaderProps) => {
   return (
     <header
-      className={`bg-[#292C33] text-[#D9D9D9] flex items-center justify-between h-12 px-[20px] py-[10px] ${className}`}
+      className={`bg-[#292C33] text-[#D9D9D9] flex items-center justify-between h-12 px-5 py-2.5 ${className}`}
     >
       <div>{left && <div>{left}</div>}</div>
       <div>{center && <div>{center}</div>}</div>
