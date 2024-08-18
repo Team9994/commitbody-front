@@ -9,8 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-[#555555] text-[#999999] font-semibold text-base',
-        active: 'bg-[#198DF7] text-white font-semibold text-base',
+        default: 'bg-blue text-[#EDEDED] font-semibold text-base',
+        active: 'bg-blue text-white font-semibold text-base',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
@@ -23,10 +23,15 @@ const buttonVariants = cva(
         lg: 'h-11 rounded-md px-8',
         icon: 'h-10 w-10',
       },
+      disabled: {
+        true: 'cursor-not-allowed bg-[#555555] text-[#999999]',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      disabled: false,
     },
   }
 );
@@ -38,10 +43,15 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, disabled = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp
+        className={cn(buttonVariants({ variant, size, className, disabled }))}
+        ref={ref}
+        disabled={disabled}
+        {...props}
+      />
     );
   }
 );
