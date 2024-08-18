@@ -1,11 +1,14 @@
+'use client';
 import { CategoryKey } from '@/constants/exerciseInform';
 import useInput from '@/hooks/useInput';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const useExerciseList = () => {
   const router = useRouter();
+  const scrollRef = useRef(null);
   const { value: searchData, onChange } = useInput('');
+
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedTool, setSelectedTool] = useState('');
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
@@ -88,6 +91,7 @@ const useExerciseList = () => {
     handleListClick,
     handleLikeToggle,
     exerciseList,
+    scrollRef,
   };
 };
 
@@ -126,6 +130,276 @@ const EXERCISE_LIST_DUMMY = [
   },
   {
     id: 6,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 7,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 8,
+    image: './assets/exercise_picture.svg',
+    name: '벤드 체스트 플라이',
+    like: false,
+  },
+  {
+    id: 9,
     image: './assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,

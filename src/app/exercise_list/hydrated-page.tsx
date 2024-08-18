@@ -4,6 +4,7 @@ import Search from './components/Search';
 import useExerciseList from './hooks/useExerciseList';
 import ExerciseListData from './components/ExerciseListData';
 import ToggleList from './components/ToggleList';
+import ScrollUpBtn from './components/ScrollUpBtn';
 
 const ExserciseList = () => {
   const {
@@ -20,6 +21,7 @@ const ExserciseList = () => {
     handleListClick,
     handleLikeToggle,
     exerciseList,
+    scrollRef,
   } = useExerciseList();
 
   return (
@@ -38,10 +40,12 @@ const ExserciseList = () => {
       />
 
       <ExerciseListData
+        scrollRef={scrollRef}
         exerciseList={exerciseList}
         handleLikeToggle={handleLikeToggle}
         handleListClick={handleListClick}
       />
+      <ScrollUpBtn scrollRef={scrollRef} />
     </div>
   );
 };

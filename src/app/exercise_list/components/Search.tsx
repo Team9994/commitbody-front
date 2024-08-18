@@ -7,7 +7,6 @@ interface SearchProps {
 }
 
 const Search = ({ searchData }: SearchProps) => {
-  console.log(searchData);
   return (
     <div className="w-full h-16 bg-backgrounds-default flex items-center mb-2 px-5">
       <div className="relative flex w-full">

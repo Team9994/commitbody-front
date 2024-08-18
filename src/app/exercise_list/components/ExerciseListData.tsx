@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import Image from 'next/image';
 
 interface ExerciseListDataProps {
   handleListClick: (id: number) => void;
   handleLikeToggle: (id: number) => void;
+  scrollRef: RefObject<HTMLDivElement>;
   exerciseList: any; // 더미데이터
 }
 
@@ -11,9 +12,14 @@ const ExerciseListData = ({
   exerciseList,
   handleListClick,
   handleLikeToggle,
+  scrollRef,
 }: ExerciseListDataProps) => {
   return (
-    <div className="w-full overflow-y-scroll mt-5" style={{ height: 'calc(100vh - 148px)' }}>
+    <div
+      ref={scrollRef}
+      className="w-full overflow-y-scroll mt-5"
+      style={{ height: 'calc(100vh - 148px)' }}
+    >
       {exerciseList.map((list: any) => (
         <div
           key={list.id}
