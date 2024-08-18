@@ -9,7 +9,7 @@ interface SearchProps {
 const Search = ({ searchData }: SearchProps) => {
   console.log(searchData);
   return (
-    <div className="w-full h-16 bg-backgrounds-sub flex items-center mb-2 px-5">
+    <div className="w-full h-16 bg-backgrounds-default flex items-center mb-2 px-5">
       <div className="relative flex w-full">
         <Input
           placeholder="운동 이름을 검색해보세요"
