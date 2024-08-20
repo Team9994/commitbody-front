@@ -1,4 +1,3 @@
-import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,13 +15,15 @@ export default function ExerciseListLayout({ children }: PropsWithChildren<{}>) 
         }
         center={<h4 className="text-xl font-semibold leading-7 text-text-main">운동 목록</h4>}
         right={
-          <Image
-            priority
-            src={'/assets/routinePlus.svg'}
-            alt={'커스텀 운동 추가하기'}
-            width={20}
-            height={20}
-          />
+          <Link href="/custom-exercise">
+            <Image
+              priority
+              src={'/assets/routinePlus.svg'}
+              alt={'커스텀 운동 추가하기'}
+              width={20}
+              height={20}
+            />
+          </Link>
         }
       />
       {children}

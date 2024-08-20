@@ -46,10 +46,6 @@ const ToggleList = ({
       </div>
       {drawerToggle && (
         <Drawer open={drawerToggle} onClose={toggleDrawer}>
-          <div
-            className="fixed w-full h-screen inset-0 bg-backgrounds-default opacity-70 z-40"
-            onClick={toggleDrawer}
-          ></div>
           <DrawerContent
             toggleDrawer={toggleDrawer}
             accentCategory={accentCategory}
