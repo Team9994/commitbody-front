@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import axios from 'axios';
 
-type StepInfo = {
+type STEP_INFO = {
   [key: number]: {
     key: string;
     label: string;
@@ -17,7 +17,7 @@ type StepInfo = {
 };
 
 // 유효성 검사 규칙 정의
-const validationRules = {
+const VALIDATION_RULES = {
   nickname: (value: string) => value.length >= 3 && value.length <= 8,
   gender: (value: string) => ['male', 'female'].includes(value),
   year: (value: string) => /^\d{4}$/.test(value),
@@ -39,7 +39,7 @@ export default function AdditionalInfo() {
    * @type {number}
    */
   const [step, setStep] = useState(0);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const [formData, setFormData] = useState({
     nickname: '',
@@ -83,8 +83,8 @@ export default function AdditionalInfo() {
   };
 
   const [systemMessage, setSystemMessage] = useState<String>('');
-  const maxStep = 5;
-  const stepInfo: StepInfo = {
+  const MAX_STEPS = 5;
+  const stepInfo: STEP_INFO = {
     0: {
       key: 'nickname',
       label: '닉네임을 입력해주세요',
@@ -154,18 +154,25 @@ export default function AdditionalInfo() {
           },
         }
       );
+      console.log(res.data.message);
       setSystemMessage(res.data.message);
       if (res.data.success) {
         setIsValid((prevIsValid) => ({
           ...prevIsValid,
           nickname: true,
         }));
+        setSystemMessage(res.data.message);
+      } else {
+        setIsValid((prevIsValid) => ({
+          ...prevIsValid,
+          nickname: false,
+        }));
       }
       return;
     }
 
     // 유효성 검사 수행
-    const rule = validationRules[field as keyof typeof validationRules];
+    const rule = VALIDATION_RULES[field as keyof typeof VALIDATION_RULES];
     const isFieldValid = typeof rule === 'function' ? rule(value) : false;
 
     setIsValid((prevIsValid) => ({
@@ -178,7 +185,7 @@ export default function AdditionalInfo() {
 
   const getStepComponent = (currentStep: number) => {
     const result = [];
-    for (let i = 0; i < maxStep; i++) {
+    for (let i = 0; i < MAX_STEPS; i++) {
       result.push(
         <span key={i}>
           {i === currentStep ? (
@@ -206,7 +213,7 @@ export default function AdditionalInfo() {
 
   const changeStep = (direction: 'next' | 'previous') => {
     if (direction === 'next') {
-      if (step < maxStep - 1) {
+      if (step < MAX_STEPS - 1) {
         setSystemMessage('');
         setStep(step + 1);
       } else {
