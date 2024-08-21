@@ -44,18 +44,6 @@ const ToggleList = ({
           );
         })}
       </div>
-      {/* <Drawer open={drawerToggle} onClose={toggleDrawer}>
-        <div
-          className="fixed w-full h-screen inset-0 bg-backgrounds-default opacity-70 z-40"
-          onClick={toggleDrawer}
-        ></div>
-        <DrawerContent
-          toggleDrawer={toggleDrawer}
-          accentCategory={accentCategory}
-          handleCategoryListClick={handleCategoryListClick}
-        />
-      </Drawer> */}
-
       <Drawer open={drawerToggle} onClose={toggleDrawer}>
         <div
           className={`fixed w-full h-screen inset-0 bg-backgrounds-default opacity-70 z-40 transition-opacity duration-300 ${
