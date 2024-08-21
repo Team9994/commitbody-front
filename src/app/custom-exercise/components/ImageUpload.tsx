@@ -10,12 +10,18 @@ const ImageUpload = ({
 }) => (
   <label
     htmlFor="image-upload"
-    className={`flex flex-col justify-center items-center w-[320px] h-[184px] ${
+    className={`flex flex-col justify-center items-center w-[320px] h-[184px] rounded-6 relative ${
       selectedImage ? 'border-blue' : 'border-gray-400'
     } border-[1px] border-dashed cursor-pointer mt-4`}
   >
     {selectedImage ? (
-      <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+      <Image
+        className="rounded-6 overflow-hidden"
+        src={selectedImage}
+        alt="업로드된 사진"
+        fill
+        style={{ objectFit: 'cover' }}
+      />
     ) : (
       <div className="flex">
         <Image src="/assets/picture.svg" alt="이미지 업로드" width={40} height={40} />

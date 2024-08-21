@@ -24,7 +24,7 @@ const ExerciseCustom = () => {
   } = useCustomPage();
 
   return (
-    <div className="flex flex-col items-center h-screen gap-7 bg-backgrounds-default">
+    <div className="flex flex-col items-center gap-7 bg-backgrounds-default">
       <ImageUpload selectedImage={selectedImage} handleImageUpload={handleImageUpload} />
       <InputField value={name} onChange={onChange} placeholder="운동 이름을 입력하세요." />
       <SelectBox
