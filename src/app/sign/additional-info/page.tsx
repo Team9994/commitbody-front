@@ -2,7 +2,9 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import axios from 'axios';
 
 type StepInfo = {
   [key: number]: {
@@ -18,11 +20,9 @@ type StepInfo = {
 const validationRules = {
   nickname: (value: string) => value.length >= 3 && value.length <= 8,
   gender: (value: string) => ['male', 'female'].includes(value),
-  birth: {
-    year: (value: string) => /^\d{4}$/.test(value),
-    month: (value: string) => /^(0?[1-9]|1[0-2])$/.test(value),
-    day: (value: string) => /^(0?[1-9]|[12][0-9]|3[01])$/.test(value),
-  },
+  year: (value: string) => /^\d{4}$/.test(value),
+  month: (value: string) => /^(0?[1-9]|1[0-2])$/.test(value),
+  day: (value: string) => /^(0?[1-9]|[12][0-9]|3[01])$/.test(value),
   height: (value: string) => /^\d{2,3}(\.\d)?$/.test(value),
   weight: (value: string) => /^\d{2,3}(\.\d)?$/.test(value),
   boneMineralDensity: (value: string) => /^\d{1,2}(\.\d)?$/.test(value),
@@ -39,19 +39,50 @@ export default function AdditionalInfo() {
    * @type {number}
    */
   const [step, setStep] = useState(0);
-  const [isValid, setIsValid] = useState<{ [key: string]: boolean }>({});
+  const { data: session, status } = useSession();
 
   const [formData, setFormData] = useState({
     nickname: '',
     gender: '',
-    birth: { year: '', month: '', day: '' },
+    year: '',
+    month: '',
+    day: '',
     height: '',
     weight: '',
     boneMineralDensity: '',
     bodyFatPercentage: '',
   });
 
-  const [systemMessage, setSystemMessage] = useState<{ [key: string]: string }>({});
+  const [isValid, setIsValid] = useState({
+    nickname: false,
+    gender: false,
+    year: false,
+    month: false,
+    day: false,
+    height: false,
+    weight: false,
+    boneMineralDensity: false,
+    bodyFatPercentage: false,
+  });
+
+  const isStepValid = (currentStep: number) => {
+    switch (currentStep) {
+      case 0:
+        return isValid.nickname;
+      case 1:
+        return isValid.gender;
+      case 2:
+        return isValid.year && isValid.month && isValid.day;
+      case 3:
+        return isValid.height && isValid.weight;
+      case 4:
+        return isValid.boneMineralDensity && isValid.bodyFatPercentage;
+      default:
+        return false;
+    }
+  };
+
+  const [systemMessage, setSystemMessage] = useState<String>('');
   const maxStep = 5;
   const stepInfo: StepInfo = {
     0: {
@@ -105,61 +136,44 @@ export default function AdditionalInfo() {
     },
   };
 
-  // 유효성 검사 함수
-  const validateField = (field: string, value: string | { [key: string]: string }) => {
-    if (field === 'birth') {
-      const birthValue = value as { year: string; month: string; day: string };
-      return (
-        validationRules.birth.year(birthValue.year) &&
-        validationRules.birth.month(birthValue.month) &&
-        validationRules.birth.day(birthValue.day)
-      );
-    }
-    return validationRules[field](value as string);
-  };
-
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = async (field: string, value: string) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
 
+    // 닉네임 검증
+    if (field === 'nickname') {
+      console.log(process.env.NEXT_PUBLIC_SPRING_BACKEND_URL);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}/api/v1/register-nickname`,
+        { nickname: value },
+        {
+          headers: {
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      setSystemMessage(res.data.message);
+      if (res.data.success) {
+        setIsValid((prevIsValid) => ({
+          ...prevIsValid,
+          nickname: true,
+        }));
+      }
+      return;
+    }
+
     // 유효성 검사 수행
-    setIsValid((prevIsValid) => ({
-      ...prevIsValid,
-      [field]: validateField(field, value),
-    }));
-    setSystemMessage((prevSystemMessage) => ({
-      ...prevSystemMessage,
-      [field]: validateField(field, value) ? stepInfo[step].success : stepInfo[step].error[field],
-    }));
-    console.log(isValid);
-  };
-
-  const handleBirthInputChange = (field: 'year' | 'month' | 'day', value: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      birth: {
-        ...prevData.birth,
-        [field]: value,
-      },
-    }));
-    // 생년월일 유효성 검사
-    const updatedBirth = { ...formData.birth, [field]: value };
-    const isBirthValid =
-      validationRules.birth.year(updatedBirth.year) &&
-      validationRules.birth.month(updatedBirth.month) &&
-      validationRules.birth.day(updatedBirth.day);
+    const rule = validationRules[field as keyof typeof validationRules];
+    const isFieldValid = typeof rule === 'function' ? rule(value) : false;
 
     setIsValid((prevIsValid) => ({
       ...prevIsValid,
-      birth: isBirthValid,
+      [field]: isFieldValid,
     }));
 
-    setSystemMessage((prevSystemMessage) => ({
-      ...prevSystemMessage,
-      birth: isBirthValid ? '' : '유효하지 않은 생년월일입니다.',
-    }));
+    setSystemMessage(isFieldValid ? stepInfo[step].success : stepInfo[step].error[field]);
   };
 
   const getStepComponent = (currentStep: number) => {
@@ -193,15 +207,38 @@ export default function AdditionalInfo() {
   const changeStep = (direction: 'next' | 'previous') => {
     if (direction === 'next') {
       if (step < maxStep - 1) {
+        setSystemMessage('');
         setStep(step + 1);
       } else {
-        // 마지막 스텝인 경우 회원가입 완료 처리
-        console.log('회원가입 완료', formData);
+        handleSubmit();
       }
     } else if (direction === 'previous' && step > 0) {
       setStep(step - 1);
     }
   };
+
+  const handleSubmit = async () => {
+    const transformedData = {
+      nickName: formData.nickname,
+      gender: formData.gender.toUpperCase(),
+      birthday: `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`,
+      height: parseFloat(formData.height),
+      weight: parseFloat(formData.weight),
+      boneMineralDensity: parseFloat(formData.boneMineralDensity),
+      bodyFatPercentage: parseFloat(formData.bodyFatPercentage),
+    };
+
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}/api/v1/additional-info`,
+      transformedData,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+  };
+
   return (
     <div className="bg-[#212227] flex flex-col h-screen px-5">
       <div className="h-12 text-white flex items-center justify-center">
@@ -252,20 +289,20 @@ export default function AdditionalInfo() {
           <Input
             className="h-[68px] w-[152px] bg-[#292C33] text-center text-xl text-white font-semibold border-0 rounded-[6px] placeholder:text-[#555555] caret-[#198DF7] focus-visible:ring-offset-[#198DF7]"
             placeholder="연도"
-            value={formData.birth.year}
-            onChange={(e) => handleBirthInputChange('year', e.target.value)}
+            value={formData.year}
+            onChange={(e) => handleInputChange('year', e.target.value)}
           />
           <Input
             className="h-[68px] bg-[#292C33] text-center text-xl text-white font-semibold border-0 rounded-[6px] placeholder:text-[#555555] caret-[#198DF7] focus-visible:ring-offset-[#198DF7]"
             placeholder="월"
-            value={formData.birth.month}
-            onChange={(e) => handleBirthInputChange('month', e.target.value)}
+            value={formData.month}
+            onChange={(e) => handleInputChange('month', e.target.value)}
           />
           <Input
             className="h-[68px] bg-[#292C33] text-center text-xl text-white font-semibold border-0 rounded-[6px] placeholder:text-[#555555] caret-[#198DF7] focus-visible:ring-offset-[#198DF7]"
             placeholder="일"
-            value={formData.birth.day}
-            onChange={(e) => handleBirthInputChange('day', e.target.value)}
+            value={formData.day}
+            onChange={(e) => handleInputChange('day', e.target.value)}
           />
         </div>
       )}
@@ -342,9 +379,9 @@ export default function AdditionalInfo() {
         </div>
       )}
       <div className="text-sm leading-[19px] mt-3 text-[#999999] flex-grow">
-        {systemMessage[stepInfo[step].key] ? (
-          <div className={`mt-2 ${isValid[stepInfo[step].key] ? 'text-blue' : 'text-red'}`}>
-            {systemMessage[stepInfo[step].key]}
+        {systemMessage ? (
+          <div className={`mt-2 ${isStepValid(step) ? 'text-blue' : 'text-red'}`}>
+            {systemMessage}
           </div>
         ) : (
           <div className="text-red-500 mt-2">{stepInfo[step].message}</div>
@@ -356,11 +393,7 @@ export default function AdditionalInfo() {
         )}
       </div>
 
-      <Button
-        className="mb-4"
-        onClick={() => changeStep('next')}
-        disabled={!isValid[stepInfo[step].key]}
-      >
+      <Button className="mb-4" onClick={() => changeStep('next')} disabled={!isStepValid(step)}>
         다음
       </Button>
     </div>
