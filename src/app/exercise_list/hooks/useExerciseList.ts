@@ -404,22 +404,4 @@ const EXERCISE_LIST_DUMMY = [
     name: '벤드 체스트 플라이',
     like: false,
   },
-  {
-    id: 7,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 8,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 9,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
 ];

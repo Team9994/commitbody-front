@@ -18,7 +18,7 @@ const ExerciseListData = ({
     <div
       ref={scrollRef}
       className="w-full overflow-y-scroll mt-5"
-      style={{ height: 'calc(100vh - 148px)' }}
+      style={{ height: 'calc(100vh - 148px - 20px)' }}
     >
       {exerciseList.map((list: any) => (
         <div
