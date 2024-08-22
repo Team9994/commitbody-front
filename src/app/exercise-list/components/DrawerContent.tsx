@@ -41,20 +41,19 @@ const DrawerContent = ({
           alt="닫기"
         />
 
-          <ul className="text-white">
-            {Object.entries(category.items).map(([itemKey, itemLabel]) => (
-              <li
-                onClick={() => handleCategoryListClick(accentCategory, itemLabel)}
-                key={itemKey}
-                className="py-3 h-12 text-base hover:bg-gray-700 rounded cursor-pointer border-b-[1px] border-b-solid border-backgrounds-light"
-              >
-                {itemLabel}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul className="text-white">
+          {Object.entries(category.items).map(([itemKey, itemLabel]) => (
+            <li
+              onClick={() => handleCategoryListClick(accentCategory, itemLabel)}
+              key={itemKey}
+              className="py-3 h-12 text-base hover:bg-gray-700 rounded cursor-pointer border-b-[1px] border-b-solid border-backgrounds-light"
+            >
+              {itemLabel}
+            </li>
+          ))}
+        </ul>
       </div>
-    </>
+    </div>
   );
 };
 
