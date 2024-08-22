@@ -18,7 +18,7 @@ const ExerciseListData = ({
     <div
       ref={scrollRef}
       className="w-full overflow-y-scroll mt-5"
-      style={{ height: 'calc(100vh - 148px)' }}
+      style={{ height: 'calc(100vh - 148px - 20px)' }}
     >
       {exerciseList.map((list: any) => (
         <div
@@ -28,19 +28,16 @@ const ExerciseListData = ({
         >
           <Image src={list.image} alt={list.name} width={76} height={76} />
           <span className="flex-1 ml-4">{list.name}</span>
-          <button
+          <Image
             onClick={(e) => {
               e.stopPropagation();
               handleLikeToggle(list.id);
             }}
-          >
-            <Image
-              width={24}
-              height={24}
-              src={list.like ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
-              alt={list.like ? '좋아요' : '좋아요 안 함'}
-            />
-          </button>
+            width={24}
+            height={24}
+            src={list.like ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
+            alt={list.like ? '좋아요' : '좋아요 안 함'}
+          />
         </div>
       ))}
     </div>
