@@ -25,7 +25,7 @@ const ScrollUpBtn = ({ scrollRef }: ScrollUpBtnProps) => {
         alt="Scroll to top"
         width={24}
         height={24}
-        className="transform rotate-90"
+        className="mt-1 transform rotate-90"
       />
     </div>
   );
