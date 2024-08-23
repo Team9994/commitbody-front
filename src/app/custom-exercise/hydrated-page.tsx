@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import DrawerContent from '../exercise_list/components/DrawerContent';
 import ImageUpload from './components/ImageUpload';
 import InputField from './components/InputField';
 import SelectBox from './components/SelectBox';
 import SubmitButton from './components/SubmitButton';
 import useCustomPage from './hooks/useCustomPage';
+import DrawerContent from '../exercise-list/components/DrawerContent';
 
 const ExerciseCustom = () => {
   const {

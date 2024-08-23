@@ -74,7 +74,7 @@ const useExerciseList = () => {
   };
 
   const handleListClick = (id: number) => {
-    router.push(`/exercise/${id}`);
+    router.push(`/exercise-details/${id}`);
   };
 
   return {

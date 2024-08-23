@@ -48,6 +48,7 @@ const config = {
     fontSize: {
       xxs: '8px',
       xs: '12px',
+      s: '13px',
       sm: '14px',
       md: '15px',
       base: '16px',
