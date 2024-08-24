@@ -46,7 +46,7 @@ const Record = () => {
           </p>
         </div>
       </div>
-      <div className="mb-10 bg-backgrounds-sub rounded-6 px-5">
+      <div className="mb-10 bg-backgrounds-sub rounded-6 px-[18px] mx-5">
         <div className="flex items-center px-[18px] py-3">
           <span className="text-s text-text-sub leading-[18px] mr-2">주간 볼륨</span>
           <strong className="text-text-main text-lg leading-[26px]">100</strong>
