@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import axios from 'axios';
+import { useRouter } from 'next/navigation'; // 추가
 
 type STEP_INFO = {
   [key: number]: {
@@ -14,6 +15,7 @@ type STEP_INFO = {
 };
 
 const useAdditionalInfo = () => {
+  const router = useRouter();
   /**
    * 0: 닉네임 (Nickname)
    * 1: 성별 (Gender)
@@ -254,6 +256,7 @@ const useAdditionalInfo = () => {
         },
       }
     );
+    router.push('/');
   };
 
   return {
