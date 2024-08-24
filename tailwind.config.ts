@@ -66,8 +66,6 @@ const config = {
       '6': '6px',
       '16': '16px',
     },
-    // padding, margin, width, height, maxHeight, flex-basis, gap, inset, space,
-    // translate, scrollMargin, scrollPadding, and textIndent core plugins.
     spacing: {
       px: '1px',
       0: '0',

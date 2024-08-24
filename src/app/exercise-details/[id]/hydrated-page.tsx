@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ExerciseInfo from '../components/ExerciseInfo';
 import SelectToggle from '../components/SelectToggle';
 import Comment from '../components/Explain';
+import Record from '../components/Record';
 
 const ExerciseDetails = () => {
   const [selected, setSelected] = useState<'explain' | 'record'>('explain');
@@ -25,8 +26,7 @@ const ExerciseDetails = () => {
           <Comment />
         </div>
       )}
-
-      {selected === 'record' && <div>분석</div>}
+      {selected === 'record' && <Record />}
     </div>
   );
 };
