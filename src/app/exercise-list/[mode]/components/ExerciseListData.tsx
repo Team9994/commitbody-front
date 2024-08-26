@@ -2,10 +2,11 @@ import React, { RefObject } from 'react';
 import Image from 'next/image';
 
 interface ExerciseListDataProps {
-  handleListClick: (id: number) => void;
+  handleListClick: (id: number, mode: 'search' | 'routine') => void;
   handleLikeToggle: (id: number) => void;
   scrollRef: RefObject<HTMLDivElement>;
   exerciseList: any; // 더미데이터
+  mode: 'search' | 'routine';
 }
 
 const ExerciseListData = ({
@@ -13,6 +14,7 @@ const ExerciseListData = ({
   handleListClick,
   handleLikeToggle,
   scrollRef,
+  mode,
 }: ExerciseListDataProps) => {
   return (
     <div
@@ -24,7 +26,7 @@ const ExerciseListData = ({
         <div
           key={list.id}
           className="flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6"
-          onClick={() => handleListClick(list.id)}
+          onClick={() => handleListClick(list.id, mode)}
         >
           <Image src={list.image} alt={list.name} width={76} height={76} />
           <span className="flex-1 ml-4">{list.name}</span>

@@ -3,9 +3,10 @@ import Image from 'next/image';
 
 interface ScrollUpBtnProps {
   scrollRef: RefObject<HTMLDivElement>;
+  mode: 'search' | 'routine';
 }
 
-const ScrollUpBtn = ({ scrollRef }: ScrollUpBtnProps) => {
+const ScrollUpBtn = ({ scrollRef, mode }: ScrollUpBtnProps) => {
   const scrollToTop = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollTo({
@@ -25,7 +26,7 @@ const ScrollUpBtn = ({ scrollRef }: ScrollUpBtnProps) => {
         alt="Scroll to top"
         width={24}
         height={24}
-        className="mt-1 transform rotate-90"
+        className="transform rotate-90"
       />
     </div>
   );

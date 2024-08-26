@@ -20,8 +20,8 @@ const CategoryItem = ({
 }) => (
   <div
     onClick={onClick}
-    className={`h-9 px-4 py-2 flex items-center  text-text-sm justify-center rounded-[18px]  border border-backgrounds-light min-w-[73px] ${
-      selected ? 'border-blue text-blue bg-[#1F3750]' : 'bg-transparent text-text-sub'
+    className={`h-9 px-4 py-2 flex items-center text-text-sm justify-center rounded-[18px] text-text-sub border border-backgrounds-light min-w-[73px] ${
+      selected ? 'border-blue text-blue' : 'bg-transparent'
     } cursor-pointer`}
   >
     {!hasItems && <span className="flex-shrink-0">{label}</span>}
@@ -33,7 +33,7 @@ const CategoryItem = ({
         </span>
         <Image
           className="ml-1 rotate-[-90deg] mb-2"
-          src="./assets/back.svg"
+          src="/assets/back.svg"
           alt="더보기"
           width={20}
           height={20}

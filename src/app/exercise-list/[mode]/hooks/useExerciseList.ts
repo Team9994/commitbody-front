@@ -1,12 +1,16 @@
 'use client';
 import { CategoryKey } from '@/constants/exerciseInform';
 import useInput from '@/hooks/useInput';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
+import useRoutineStore from '@/store/routine';
 
 const useExerciseList = () => {
   const router = useRouter();
+  const params = useParams();
   const scrollRef = useRef(null);
+  const { routines, addRoutine } = useRoutineStore();
+
   const { value: searchData, onChange } = useInput('');
 
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
@@ -15,6 +19,8 @@ const useExerciseList = () => {
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
   const [exerciseList, setExerciseList] = useState(EXERCISE_LIST_DUMMY);
+  const mode = params.mode as 'search' | 'routine';
+
   const toggleDrawer = () => {
     setDrawerToggle((prev) => !prev);
   };
@@ -73,8 +79,20 @@ const useExerciseList = () => {
     }
   };
 
-  const handleListClick = (id: number) => {
-    router.push(`/exercise/${id}`);
+  //mode === "routine" 일 경우
+  //1.추가하기 버튼 적용하기
+  //2.클릭했을때 zustand 운동리스트에 추가하기
+
+  //mode === "search" 일 경우
+  //1.클릭했을때 해당 운동으로 넘어가기
+  const handleListClick = (id: number, mode: 'search' | 'routine') => {
+    if (mode === 'search') {
+      router.push(`/exercise/${id}`);
+    } else {
+      // TODO: zustand에 해당정보 추가하기
+      addRoutine({ id, name: '벤드 체스트 플라이', like: false });
+      // TODO : 해당 div css 변경하고, 상태칩에 추가하기
+    }
   };
 
   return {
@@ -92,6 +110,7 @@ const useExerciseList = () => {
     handleLikeToggle,
     exerciseList,
     scrollRef,
+    mode,
   };
 };
 
@@ -100,73 +119,73 @@ export default useExerciseList;
 const EXERCISE_LIST_DUMMY = [
   {
     id: 1,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 2,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 3,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 4,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 5,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 6,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 7,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 8,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 9,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 10,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 11,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
   {
     id: 12,
-    image: './assets/exercise_picture.svg',
+    image: '/assets/exercise_picture.svg',
     name: '벤드 체스트 플라이',
     like: false,
   },
