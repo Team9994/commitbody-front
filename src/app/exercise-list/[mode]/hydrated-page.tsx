@@ -24,11 +24,14 @@ const ExserciseList = () => {
     exerciseList,
     scrollRef,
     mode,
+    routines,
+    getRoutineCount,
+    deleteRoutine,
+    selectedExerciseIds,
   } = useExerciseList();
 
   return (
     <div>
-      <div>{mode}</div>
       <Search searchData={searchData} />
 
       <ToggleList
@@ -41,7 +44,6 @@ const ExserciseList = () => {
         handleCategoryClick={handleCategoryClick}
         handleCategoryListClick={handleCategoryListClick}
       />
-      <AddExerciseBtn />
 
       <ExerciseListData
         scrollRef={scrollRef}
@@ -49,8 +51,17 @@ const ExserciseList = () => {
         handleLikeToggle={handleLikeToggle}
         handleListClick={handleListClick}
         mode={mode}
+        selectedExerciseIds={selectedExerciseIds}
       />
       <ScrollUpBtn scrollRef={scrollRef} mode={mode} />
+
+      {mode === 'routine' && (
+        <AddExerciseBtn
+          count={getRoutineCount()}
+          routines={routines}
+          deleteRoutine={deleteRoutine}
+        />
+      )}
     </div>
   );
 };

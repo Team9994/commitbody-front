@@ -1,15 +1,23 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { produce } from 'immer';
+import { produce, enableMapSet } from 'immer';
+enableMapSet();
 
 const useRoutineStore = create(
   devtools(
-    (set) => ({
+    (set, get) => ({
       routines: [],
+      selectedExerciseIds: new Set(),
       addRoutine: (routine) =>
         set(
           produce((state) => {
-            state.routines.push(routine);
+            const existingRoutine = state.routines.find((r) => r.id === routine.id);
+            if (!existingRoutine) {
+              // 기존 ID가 없는 경우에만 새 루틴 추가
+              state.routines.push(routine);
+              // 여기에서 selectedExerciseIds set에 추가
+              state.selectedExerciseIds.add(routine.id);
+            }
           })
         ),
       updateRoutine: (id, updatedRoutine) =>
@@ -25,8 +33,10 @@ const useRoutineStore = create(
         set(
           produce((state) => {
             state.routines = state.routines.filter((r) => r.id !== id);
+            state.selectedExerciseIds.delete(id);
           })
         ),
+      getRoutineCount: () => get().routines.length,
     }),
     { name: 'routine-store' }
   )

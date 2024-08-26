@@ -19,7 +19,9 @@ const ScrollUpBtn = ({ scrollRef, mode }: ScrollUpBtnProps) => {
   return (
     <div
       onClick={scrollToTop}
-      className="fixed bottom-4 left-4 bg-black shadow-lg shadow-black/40 z-90 rounded-[16px] w-14 h-14 flex items-center justify-center cursor-pointer"
+      className={`fixed left-4 bg-black shadow-lg shadow-black/40 z-90 rounded-[16px] w-14 h-14 flex items-center justify-center cursor-pointer ${
+        mode === 'search' ? 'bottom-16' : 'bottom-[140px]'
+      }`}
     >
       <Image
         src="/assets/back.svg"

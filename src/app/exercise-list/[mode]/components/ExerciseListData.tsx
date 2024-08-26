@@ -7,6 +7,7 @@ interface ExerciseListDataProps {
   scrollRef: RefObject<HTMLDivElement>;
   exerciseList: any; // 더미데이터
   mode: 'search' | 'routine';
+  selectedExerciseIds: Set<number>;
 }
 
 const ExerciseListData = ({
@@ -15,6 +16,7 @@ const ExerciseListData = ({
   handleLikeToggle,
   scrollRef,
   mode,
+  selectedExerciseIds,
 }: ExerciseListDataProps) => {
   return (
     <div
@@ -25,8 +27,10 @@ const ExerciseListData = ({
       {exerciseList.map((list: any) => (
         <div
           key={list.id}
-          className="flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6"
-          onClick={() => handleListClick(list.id, mode)}
+          className={`flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6 ${
+            selectedExerciseIds.has(list.id) && 'bg-backgrounds-light'
+          }`}
+          onClick={() => handleListClick(list, mode)}
         >
           <Image src={list.image} alt={list.name} width={76} height={76} />
           <span className="flex-1 ml-4">{list.name}</span>

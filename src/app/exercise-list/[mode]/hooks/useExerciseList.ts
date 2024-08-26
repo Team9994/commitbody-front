@@ -9,7 +9,8 @@ const useExerciseList = () => {
   const router = useRouter();
   const params = useParams();
   const scrollRef = useRef(null);
-  const { routines, addRoutine } = useRoutineStore();
+  const { routines, addRoutine, getRoutineCount, deleteRoutine, selectedExerciseIds } =
+    useRoutineStore();
 
   const { value: searchData, onChange } = useInput('');
 
@@ -71,10 +72,12 @@ const useExerciseList = () => {
 
   const handleLikeToggle = (id: number) => {
     const index = exerciseList.findIndex((item) => item.id === id);
+    console.log(index);
 
     if (index !== -1) {
       const updatedList = [...exerciseList];
       updatedList[index].like = !updatedList[index].like;
+      console.log(updatedList);
       setExerciseList(updatedList);
     }
   };
@@ -85,12 +88,12 @@ const useExerciseList = () => {
 
   //mode === "search" 일 경우
   //1.클릭했을때 해당 운동으로 넘어가기
-  const handleListClick = (id: number, mode: 'search' | 'routine') => {
+  const handleListClick = (exercise: any, mode: 'search' | 'routine') => {
     if (mode === 'search') {
-      router.push(`/exercise/${id}`);
+      router.push(`/exercise/${exercise.id}`);
     } else {
       // TODO: zustand에 해당정보 추가하기
-      addRoutine({ id, name: '벤드 체스트 플라이', like: false });
+      addRoutine(exercise);
       // TODO : 해당 div css 변경하고, 상태칩에 추가하기
     }
   };
@@ -111,6 +114,10 @@ const useExerciseList = () => {
     exerciseList,
     scrollRef,
     mode,
+    routines,
+    getRoutineCount,
+    deleteRoutine,
+    selectedExerciseIds,
   };
 };
 
@@ -126,31 +133,31 @@ const EXERCISE_LIST_DUMMY = [
   {
     id: 2,
     image: '/assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
+    name: '시티드 덤벨 프레스',
     like: false,
   },
   {
     id: 3,
     image: '/assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
+    name: '인클라인 덤벨 프레스',
     like: false,
   },
   {
     id: 4,
     image: '/assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
+    name: '디클라인 덤벨 프레스',
     like: false,
   },
   {
     id: 5,
     image: '/assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
+    name: '플라이',
     like: false,
   },
   {
     id: 6,
     image: '/assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
+    name: '벤치프레스',
     like: false,
   },
   {

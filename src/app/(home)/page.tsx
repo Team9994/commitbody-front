@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import RoutineList from './components/RoutineList';
-import PlusRoutineBtn from './components/PlusRoutineBtn';
+import PlusRoutineBtn from '@/components/common/PlusRoutineBtn';
 import { url } from 'inspector';
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-[#212227]">
       <div className="w-full h-[64px] bg-[#292C33] flex items-center mb-2 px-5">
         <Link
-          href="./exercise-list"
+          href="/exercise-list/search"
           className="flex items-center w-full h-10  text-sm leading-5 py-2.5 rounded-6 bg-backgrounds-light"
         >
           <Image className="m-2" src={'/assets/search.svg'} width={24} height={24} alt="돋보기" />
@@ -18,7 +18,7 @@ export default function Home() {
       </div>
       <h4 className="text-[18px] font-semibold leading-[26px] py-2 pl-5 text-[#EDEDED]">내 루틴</h4>
       <RoutineList />
-      <PlusRoutineBtn />
+      <PlusRoutineBtn href="/routine/new" />
     </div>
   );
 }
