@@ -164,9 +164,14 @@ export default function AdditionalInfo() {
           <div className="text-red-500 mt-2">{stepInfo[step].message}</div>
         )}
         {step === 4 && (
-          <div className="flex justify-center text-sm leading-[19px] text-blue mt-10">
-            잘 모르겠어요
-          </div>
+          <>
+            <div
+              className="flex justify-center text-sm leading-[19px] text-blue mt-10"
+              onClick={() => changeStep('next')}
+            >
+              잘 모르겠어요
+            </div>
+          </>
         )}
       </div>
 
