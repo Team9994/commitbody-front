@@ -35,6 +35,7 @@ const config = {
         main: '#EDEDED',
         light: '#999999',
         sub: '#C2C2C2',
+        placeholder: '#777777',
         error: '#EB4141',
         accent: '#EB4141',
       },
