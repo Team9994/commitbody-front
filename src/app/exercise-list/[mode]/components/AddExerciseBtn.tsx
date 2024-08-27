@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const AddExerciseBtn = ({
   count,
@@ -33,7 +34,9 @@ const AddExerciseBtn = ({
           ))}
         </div>
       </div>
-      <Button className="w-full bottom-2">{count}개의 운동 추가하기</Button>
+      <Button asChild className="w-full bottom-2">
+        <Link href="/routine/new">{count}개의 운동 추가하기</Link>
+      </Button>
     </div>
   );
 };
