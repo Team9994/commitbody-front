@@ -1,21 +1,17 @@
 'use client';
 import { getSearchExercise } from '@/app/api/exercise';
 import { CategoryKey } from '@/constants/exerciseInform';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import useInput from '@/hooks/useInput';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 const useExerciseList = () => {
   const router = useRouter();
   const scrollRef = useRef(null);
   const { data: session } = useSession();
-  const { data } = useQuery({
-    queryKey: ['exercise_search', session],
-    queryFn: () => getSearchExercise(session),
-  });
-  console.log(data);
   const { value: searchData, onChange } = useInput('');
 
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
@@ -23,68 +19,123 @@ const useExerciseList = () => {
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
-  const [exerciseList, setExerciseList] = useState(EXERCISE_LIST_DUMMY);
-  const toggleDrawer = () => {
+
+  //TODO : favorite 부분 백엔드에게 어떤 양식인지 질문하기
+  const [filters, setFilters] = useState({
+    name: '',
+    target: '',
+    equipment: '',
+    favorite: false,
+    source: '',
+  });
+
+  const updateFilters = useCallback(() => {
+    setFilters({
+      name: searchData,
+      target: selectedBodyPart,
+      equipment: selectedTool,
+      favorite: selectedCategory.includes('like') ? true : false,
+      source: selectedCategory.includes('custom') ? 'custom' : '',
+    });
+  }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);
+
+  useEffect(() => {
+    updateFilters();
+  }, [selectedCategory, updateFilters]);
+
+  const toggleDrawer = useCallback(() => {
     setDrawerToggle((prev) => !prev);
-  };
+  }, []);
 
-  const handleCategoryClick = (categoryKey: CategoryKey, hasItems: boolean) => {
-    if (hasItems) {
-      setAccentCategory(categoryKey);
-      toggleDrawer();
-      return;
-    }
+  const handleCategoryClick = useCallback(
+    (categoryKey: CategoryKey, hasItems: boolean) => {
+      if (hasItems) {
+        setAccentCategory(categoryKey);
+        toggleDrawer();
+        return;
+      }
 
-    setSelectedCategory((prev) =>
-      prev.includes(categoryKey)
-        ? prev.filter((item) => item !== categoryKey)
-        : [...prev, categoryKey]
-    );
-  };
-
-  const handleCategoryListClick = (key: string, itemLabel: string) => {
-    const isAllSelected = itemLabel === '전체';
-
-    const updateSelectedCategory = (key: string) => {
       setSelectedCategory((prev) =>
-        prev.includes(key) ? prev.filter((item) => item !== key) : prev
+        prev.includes(categoryKey)
+          ? prev.filter((item) => item !== categoryKey)
+          : [...prev, categoryKey]
       );
-    };
+    },
+    [toggleDrawer]
+  );
 
-    const clearSelection = (key: string) => {
-      if (key === 'tool') setSelectedTool('');
-      if (key === 'bodyPart') setSelectedBodyPart('');
-      updateSelectedCategory(key);
-    };
+  const handleCategoryListClick = useCallback(
+    (key: string, itemLabel: string) => {
+      const isAllSelected = itemLabel === '전체';
 
-    const selectItem = (key: string, itemLabel: string) => {
-      if (key === 'tool') setSelectedTool(itemLabel);
-      if (key === 'bodyPart') setSelectedBodyPart(itemLabel);
-      setSelectedCategory((prev) => [...prev, key]);
-    };
+      const updateSelectedCategory = (key: string) => {
+        setSelectedCategory((prev) =>
+          prev.includes(key) ? prev.filter((item) => item !== key) : prev
+        );
+      };
 
-    if (isAllSelected) {
-      clearSelection(key);
-    } else {
-      selectItem(key, itemLabel);
-    }
+      const clearSelection = (key: string) => {
+        if (key === 'tool') setSelectedTool('');
+        if (key === 'bodyPart') setSelectedBodyPart('');
+        updateSelectedCategory(key);
+      };
 
-    toggleDrawer();
-  };
+      const selectItem = (key: string, itemLabel: string) => {
+        if (key === 'tool') setSelectedTool(itemLabel);
+        if (key === 'bodyPart') setSelectedBodyPart(itemLabel);
+        setSelectedCategory((prev) => [...prev, key]);
+      };
 
-  const handleLikeToggle = (id: number) => {
-    const index = exerciseList.findIndex((item) => item.id === id);
+      if (isAllSelected) {
+        clearSelection(key);
+      } else {
+        selectItem(key, itemLabel);
+      }
 
-    if (index !== -1) {
-      const updatedList = [...exerciseList];
-      updatedList[index].like = !updatedList[index].like;
-      setExerciseList(updatedList);
-    }
-  };
+      toggleDrawer();
+    },
+    [toggleDrawer]
+  );
 
-  const handleListClick = (id: number) => {
-    router.push(`/exercise-details/${id}`);
-  };
+  const handleListClick = useCallback(
+    (id: number) => {
+      router.push(`/exercise-details/${id}`);
+    },
+    [router]
+  );
+
+  const {
+    data: searchResults,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    refetch,
+  } = useInfiniteQuery({
+    queryKey: ['Search_Result', filters],
+    queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
+      getSearchExercise(session, filters, pageParam.size, pageParam.from),
+
+    initialPageParam: { from: 0, size: 20 },
+
+    getNextPageParam: (_lastPage, allPages) => {
+      const nextFrom = allPages.length * 20;
+      return allPages[allPages.length - 1].length === 20 ? { from: nextFrom, size: 20 } : undefined;
+    },
+    enabled: false,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [filters]);
+
+  const observerRef = useInfiniteScroll(
+    () => {
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: '50px', threshold: 0 }
+  );
 
   return {
     selectedCategory,
@@ -98,85 +149,10 @@ const useExerciseList = () => {
     handleCategoryClick,
     handleCategoryListClick,
     handleListClick,
-    handleLikeToggle,
-    exerciseList,
     scrollRef,
+    observerRef,
+    searchResults,
   };
 };
 
 export default useExerciseList;
-
-const EXERCISE_LIST_DUMMY = [
-  {
-    id: 1,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 2,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 3,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 4,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 5,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 6,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 7,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 8,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 9,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 10,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 11,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-  {
-    id: 12,
-    image: './assets/exercise_picture.svg',
-    name: '벤드 체스트 플라이',
-    like: false,
-  },
-];

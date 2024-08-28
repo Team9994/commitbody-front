@@ -5,13 +5,12 @@ const EXERCISE = {
   POST_CUSTOM_EXERCISE: '/api/v1/save-exercise',
 };
 
-export const getSearchExercise = async (session: any) => {
-  // const params = {
-  //   ...filters, // { name, target, equipment, favorite }
-  //   from,
-  //   size,
-  // };
-
+export const getSearchExercise = async (session: any, filters: any, size: number, from: number) => {
+  const params = {
+    ...filters,
+    from,
+    size,
+  };
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_SEARCH}`,
@@ -19,6 +18,7 @@ export const getSearchExercise = async (session: any) => {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
+        params,
       }
     );
 
