@@ -4,6 +4,13 @@ const useRoutine = () => {
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
   const [routineToDelete, setRoutineToDelete] = useState<number | undefined>(undefined);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<number>(0);
+
+  const toggleDrawer = (index: number) => {
+    setDrawerToggle((prev) => !prev);
+    setSelectedId(index);
+  };
 
   const handleMenuClick = (id: number) => {
     setActiveMenuId(id);
@@ -40,6 +47,9 @@ const useRoutine = () => {
     confirmDelete,
     menuRef,
     setRoutineToDelete,
+    drawerToggle,
+    toggleDrawer,
+    selectedId,
   };
 };
 
