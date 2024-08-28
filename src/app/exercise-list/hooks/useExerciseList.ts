@@ -1,12 +1,21 @@
 'use client';
+import { getSearchExercise } from '@/app/api/exercise';
 import { CategoryKey } from '@/constants/exerciseInform';
 import useInput from '@/hooks/useInput';
+import { useQuery } from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 const useExerciseList = () => {
   const router = useRouter();
   const scrollRef = useRef(null);
+  const { data: session } = useSession();
+  const { data } = useQuery({
+    queryKey: ['exercise_search', session],
+    queryFn: () => getSearchExercise(session),
+  });
+  console.log(data);
   const { value: searchData, onChange } = useInput('');
 
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);

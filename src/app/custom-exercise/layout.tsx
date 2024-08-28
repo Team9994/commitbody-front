@@ -1,6 +1,4 @@
 import Header from '@/components/layouts/Header';
-import Image from 'next/image';
-import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import Back from '../../components/common/Back';
 

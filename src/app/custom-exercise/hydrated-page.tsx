@@ -21,6 +21,7 @@ const ExerciseCustom = () => {
     selectedBodyPart,
     selectedTool,
     setIsDrawerOpen,
+    handleSubmit,
   } = useCustomPage();
 
   return (
@@ -44,7 +45,7 @@ const ExerciseCustom = () => {
           handleCategoryListClick={handleCategoryListClick}
         />
       )}
-      <SubmitButton isDisabled={isButtonDisabled} />
+      <SubmitButton isDisabled={isButtonDisabled} onClick={handleSubmit} />
     </div>
   );
 };
