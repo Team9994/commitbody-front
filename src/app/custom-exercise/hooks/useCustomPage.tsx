@@ -1,9 +1,9 @@
 import { useCustomExerciseMutation } from '@/app/api/exercise/query';
-import { CategoryKey } from '@/constants/exerciseInform';
 import useInput from '@/hooks/useInput';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
+import { CategoryKey } from '../constants';
 
 const useCustomPage = () => {
   const router = useRouter();

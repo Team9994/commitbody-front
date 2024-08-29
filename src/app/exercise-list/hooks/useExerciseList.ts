@@ -1,12 +1,13 @@
 'use client';
 import { getSearchExercise } from '@/app/api/exercise';
-import { CategoryKey } from '@/constants/exerciseInform';
+import { CategoryKey } from '@/app/custom-exercise/constants';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import useInput from '@/hooks/useInput';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { Filters } from '../types';
 
 const useExerciseList = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const useExerciseList = () => {
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
 
   //TODO : favorite 부분 백엔드에게 어떤 양식인지 질문하기
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     name: '',
     target: '',
     equipment: '',
@@ -33,7 +34,7 @@ const useExerciseList = () => {
       name: searchData,
       target: selectedBodyPart,
       equipment: selectedTool,
-      favorite: selectedCategory.includes('like') ? true : false,
+      favorite: selectedCategory.includes('like'),
       source: selectedCategory.includes('custom') ? 'custom' : '',
     });
   }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);
@@ -94,12 +95,11 @@ const useExerciseList = () => {
     [toggleDrawer]
   );
 
-  const handleListClick = useCallback(
-    (id: number) => {
-      router.push(`/exercise-details/${id}`);
-    },
-    [router]
-  );
+  const handleListClick = (id: number, type: string) => {
+    const queryParam = type === 'custom' ? 'custom' : 'default';
+
+    router.push(`/exercise-details/${id}?type=${queryParam}`);
+  };
 
   const {
     data: searchResults,
@@ -110,7 +110,12 @@ const useExerciseList = () => {
   } = useInfiniteQuery({
     queryKey: ['Search_Result', filters],
     queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
-      getSearchExercise(session, filters, pageParam.size, pageParam.from),
+      getSearchExercise({
+        session,
+        filters,
+        size: pageParam.size,
+        from: pageParam.from,
+      }),
     staleTime: 1000 * 60 * 60,
     initialPageParam: { from: 0, size: 20 },
 

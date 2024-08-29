@@ -1,18 +1,22 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ExerciseInfo from '../components/ExerciseInfo';
 import SelectToggle from '../components/SelectToggle';
 import Comment from '../components/Explain';
 import Record from '../components/Record';
+import { useSearchParams } from 'next/navigation';
 
 const ExerciseDetails = () => {
-  const [selected, setSelected] = useState<'explain' | 'record'>('explain');
-
+  const searchParams = useSearchParams();
+  const type = searchParams.get('type');
+  const [selected, setSelected] = useState<'explain' | 'record'>(
+    type === 'default' ? 'explain' : 'record'
+  );
   return (
     <div>
       <ExerciseInfo />
-      <SelectToggle selected={selected} setSelected={setSelected} />
-      {selected === 'explain' && (
+      <SelectToggle type={type} selected={selected} setSelected={setSelected} />
+      {type === 'default' && selected === 'explain' && (
         <div className="w-full px-5 mt-4 mb-10">
           <h4 className="text-lg text-text-main font-bold mb-2">운동 순서</h4>
           <p className="mb-2">1. 등을 대고 눕고 무릎을 구부리며 발은 바닥에 평평하게 붙입니다.</p>

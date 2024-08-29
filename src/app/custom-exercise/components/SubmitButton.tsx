@@ -1,7 +1,12 @@
 import { Button } from '@/components/ui/button';
 import React from 'react';
 
-const SubmitButton = ({ isDisabled, onClick }: { isDisabled: boolean; onClick: () => void }) => (
+interface SubmitButtonProps {
+  isDisabled: boolean;
+  onClick: () => void;
+}
+
+const SubmitButton = ({ isDisabled, onClick }: SubmitButtonProps) => (
   <Button
     disabled={isDisabled}
     onClick={onClick}

@@ -1,3 +1,4 @@
+import { Filters } from '@/app/exercise-list/types';
 import axios from 'axios';
 
 const EXERCISE = {
@@ -6,7 +7,19 @@ const EXERCISE = {
   POST_LIKE_REGISTER: '/api/v1/interest-exercise',
 };
 
-export const getSearchExercise = async (session: any, filters: any, size: number, from: number) => {
+interface SearchExercisePayload {
+  filters: Filters;
+  size: number;
+  from: number;
+  session: any;
+}
+
+export const getSearchExercise = async ({
+  session,
+  filters,
+  size,
+  from,
+}: SearchExercisePayload) => {
   const params = {
     ...filters,
     from,
@@ -38,17 +51,23 @@ interface CustomExercisePayload {
   session: any;
 }
 
-export const postCustomExercise = async (data: CustomExercisePayload) => {
+export const postCustomExercise = async ({
+  name,
+  bodyPart,
+  tool,
+  image,
+  session,
+}: CustomExercisePayload) => {
   const formData = new FormData();
   const customExerciseRequest = JSON.stringify({
-    exerciseName: data.name,
-    exerciseEquipment: data.tool,
-    exerciseTarget: data.bodyPart,
+    exerciseName: name,
+    exerciseEquipment: tool,
+    exerciseTarget: bodyPart,
   });
 
   formData.append('customExerciseRequest', customExerciseRequest);
-  if (data.image) {
-    formData.append('file', data.image);
+  if (image) {
+    formData.append('file', image);
   }
 
   try {
@@ -57,7 +76,7 @@ export const postCustomExercise = async (data: CustomExercisePayload) => {
       formData,
       {
         headers: {
-          Authorization: `Bearer ${data.session?.accessToken}`,
+          Authorization: `Bearer ${session?.accessToken}`,
         },
       }
     );
@@ -75,11 +94,11 @@ interface LikeRegister {
   session: any;
 }
 
-export const postLikeRegister = async (data: LikeRegister) => {
+export const postLikeRegister = async ({ exerciseId, source, session }: LikeRegister) => {
   try {
     const body = {
-      exerciseId: data.exerciseId,
-      source: data.source + '_',
+      exerciseId: exerciseId,
+      source: source + '_',
     };
 
     const response = await axios.post(
@@ -87,7 +106,7 @@ export const postLikeRegister = async (data: LikeRegister) => {
       body,
       {
         headers: {
-          Authorization: `Bearer ${data.session?.accessToken}`,
+          Authorization: `Bearer ${session?.accessToken}`,
         },
       }
     );

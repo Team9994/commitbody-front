@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postCustomExercise, postLikeRegister } from '..';
+import { Filters } from '@/app/exercise-list/types';
 
 export const useCustomExerciseMutation = () => {
   return useMutation({
@@ -7,7 +8,14 @@ export const useCustomExerciseMutation = () => {
   });
 };
 
-export const useLikeRegister = (filters: any) => {
+// 낙관적 업데이트 vs 성공시 수동 캐시수정
+// - 낙관적 업데이트
+//  서버가 느릴 때 사용자 경험 상승
+//  복잡도 상승 (API 요청 실패시 롤백 필요)
+// - 성공시 수동 캐시 수정
+//  성공했을 때 수동으로 캐시 수정
+//  복잡도 상대적으로 낮음
+export const useLikeRegister = (filters: Filters) => {
   const queryClient = useQueryClient();
 
   return useMutation({
