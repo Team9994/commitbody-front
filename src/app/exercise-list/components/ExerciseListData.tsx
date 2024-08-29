@@ -1,11 +1,14 @@
 import React, { RefObject } from 'react';
 import Image from 'next/image';
+import { useLikeRegister } from '@/app/api/exercise/query';
+import { useSession } from 'next-auth/react';
 
 interface ExerciseListDataProps {
   handleListClick: (id: number) => void;
   scrollRef: RefObject<HTMLDivElement>;
   observerRef: RefObject<HTMLDivElement>;
   searchResults: any;
+  filters: any;
 }
 
 const ExerciseListData = ({
@@ -13,7 +16,10 @@ const ExerciseListData = ({
   handleListClick,
   scrollRef,
   observerRef,
+  filters,
 }: ExerciseListDataProps) => {
+  const { data: session } = useSession();
+  const mutation = useLikeRegister(filters);
   return (
     <div
       ref={scrollRef}
@@ -31,10 +37,15 @@ const ExerciseListData = ({
           <Image
             onClick={(e) => {
               e.stopPropagation();
+              mutation.mutate({
+                exerciseId: list.exerciseId,
+                source: list.source,
+                session: session,
+              });
             }}
             width={24}
             height={24}
-            src={list.like ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
+            src={list.interest ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
             alt={list.like ? '좋아요' : '좋아요 안 함'}
           />
         </div>

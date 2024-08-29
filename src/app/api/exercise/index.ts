@@ -3,6 +3,7 @@ import axios from 'axios';
 const EXERCISE = {
   GET_SEARCH: '/api/v1/search-exercise',
   POST_CUSTOM_EXERCISE: '/api/v1/save-exercise',
+  POST_LIKE_REGISTER: '/api/v1/interest-exercise',
 };
 
 export const getSearchExercise = async (session: any, filters: any, size: number, from: number) => {
@@ -64,6 +65,36 @@ export const postCustomExercise = async (data: CustomExercisePayload) => {
     return response;
   } catch (error) {
     console.error('Error saving custom exercise:', error);
+    throw error;
+  }
+};
+
+interface LikeRegister {
+  exerciseId: number;
+  source: 'custom' | 'default';
+  session: any;
+}
+
+export const postLikeRegister = async (data: LikeRegister) => {
+  try {
+    const body = {
+      exerciseId: data.exerciseId,
+      source: data.source + '_',
+    };
+
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_LIKE_REGISTER}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${data.session?.accessToken}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error interest-exercise', error);
     throw error;
   }
 };

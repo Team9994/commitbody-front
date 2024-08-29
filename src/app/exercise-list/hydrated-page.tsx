@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Search from './components/Search';
 import useExerciseList from './hooks/useExerciseList';
 import ExerciseListData from './components/ExerciseListData';
@@ -21,6 +21,7 @@ const ExserciseList = () => {
     scrollRef,
     observerRef,
     searchResults,
+    filters,
   } = useExerciseList();
   return (
     <div>
@@ -38,6 +39,7 @@ const ExserciseList = () => {
       />
 
       <ExerciseListData
+        filters={filters}
         scrollRef={scrollRef}
         searchResults={searchResults?.pages.flat() || []}
         handleListClick={handleListClick}

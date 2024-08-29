@@ -13,7 +13,6 @@ const useExerciseList = () => {
   const scrollRef = useRef(null);
   const { data: session } = useSession();
   const { value: searchData, onChange } = useInput('');
-
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedTool, setSelectedTool] = useState('');
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
@@ -38,7 +37,6 @@ const useExerciseList = () => {
       source: selectedCategory.includes('custom') ? 'custom' : '',
     });
   }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);
-
   useEffect(() => {
     updateFilters();
   }, [selectedCategory, updateFilters]);
@@ -46,7 +44,6 @@ const useExerciseList = () => {
   const toggleDrawer = useCallback(() => {
     setDrawerToggle((prev) => !prev);
   }, []);
-
   const handleCategoryClick = useCallback(
     (categoryKey: CategoryKey, hasItems: boolean) => {
       if (hasItems) {
@@ -114,7 +111,7 @@ const useExerciseList = () => {
     queryKey: ['Search_Result', filters],
     queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
       getSearchExercise(session, filters, pageParam.size, pageParam.from),
-
+    staleTime: 1000 * 60 * 60,
     initialPageParam: { from: 0, size: 20 },
 
     getNextPageParam: (_lastPage, allPages) => {
@@ -152,6 +149,7 @@ const useExerciseList = () => {
     scrollRef,
     observerRef,
     searchResults,
+    filters,
   };
 };
 
