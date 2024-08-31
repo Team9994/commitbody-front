@@ -3,9 +3,11 @@ import axios from 'axios';
 const EXERCISE = {
   GET_COMMENT: '/api/v1/comment-exercise',
   DELETE_COMMENT: '/api/v1/comment-exercise',
+  POST_COMMENT: '/api/v1/comment-exercise',
+  POST_COMMENT_LIKE: '/api/v1/comment-exercise/like',
 };
 
-interface CommentPayload {
+interface GetCommentPayload {
   id: string;
   source: 'custom' | 'default';
   lastId?: number | null;
@@ -19,7 +21,7 @@ export const getComment = async ({
   source = 'default',
   lastId,
   size,
-}: CommentPayload) => {
+}: GetCommentPayload) => {
   const params = {
     source,
     lastId,
@@ -41,6 +43,40 @@ export const getComment = async ({
   }
 };
 
+interface PostCommentPayload {
+  exerciseId: string;
+  session: any;
+  source?: 'default' | 'custom';
+  content: string;
+}
+
+export const postComment = async ({
+  session,
+  exerciseId,
+  source = 'default',
+  content,
+}: PostCommentPayload) => {
+  const body = {
+    exerciseId,
+    source,
+    content,
+  };
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_COMMENT}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('Error deleting comment:', error);
+  }
+};
+
 interface DeleteCommentPayload {
   exerciseId: number;
   session: any;
@@ -50,6 +86,31 @@ export const deleteComment = async ({ exerciseId, session }: DeleteCommentPayloa
   try {
     const res = await axios.delete(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.DELETE_COMMENT}/${exerciseId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('Error deleting comment:', error);
+  }
+};
+
+interface PostCommentLikePayload {
+  exCommentId: number;
+  session: any;
+}
+
+export const postCommentLike = async ({ session, exCommentId }: PostCommentLikePayload) => {
+  const body = {
+    exCommentId,
+  };
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_COMMENT_LIKE}`,
+      body,
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

@@ -1,11 +1,16 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import React from 'react';
 import useExplain from '../hooks/useExplain';
 import { CommentList } from '../types';
-import { deleteComment } from '@/app/api/exercise-comment';
 import { useSession } from 'next-auth/react';
-import { useCommentDeleteMutation } from '@/app/api/exercise-comment/query';
+import {
+  useCommentDeleteMutation,
+  useCommentPostLikeMutation,
+  useCommentPostMutation,
+} from '@/app/api/exercise-comment/query';
+import useInput from '@/hooks/useInput';
 
 interface CommentProps {
   id: string;
@@ -13,10 +18,22 @@ interface CommentProps {
 }
 
 const Comment = ({ id, type }: CommentProps) => {
-  const { handleMenuClick, activeMenuId, menuRef, observerRef, isLoading, commentLists } =
-    useExplain(id, type);
+  const { handleMenuClick, activeMenuId, menuRef, observerRef, commentLists } = useExplain(
+    id,
+    type
+  );
   const { data: session } = useSession();
-  const mutation = useCommentDeleteMutation(id, session, 'default');
+
+  // 세션 정보가 없는 경우를 대비한 에러 처리
+  if (!session) {
+    return <div>로그인이 필요합니다.</div>;
+  }
+
+  const { deleteMutation } = useCommentDeleteMutation(id, session, type);
+  const { value: content, onChange } = useInput();
+  const { postCommentMutation } = useCommentPostMutation(id, session, type);
+  const { postCommentLikeMutation } = useCommentPostLikeMutation(id, session, type);
+
   return (
     <>
       <h3 className="font-lg font-bold leading-[26px] text-text-main mb-2">댓글</h3>
@@ -25,16 +42,24 @@ const Comment = ({ id, type }: CommentProps) => {
           style={{ boxShadow: 'none' }}
           className="w-full h-[40px] bg-backgrounds-light focus:outline-none border-none placeholder-[#999999]"
           placeholder="댓글을 작성해보세요"
+          onChange={onChange}
+          value={content} // 입력된 내용을 표시하기 위해 value 추가
         />
         <Image
           src={'/assets/send.svg'}
           alt="보내기"
           width={18}
           height={18}
-          className="absolute top-1/2 right-[13px] -translate-y-[9px]"
+          className="absolute top-1/2 right-[13px] -translate-y-[9px] cursor-pointer"
+          onClick={() => {
+            if (content.trim() === '') {
+              alert('댓글 내용을 입력해주세요.');
+              return;
+            }
+            postCommentMutation.mutate({ session, content, exerciseId: id });
+          }}
         />
       </div>
-
       {commentLists?.pages
         ?.flatMap((page) => page.data.commentList)
         ?.map((data: CommentList) => (
@@ -48,15 +73,20 @@ const Comment = ({ id, type }: CommentProps) => {
               <p className="text-s font-medium text-text-main leading-[18px] mb-1">
                 {data.content}
               </p>
-              <div className="flex items-center">
+              <div
+                onClick={() =>
+                  postCommentLikeMutation.mutate({ exCommentId: data.exerciseCommentId, session })
+                }
+                className="flex items-center cursor-pointer"
+              >
                 <Image
                   className="mr-1"
-                  src="/assets/recommend.svg"
+                  src={data.likeStatus ? '/assets/fillRecommend.svg' : '/assets/recommend.svg'}
                   width={24}
                   height={24}
                   alt="추천"
                 />
-                <p>{data.likeCount}</p>
+                <p className={data.likeStatus ? 'text-blue' : ''}>{data.likeCount}</p>
               </div>
             </div>
             <Image
@@ -77,7 +107,9 @@ const Comment = ({ id, type }: CommentProps) => {
                   수정
                 </div>
                 <div
-                  onClick={() => mutation.mutate({ exerciseId: data.exerciseCommentId, session })}
+                  onClick={() =>
+                    deleteMutation.mutate({ exerciseId: data.exerciseCommentId, session })
+                  }
                   className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
                 >
                   삭제
