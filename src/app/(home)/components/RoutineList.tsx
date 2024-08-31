@@ -124,7 +124,7 @@ const RoutineList = () => {
             onClick={() => toggleDrawer(selectedId)}
           ></div>
           <div
-            className={`fixed bg-backgrounds-sub h-[570px] w-full rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
+            className={`fixed bg-backgrounds-sub max-h-[480px] w-full rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
               drawerToggle ? 'translate-y-0' : 'translate-y-full'
             }`}
           >
@@ -173,6 +173,62 @@ const RoutineData = [
           {
             setsId: 105,
             sets: 2,
+          },
+        ],
+      },
+      {
+        exerciseId: 3,
+        exerciseName: '커스텀2',
+        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
+        exerciseType: '횟수',
+        sets: 4,
+        orders: 1,
+        routineSets: [
+          {
+            setsId: 105,
+            sets: 1,
+          },
+        ],
+      },
+      {
+        exerciseId: 4,
+        exerciseName: '커스텀3',
+        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
+        exerciseType: '횟수',
+        sets: 4,
+        orders: 1,
+        routineSets: [
+          {
+            setsId: 105,
+            sets: 1,
+          },
+        ],
+      },
+      {
+        exerciseId: 5,
+        exerciseName: '커스텀4',
+        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
+        exerciseType: '횟수',
+        sets: 4,
+        orders: 1,
+        routineSets: [
+          {
+            setsId: 105,
+            sets: 1,
+          },
+        ],
+      },
+      {
+        exerciseId: 6,
+        exerciseName: '커스텀5',
+        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
+        exerciseType: '횟수',
+        sets: 4,
+        orders: 1,
+        routineSets: [
+          {
+            setsId: 105,
+            sets: 1,
           },
         ],
       },
