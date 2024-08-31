@@ -1,6 +1,6 @@
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
 // session 속성 재정의
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
       name: number;
@@ -15,5 +15,6 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     customToken: string;
+    nickname: string;
   }
 }

@@ -38,10 +38,12 @@ export const { handlers, auth, signIn } = NextAuth({
             socialId: googleResponse.data.kid,
           });
 
+          console.log(springResponse.data.data);
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
+            nickname: springResponse.data.data.tokenInfo?.nickname,
           };
         } else if (account?.provider === 'kakao') {
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
@@ -53,6 +55,7 @@ export const { handlers, auth, signIn } = NextAuth({
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
+            nickname: springResponse.data.data.nickname,
           };
         }
       }
@@ -64,6 +67,7 @@ export const { handlers, auth, signIn } = NextAuth({
       if (token) {
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
+        session.nickname = token.nickname as string;
       }
       return session;
     },

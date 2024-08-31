@@ -3,8 +3,14 @@ import Link from 'next/link';
 import RoutineList from './components/RoutineList';
 import PlusRoutineBtn from '@/components/common/PlusRoutineBtn';
 import { url } from 'inspector';
+import { redirect } from 'next/navigation';
+import { auth } from '@/auth';
 
 export default function Home() {
+  const session = auth();
+  if (!session) {
+    redirect('/sign');
+  }
   return (
     <div className="flex flex-col h-screen bg-[#212227]">
       <div className="w-full h-[64px] bg-[#292C33] flex items-center mb-2 px-5">

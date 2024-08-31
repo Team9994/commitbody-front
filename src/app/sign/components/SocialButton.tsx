@@ -7,7 +7,7 @@ export default function SocialButton(props: { type: 'google' | 'kakao' }) {
   const handleSignIn = async () => {
     try {
       await signIn(props.type, {
-        callbackUrl: `http://localhost:3000/sign/additional-info`,
+        callbackUrl: `http://localhost:3000/`,
       });
     } catch (error) {
       console.error('로그인 중 오류 발생:', error);
