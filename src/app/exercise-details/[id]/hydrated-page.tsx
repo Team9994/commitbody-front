@@ -1,12 +1,16 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ExerciseInfo from '../components/ExerciseInfo';
 import SelectToggle from '../components/SelectToggle';
-import Comment from '../components/Explain';
+import Comment from '../components/Comment';
 import Record from '../components/Record';
 import { useSearchParams } from 'next/navigation';
 
-const ExerciseDetails = () => {
+interface ExerciseDetails {
+  id: string;
+}
+
+const ExerciseDetails = ({ id }: ExerciseDetails) => {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
   const [selected, setSelected] = useState<'explain' | 'record'>(
@@ -27,7 +31,7 @@ const ExerciseDetails = () => {
             <div className="leading-[18px] text-text-main ">더 자세한 동작을 알고싶다면?</div>
             <div className="leading-[18px] text-blue">동영상 보러 가기 </div>
           </div>
-          <Comment />
+          <Comment type={type} id={id} />
         </div>
       )}
       {selected === 'record' && <Record />}
