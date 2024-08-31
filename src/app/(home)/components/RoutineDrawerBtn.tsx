@@ -6,6 +6,7 @@ interface RoutineDrawerBtnProps {
   height?: number;
   backgroundColor?: string;
   image?: string;
+  onClick?: () => void;
 }
 
 const RoutineDrawerBtn = ({
@@ -14,11 +15,13 @@ const RoutineDrawerBtn = ({
   height,
   backgroundColor,
   image,
+  onClick,
 }: RoutineDrawerBtnProps) => {
   return (
     <Button
       className={`text-base leading-6 bg-${backgroundColor} !border-blue !border`}
       style={{ width: `${width}px`, height: `${height}px` }}
+      onClick={onClick}
     >
       {image && <Image src={image} alt="운동 시작" width={20} height={20} className="" />}
       {text}

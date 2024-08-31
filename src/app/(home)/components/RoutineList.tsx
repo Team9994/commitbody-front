@@ -26,6 +26,7 @@ const RoutineList = () => {
     drawerToggle,
     toggleDrawer,
     selectedId,
+    moveRouter,
   } = useRoutine();
 
   return (
@@ -132,6 +133,7 @@ const RoutineList = () => {
               toggleDrawer={toggleDrawer}
               routineData={RoutineData[selectedId]}
               selectedId={selectedId}
+              moveRouter={moveRouter}
             />
           </div>
         </Drawer>
