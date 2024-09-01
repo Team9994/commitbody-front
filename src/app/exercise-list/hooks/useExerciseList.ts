@@ -19,12 +19,11 @@ const useExerciseList = () => {
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
 
-  //TODO : favorite 부분 백엔드에게 어떤 양식인지 질문하기
   const [filters, setFilters] = useState<Filters>({
     name: '',
     target: '',
     equipment: '',
-    favorite: false,
+    favorite: null,
     source: '',
   });
 
@@ -33,7 +32,7 @@ const useExerciseList = () => {
       name: searchData,
       target: selectedBodyPart,
       equipment: selectedTool,
-      favorite: selectedCategory.includes('like'),
+      favorite: selectedCategory.includes('like') ? true : null,
       source: selectedCategory.includes('custom') ? 'custom' : '',
     });
   }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);

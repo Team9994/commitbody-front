@@ -2,7 +2,7 @@ export interface Filters {
   name: string;
   target: string;
   equipment: string;
-  favorite: boolean;
+  favorite?: boolean | null;
   source: string;
 }
 
