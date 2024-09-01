@@ -10,15 +10,6 @@ const HydratedExerciseList = async () => {
   const queryClient = getQueryClient();
   const session = await auth();
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/sign',
-        permanent: false,
-      },
-    };
-  }
-
   const filters = {
     name: '',
     target: '',
