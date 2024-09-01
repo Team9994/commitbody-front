@@ -1,16 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import React from 'react';
 import useExplain from '../hooks/useExplain';
 import { CommentList } from '../types';
-import { useSession } from 'next-auth/react';
-import {
-  useCommentDeleteMutation,
-  useCommentPostLikeMutation,
-  useCommentPostMutation,
-} from '@/app/api/exercise-comment/query';
-import useInput from '@/hooks/useInput';
 
 interface CommentProps {
   id: string;
@@ -18,21 +10,19 @@ interface CommentProps {
 }
 
 const Comment = ({ id, type }: CommentProps) => {
-  const { handleMenuClick, activeMenuId, menuRef, observerRef, commentLists } = useExplain(
-    id,
-    type
-  );
-  const { data: session } = useSession();
-
-  // 세션 정보가 없는 경우를 대비한 에러 처리
-  if (!session) {
-    return <div>로그인이 필요합니다.</div>;
-  }
-
-  const { deleteMutation } = useCommentDeleteMutation(id, session, type);
-  const { value: content, onChange } = useInput();
-  const { postCommentMutation } = useCommentPostMutation(id, session, type);
-  const { postCommentLikeMutation } = useCommentPostLikeMutation(id, session, type);
+  const {
+    handleMenuClick,
+    activeMenuId,
+    menuRef,
+    observerRef,
+    commentLists,
+    deleteMutation,
+    content,
+    onChange,
+    postCommentLikeMutation,
+    postCommentMutation,
+    session,
+  } = useExplain(id, type);
 
   return (
     <>
@@ -43,7 +33,7 @@ const Comment = ({ id, type }: CommentProps) => {
           className="w-full h-[40px] bg-backgrounds-light focus:outline-none border-none placeholder-[#999999]"
           placeholder="댓글을 작성해보세요"
           onChange={onChange}
-          value={content} // 입력된 내용을 표시하기 위해 value 추가
+          value={content}
         />
         <Image
           src={'/assets/send.svg'}

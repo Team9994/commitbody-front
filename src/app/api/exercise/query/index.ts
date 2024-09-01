@@ -1,6 +1,26 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postCustomExercise, postLikeRegister } from '..';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getSearchExercise, postCustomExercise, postLikeRegister } from '..';
 import { Filters } from '@/app/exercise-list/types';
+
+export const useSearchExercise = (filters: Filters, session: any) => {
+  return useInfiniteQuery({
+    queryKey: ['Search_Result', filters],
+    queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
+      getSearchExercise({
+        session,
+        filters,
+        size: pageParam.size,
+        from: pageParam.from,
+      }),
+    staleTime: 1000 * 60 * 60,
+    initialPageParam: { from: 0, size: 20 },
+    getNextPageParam: (_lastPage, allPages) => {
+      const nextFrom = allPages.length * 20;
+      return allPages[allPages.length - 1].length === 20 ? { from: nextFrom, size: 20 } : undefined;
+    },
+    enabled: false,
+  });
+};
 
 export const useCustomExerciseMutation = () => {
   return useMutation({

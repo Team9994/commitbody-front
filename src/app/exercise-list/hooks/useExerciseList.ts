@@ -1,13 +1,12 @@
 'use client';
-import { getSearchExercise } from '@/app/api/exercise';
 import { CategoryKey } from '@/app/custom-exercise/constants';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import useInput from '@/hooks/useInput';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Filters } from '../types';
+import { useSearchExercise } from '@/app/api/exercise/query';
 
 const useExerciseList = () => {
   const router = useRouter();
@@ -38,6 +37,7 @@ const useExerciseList = () => {
       source: selectedCategory.includes('custom') ? 'custom' : '',
     });
   }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);
+
   useEffect(() => {
     updateFilters();
   }, [selectedCategory, updateFilters]);
@@ -45,6 +45,7 @@ const useExerciseList = () => {
   const toggleDrawer = useCallback(() => {
     setDrawerToggle((prev) => !prev);
   }, []);
+
   const handleCategoryClick = useCallback(
     (categoryKey: CategoryKey, hasItems: boolean) => {
       if (hasItems) {
@@ -107,24 +108,7 @@ const useExerciseList = () => {
     hasNextPage,
     isFetching,
     refetch,
-  } = useInfiniteQuery({
-    queryKey: ['Search_Result', filters],
-    queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
-      getSearchExercise({
-        session,
-        filters,
-        size: pageParam.size,
-        from: pageParam.from,
-      }),
-    staleTime: 1000 * 60 * 60,
-    initialPageParam: { from: 0, size: 20 },
-
-    getNextPageParam: (_lastPage, allPages) => {
-      const nextFrom = allPages.length * 20;
-      return allPages[allPages.length - 1].length === 20 ? { from: nextFrom, size: 20 } : undefined;
-    },
-    enabled: false,
-  });
+  } = useSearchExercise(filters, session);
 
   useEffect(() => {
     refetch();
