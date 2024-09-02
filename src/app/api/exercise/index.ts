@@ -90,6 +90,59 @@ export const postCustomExercise = async ({
   }
 };
 
+interface PutCustomExercisePayload {
+  customExerciseId: string | null;
+  name: string;
+  bodyPart: string;
+  tool: string;
+  source: string;
+  image?: File;
+  session: any;
+}
+
+export const putCustomExercise = async ({
+  customExerciseId,
+  name,
+  bodyPart,
+  tool,
+  source,
+  image,
+  session,
+}: PutCustomExercisePayload) => {
+  const formData = new FormData();
+
+  const customUpdateExerciseRequest = JSON.stringify({
+    customExerciseId: customExerciseId,
+    exerciseName: name,
+    exerciseEquipment: tool,
+    exerciseTarget: bodyPart,
+    source: source,
+  });
+
+  formData.append('customUpdateExerciseRequest', customUpdateExerciseRequest);
+
+  if (image) {
+    formData.append('file', image);
+  }
+
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.PUT_CUSTOM_EXERCISE}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error('Error saving custom exercise:', error);
+    throw error;
+  }
+};
+
 interface LikeRegister {
   exerciseId: number;
   source: 'custom' | 'default';
@@ -119,9 +172,6 @@ export const postLikeRegister = async ({ exerciseId, source, session }: LikeRegi
     throw error;
   }
 };
-
-interface PutCustomExercisePayload {}
-export const putCustomExercise = () => {};
 
 interface DeleteCustomExcercisePayload {
   id: string;

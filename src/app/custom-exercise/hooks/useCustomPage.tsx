@@ -1,14 +1,15 @@
-import { useCustomExerciseMutation } from '@/app/api/exercise/query';
+import { useCustomExerciseEditMutation, useCustomExerciseMutation } from '@/app/api/exercise/query';
 import useInput from '@/hooks/useInput';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { CategoryKey } from '../constants';
 
 const useCustomPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const mutation = useCustomExerciseMutation();
+  const customExerciseCreateMutation = useCustomExerciseMutation();
+  const customExerciseEditMutation = useCustomExerciseEditMutation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
@@ -17,6 +18,9 @@ const useCustomPage = () => {
   const [selectedTool, setSelectedTool] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const { value: name, onChange } = useInput('');
+  const searchParam = useSearchParams();
+  const status = searchParam.get('status');
+  const exerciseId = searchParam.get('exerciseId');
 
   const handleImageUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -44,8 +48,8 @@ const useCustomPage = () => {
     setIsDrawerOpen(false);
   }, []);
 
-  const handleSubmit = async () => {
-    mutation.mutate(
+  const handleCreateSubmit = async () => {
+    customExerciseCreateMutation.mutate(
       {
         name,
         bodyPart: selectedBodyPart,
@@ -65,6 +69,29 @@ const useCustomPage = () => {
     );
   };
 
+  const handleEditExerciseSubmit = () => {
+    const editPayload = {
+      customExerciseId: exerciseId,
+      name,
+      bodyPart: selectedBodyPart,
+      tool: selectedTool,
+      image: selectedFile || undefined,
+      source: 'custom',
+      session,
+    };
+
+    customExerciseEditMutation.mutate(editPayload, {
+      onSuccess: () => {
+        alert('운동 수정에 성공하셨습니다!');
+        router.push('/exercise-list');
+      },
+      onError: (error) => {
+        alert('운동 수정 중 에러가 발생했습니다.');
+        console.error(error);
+      },
+    });
+  };
+
   useEffect(() => {
     setIsButtonDisabled(!(name && selectedBodyPart && selectedTool));
   }, [name, selectedBodyPart, selectedTool]);
@@ -82,7 +109,9 @@ const useCustomPage = () => {
     selectedBodyPart,
     selectedTool,
     setIsDrawerOpen,
-    handleSubmit,
+    handleCreateSubmit,
+    handleEditExerciseSubmit,
+    status,
   };
 };
 

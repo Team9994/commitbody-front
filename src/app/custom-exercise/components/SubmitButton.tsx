@@ -4,9 +4,10 @@ import React from 'react';
 interface SubmitButtonProps {
   isDisabled: boolean;
   onClick: () => void;
+  status: string | null;
 }
 
-const SubmitButton = ({ isDisabled, onClick }: SubmitButtonProps) => (
+const SubmitButton = ({ status, isDisabled, onClick }: SubmitButtonProps) => (
   <Button
     disabled={isDisabled}
     onClick={onClick}
@@ -16,7 +17,7 @@ const SubmitButton = ({ isDisabled, onClick }: SubmitButtonProps) => (
         : 'bg-blue text-white cursor-pointer'
     }`}
   >
-    추가하기
+    {status ? '수정하기' : '추가하기'}
   </Button>
 );
 

@@ -30,9 +30,18 @@ export const useSearchExercise = (filters: Filters, session: any) => {
 };
 
 export const useCustomExerciseMutation = () => {
-  return useMutation({
+  const customExerciseCreateMutation = useMutation({
     mutationFn: postCustomExercise,
   });
+  return customExerciseCreateMutation;
+};
+
+export const useCustomExerciseEditMutation = () => {
+  const customExerciseEditMutation = useMutation({
+    mutationFn: putCustomExercise,
+  });
+
+  return customExerciseEditMutation;
 };
 
 // 낙관적 업데이트 vs 성공시 수동 캐시수정
@@ -74,18 +83,6 @@ export const useLikeRegister = (filters: Filters) => {
     },
   });
 };
-
-// export const usePutCustomExerciseMutation = () => {
-//   const router = useRouter();
-//   const putCustomExerciseMutation = useMutation({
-//     mutationFn: putCustomExercise,
-//     onSuccess: () => {
-//       router.back();
-//     },
-//   });
-
-//   return { putCustomExerciseMutation };
-// };
 
 export const useDeleteCustomExerciseMutation = () => {
   const router = useRouter();

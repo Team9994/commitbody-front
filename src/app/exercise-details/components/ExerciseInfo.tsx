@@ -1,7 +1,9 @@
+'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useDeleteCustomExerciseMutation } from '@/app/api/exercise/query';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface ExerciseInfoProps {
   type: string | null;
@@ -10,6 +12,7 @@ interface ExerciseInfoProps {
 
 const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
   const { data: session } = useSession();
+  const router = useRouter();
   const heartToggle = true;
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isActiveMenu, setIsActiveMenu] = useState<boolean>(false);
@@ -61,7 +64,9 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
                 className="absolute top-0 z-10 right-0 shadow-main bg-backgrounds-light text-md"
               >
                 <div
-                  onClick={() => {}}
+                  onClick={() => {
+                    router.push(`/custom-exercise?status=edit&exerciseId=${id}`);
+                  }}
                   className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
                 >
                   수정
