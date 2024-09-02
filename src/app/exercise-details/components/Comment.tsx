@@ -5,12 +5,7 @@ import useExplain from '../hooks/useExplain';
 import { CommentList } from '../types';
 import { usePathname } from 'next/navigation';
 
-interface CommentProps {
-  id: string;
-  type: 'custom' | 'default';
-}
-
-const Comment = ({ id, type }: CommentProps) => {
+const Comment = () => {
   const {
     handleMenuClick,
     activeMenuId,
@@ -25,7 +20,8 @@ const Comment = ({ id, type }: CommentProps) => {
     session,
     contentReset,
     router,
-  } = useExplain(id, type);
+    id,
+  } = useExplain();
 
   const pathname = usePathname();
   return (

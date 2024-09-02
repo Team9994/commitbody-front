@@ -5,6 +5,8 @@ const EXERCISE = {
   GET_SEARCH: '/api/v1/search-exercise',
   POST_CUSTOM_EXERCISE: '/api/v1/save-exercise',
   POST_LIKE_REGISTER: '/api/v1/interest-exercise',
+  PUT_CUSTOM_EXERCISE: '/api/v1/update-exercise',
+  DELETE_CUSTOM_EXERCISE: '/api/v1/delete-exercise',
 };
 
 interface SearchExercisePayload {
@@ -108,6 +110,36 @@ export const postLikeRegister = async ({ exerciseId, source, session }: LikeRegi
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,
         },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error('Error interest-exercise', error);
+    throw error;
+  }
+};
+
+interface PutCustomExercisePayload {}
+export const putCustomExercise = () => {};
+
+interface DeleteCustomExcercisePayload {
+  id: string;
+  session: any;
+}
+export const deleteCustomExercise = async ({ id, session }: DeleteCustomExcercisePayload) => {
+  const params = {
+    id,
+  };
+
+  try {
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.DELETE_CUSTOM_EXERCISE}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        params,
       }
     );
 

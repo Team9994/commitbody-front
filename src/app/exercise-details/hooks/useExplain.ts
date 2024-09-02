@@ -3,16 +3,20 @@ import {
   useCommentList,
   useCommentPostLikeMutation,
   useCommentPostMutation,
-} from '@/app/api/exercise-comment/query';
+} from '@/app/api/exercise-details/query';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import useInput from '@/hooks/useInput';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-const useExplain = (id: string, source: 'custom' | 'default') => {
+const useExplain = () => {
   const { data: session } = useSession();
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
+  const pathname = usePathname();
+  const source = 'default';
+  const pathSegments = pathname.split('/');
+  const id = pathSegments[pathSegments.length - 1];
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
   const { deleteMutation } = useCommentDeleteMutation(id, session, source);
@@ -66,6 +70,8 @@ const useExplain = (id: string, source: 'custom' | 'default') => {
     session,
     contentReset,
     router,
+    isFetching,
+    id,
   };
 };
 

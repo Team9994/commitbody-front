@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'; // us
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import useInput from '@/hooks/useInput';
-import { useCommentPutMutation } from '@/app/api/exercise-comment/query';
+import { useCommentPutMutation } from '@/app/api/exercise-details/query';
 import { useSession } from 'next-auth/react';
 
 const Edit = () => {

@@ -3,7 +3,7 @@ import ExerciseDetails from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/GetQueryClient';
 import { auth } from '@/auth';
-import { getComment } from '@/app/api/exercise-comment';
+import { getComment, getDetailsInfo } from '@/app/api/exercise-details';
 
 const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) => {
   const queryClient = getQueryClient();
@@ -29,6 +29,12 @@ const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) =
       return lastPage?.data?.hasNext ? { lastId: nextLastId, size: 10 } : undefined;
     },
   });
+  console.log(session);
+  await queryClient.prefetchQuery({
+    queryKey: ['get_detail_exercise_info', id, session, source],
+    queryFn: () => getDetailsInfo({ id, session, source }),
+  });
+
   return (
     <HydrationBoundary state={dehydratedState}>
       <div className="flex flex-col min-h-[calc(100vh-48px)] bg-backgrounds-default text-text-main">

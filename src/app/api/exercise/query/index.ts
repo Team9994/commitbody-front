@@ -1,6 +1,13 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getSearchExercise, postCustomExercise, postLikeRegister } from '..';
+import {
+  deleteCustomExercise,
+  getSearchExercise,
+  postCustomExercise,
+  postLikeRegister,
+  putCustomExercise,
+} from '..';
 import { Filters } from '@/app/exercise-list/types';
+import { useRouter } from 'next/navigation';
 
 export const useSearchExercise = (filters: Filters, session: any) => {
   return useInfiniteQuery({
@@ -66,4 +73,29 @@ export const useLikeRegister = (filters: Filters) => {
       console.error('Error registering like:', error);
     },
   });
+};
+
+// export const usePutCustomExerciseMutation = () => {
+//   const router = useRouter();
+//   const putCustomExerciseMutation = useMutation({
+//     mutationFn: putCustomExercise,
+//     onSuccess: () => {
+//       router.back();
+//     },
+//   });
+
+//   return { putCustomExerciseMutation };
+// };
+
+export const useDeleteCustomExerciseMutation = () => {
+  const router = useRouter();
+  const deleteCustomExerciseMutation = useMutation({
+    mutationFn: deleteCustomExercise,
+    onSuccess: () => {
+      alert('커스텀 운동이 삭제되었습니다.');
+      router.back();
+    },
+  });
+
+  return { deleteCustomExerciseMutation };
 };

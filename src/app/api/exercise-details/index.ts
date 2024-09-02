@@ -6,6 +6,7 @@ const EXERCISE = {
   POST_COMMENT_LIKE: '/api/v1/comment-exercise/like',
   PUT_COMMENT: '/api/v1/comment-exercise',
   DELETE_COMMENT: '/api/v1/comment-exercise',
+  GET_DETAILS_INFO: '/api/v1/exercise',
 };
 
 interface GetCommentPayload {
@@ -139,6 +140,28 @@ export const postCommentLike = async ({ session, exCommentId }: PostCommentLikeP
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_COMMENT_LIKE}`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('Error postLike:', error);
+  }
+};
+
+interface GetDetailsInfoPayload {
+  id: string;
+  source: 'default' | 'custom';
+  session: any;
+}
+
+export const getDetailsInfo = async ({ id, session, source }: GetDetailsInfoPayload) => {
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}${id}?source=${source}`,
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

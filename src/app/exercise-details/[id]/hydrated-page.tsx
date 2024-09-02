@@ -18,7 +18,7 @@ const ExerciseDetails = ({ id }: ExerciseDetails) => {
   );
   return (
     <div>
-      <ExerciseInfo />
+      <ExerciseInfo id={id} type={type} />
       <SelectToggle type={type} selected={selected} setSelected={setSelected} />
       {type === 'default' && selected === 'explain' && (
         <div className="w-full px-5 mt-4 mb-10">
@@ -31,7 +31,7 @@ const ExerciseDetails = ({ id }: ExerciseDetails) => {
             <div className="leading-[18px] text-text-main ">더 자세한 동작을 알고싶다면?</div>
             <div className="leading-[18px] text-blue">동영상 보러 가기 </div>
           </div>
-          <Comment type={type} id={id} />
+          <Comment />
         </div>
       )}
       {selected === 'record' && <Record />}
