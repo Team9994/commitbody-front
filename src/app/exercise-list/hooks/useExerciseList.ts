@@ -23,7 +23,7 @@ const useExerciseList = () => {
     name: '',
     target: '',
     equipment: '',
-    favorite: null,
+    interest: null,
     source: '',
   });
 
@@ -32,7 +32,7 @@ const useExerciseList = () => {
       name: searchData,
       target: selectedBodyPart,
       equipment: selectedTool,
-      favorite: selectedCategory.includes('like') ? true : null,
+      interest: selectedCategory.includes('like') ? true : null,
       source: selectedCategory.includes('custom') ? 'custom' : '',
     });
   }, [searchData, selectedBodyPart, selectedTool, selectedCategory]);
