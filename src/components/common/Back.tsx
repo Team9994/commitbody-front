@@ -7,7 +7,7 @@ const Back = () => {
   const router = useRouter();
 
   return (
-    <div onClick={() => router.back()}>
+    <div>
       <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={24} height={24} />
     </div>
   );

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 import useExplain from '../hooks/useExplain';
 import { CommentList } from '../types';
+import { usePathname } from 'next/navigation';
 
 interface CommentProps {
   id: string;
@@ -22,8 +23,11 @@ const Comment = ({ id, type }: CommentProps) => {
     postCommentLikeMutation,
     postCommentMutation,
     session,
+    contentReset,
+    router,
   } = useExplain(id, type);
 
+  const pathname = usePathname();
   return (
     <>
       <h3 className="font-lg font-bold leading-[26px] text-text-main mb-2">댓글</h3>
@@ -47,6 +51,7 @@ const Comment = ({ id, type }: CommentProps) => {
               return;
             }
             postCommentMutation.mutate({ session, content, exerciseId: id });
+            contentReset();
           }}
         />
       </div>
@@ -93,7 +98,12 @@ const Comment = ({ id, type }: CommentProps) => {
                 ref={menuRef}
                 className="absolute top-0 z-10 right-0 shadow-main bg-backgrounds-light text-md"
               >
-                <div className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub">
+                <div
+                  onClick={() => {
+                    router.push(`${pathname}/edit?exerciseCommentId=${data.exerciseCommentId}`);
+                  }}
+                  className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
+                >
                   수정
                 </div>
                 <div

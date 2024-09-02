@@ -1,5 +1,5 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteComment, getComment, postComment, postCommentLike } from '..';
+import { deleteComment, getComment, postComment, postCommentLike, putComment } from '..';
 
 export const useCommentList = (id: string, session: any, source: 'default' | 'custom') => {
   return useInfiniteQuery({
@@ -23,20 +23,6 @@ export const useCommentList = (id: string, session: any, source: 'default' | 'cu
   });
 };
 
-export const useCommentDeleteMutation = (id: string, session: any, type: 'custom' | 'default') => {
-  const queryClient = useQueryClient();
-
-  const deleteMutation = useMutation({
-    mutationFn: deleteComment,
-
-    onSuccess: () => {
-      alert('댓글이 삭제되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
-    },
-  });
-
-  return { deleteMutation };
-};
 export const useCommentPostLikeMutation = (
   id: string,
   session: any,
@@ -64,4 +50,32 @@ export const useCommentPostMutation = (id: string, session: any, type: 'custom' 
   });
 
   return { postCommentMutation };
+};
+
+export const useCommentPutMutation = (id: string, session: any, type: 'custom' | 'default') => {
+  const queryClient = useQueryClient();
+  const putCommentMutation = useMutation({
+    mutationFn: putComment,
+    onSuccess: () => {
+      alert('댓글이 수정되었습니다.');
+      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+    },
+  });
+
+  return { putCommentMutation };
+};
+
+export const useCommentDeleteMutation = (id: string, session: any, type: 'custom' | 'default') => {
+  const queryClient = useQueryClient();
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteComment,
+
+    onSuccess: () => {
+      alert('댓글이 삭제되었습니다.');
+      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+    },
+  });
+
+  return { deleteMutation };
 };

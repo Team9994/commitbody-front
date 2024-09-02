@@ -2,9 +2,10 @@ import axios from 'axios';
 
 const EXERCISE = {
   GET_COMMENT: '/api/v1/comment-exercise',
-  DELETE_COMMENT: '/api/v1/comment-exercise',
   POST_COMMENT: '/api/v1/comment-exercise',
   POST_COMMENT_LIKE: '/api/v1/comment-exercise/like',
+  PUT_COMMENT: '/api/v1/comment-exercise',
+  DELETE_COMMENT: '/api/v1/comment-exercise',
 };
 
 interface GetCommentPayload {
@@ -73,7 +74,34 @@ export const postComment = async ({
     );
     return res.data;
   } catch (error) {
-    console.log('Error deleting comment:', error);
+    console.log('Error post comment:', error);
+  }
+};
+
+interface PutCommentPayload {
+  exerciseCommentId: string | null;
+  content: string;
+  session: any;
+}
+
+export const putComment = async ({ exerciseCommentId, content, session }: PutCommentPayload) => {
+  const body = {
+    exerciseCommentId,
+    content,
+  };
+  try {
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.PUT_COMMENT}`,
+      body,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.log('Error put comment:', error);
   }
 };
 
@@ -119,6 +147,6 @@ export const postCommentLike = async ({ session, exCommentId }: PostCommentLikeP
     );
     return res.data;
   } catch (error) {
-    console.log('Error deleting comment:', error);
+    console.log('Error postLike:', error);
   }
 };
