@@ -152,7 +152,7 @@ export const postCommentLike = async ({ session, exCommentId }: PostCommentLikeP
   }
 };
 
-interface GetDetailsInfoPayload {
+export interface GetDetailsInfoPayload {
   id: string;
   source: 'default' | 'custom';
   session: any;
@@ -161,7 +161,7 @@ interface GetDetailsInfoPayload {
 export const getDetailsInfo = async ({ id, session, source }: GetDetailsInfoPayload) => {
   try {
     const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}${id}?source=${source}`,
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`,
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

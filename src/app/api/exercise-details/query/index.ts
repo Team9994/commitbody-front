@@ -1,5 +1,13 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteComment, getComment, postComment, postCommentLike, putComment } from '..';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  deleteComment,
+  getComment,
+  getDetailsInfo,
+  GetDetailsInfoPayload,
+  postComment,
+  postCommentLike,
+  putComment,
+} from '..';
 
 export const useCommentList = (id: string, session: any, source: 'default' | 'custom') => {
   return useInfiniteQuery({
@@ -20,6 +28,13 @@ export const useCommentList = (id: string, session: any, source: 'default' | 'cu
       return lastPage?.data?.hasNext ? { lastId: nextLastId, size: 10 } : undefined;
     },
     enabled: true,
+  });
+};
+
+export const useDetailsInfo = ({ id, session, source }: GetDetailsInfoPayload) => {
+  return useQuery({
+    queryKey: ['get_detail_exercise_info'],
+    queryFn: () => getDetailsInfo({ id, session, source }),
   });
 };
 

@@ -5,6 +5,9 @@ import SelectToggle from '../components/SelectToggle';
 import Comment from '../components/Comment';
 import Record from '../components/Record';
 import { useSearchParams } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { useDetailsInfo } from '@/app/api/exercise-details/query';
+import { useSession } from 'next-auth/react';
 
 interface ExerciseDetails {
   id: string;
@@ -16,6 +19,11 @@ const ExerciseDetails = ({ id }: ExerciseDetails) => {
   const [selected, setSelected] = useState<'explain' | 'record'>(
     type === 'default' ? 'explain' : 'record'
   );
+  const { data: session } = useSession();
+
+  //TODO : 상세 데이터가져오는 API 추후에 루틴쪽 완성되면 연동 예정
+  const { data } = useDetailsInfo({ id, source: 'default', session });
+  console.log(data);
   return (
     <div>
       <ExerciseInfo id={id} type={type} />
