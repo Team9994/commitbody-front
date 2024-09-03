@@ -14,7 +14,6 @@ const DrawerContent = ({
   selectedId,
   moveRouter,
 }: DrawerContentProps) => {
-  console.log(routineData);
   // {
   //   id: 1,
   //   title: '무분할 상체 루틴',

@@ -1,4 +1,3 @@
-import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import Link from 'next/link';
