@@ -46,9 +46,9 @@ const Record = () => {
           </p>
         </div>
       </div>
-      <div className="mb-10 bg-backgrounds-sub rounded-6 px-[18px] mx-5">
-        <div className="flex items-center px-[18px] py-3">
-          <span className="text-s text-text-sub leading-[18px] mr-2">주간 볼륨</span>
+      <div className="mb-10 bg-backgrounds-sub rounded-6 px-4 mx-5">
+        <div className="flex items-center pt-4 pb-2">
+          <span className="text-sm text-text-sub leading-[18px] px-2 mr-2">주간 볼륨</span>
           <strong className="text-text-main text-lg leading-[26px]">100</strong>
           <span className="text-s text-text-sub leading-[18px]">kg</span>
         </div>
@@ -60,7 +60,7 @@ const Record = () => {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tick={{ fill: '#C2C2C2' }}
+                tick={{ style: { fill: '#c2c2c2' } }}
               />
               <Bar dataKey="desktop" radius={2} fill="#198DF7" minPointSize={4}>
                 {chartData.map((entry, index) => (
