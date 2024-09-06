@@ -22,6 +22,7 @@ export default function ExerciseCustomlayout({ children }: PropsWithChildren<{}>
             {status === 'edit' ? '커스텀 운동 수정' : '커스텀 운동 추가'}
           </h4>
         }
+        right={<div style={{ visibility: 'hidden', width: '24px' }} />}
       />
       {children}
     </>
