@@ -22,10 +22,11 @@ const Edit = () => {
     router.push(`/exercise-details/${exerciseId}?type=default`);
   };
   const { value: content, onChange } = useInput();
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (inputRef.current) inputRef.current.focus();
+  const ref = React.useCallback((node: HTMLInputElement | null) => {
+    if (node) {
+      node.focus();
+    }
   }, []);
 
   return (
@@ -55,7 +56,7 @@ const Edit = () => {
         }
       />
       <Input
-        ref={inputRef}
+        ref={ref}
         value={content}
         onChange={onChange}
         className="w-full px-5 border-none bg-transparent outline-none focus:ring-0 text-text-main"

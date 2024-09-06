@@ -5,7 +5,6 @@ import SelectToggle from '../components/SelectToggle';
 import Comment from '../components/Comment';
 import Record from '../components/Record';
 import { useSearchParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
 import { useDetailsInfo } from '@/app/api/exercise-details/query';
 import { useSession } from 'next-auth/react';
 
