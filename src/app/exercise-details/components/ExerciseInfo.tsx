@@ -36,17 +36,7 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
           덤벨 라잉 외회전 숄더 로테이션
         </h3>
         <div className="flex align-center">
-          {type === 'default' && (
-            <Image
-              priority
-              src={heartToggle ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
-              alt={'찜하기'}
-              width={24}
-              height={24}
-            />
-          )}
-
-          <div className="relative">
+          <div className="relative flex align-center">
             {type === 'custom' && (
               <Image
                 priority
@@ -54,14 +44,14 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
                 alt={'메뉴'}
                 width={28}
                 height={28}
-                className="rotate-90 ml-2"
+                className="ml-2"
                 onClick={() => setIsActiveMenu((pre) => !pre)}
               />
             )}
             {isActiveMenu && (
               <div
                 ref={menuRef}
-                className="absolute top-0 z-10 right-0 shadow-main bg-backgrounds-light text-md"
+                className="absolute top-0 z-20 right-0 shadow-main bg-backgrounds-light text-md"
               >
                 <div
                   onClick={() => {
@@ -90,16 +80,14 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
 
       <p className="text-sm leading-5 text-text-light mb-4">가슴 : 스미스머신</p>
       <div className="w-full h-[184px] bg-backgrounds-light mb-4 relative">
-        {type === 'custom' && (
-          <Image
-            className="absolute top-1 right-1 z-10"
-            priority
-            src={heartToggle ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
-            alt={'찜하기'}
-            width={24}
-            height={24}
-          />
-        )}
+        <Image
+          className="absolute top-1 right-1 z-10"
+          priority
+          src={heartToggle ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
+          alt={'찜하기'}
+          width={24}
+          height={24}
+        />
       </div>
     </div>
   );
