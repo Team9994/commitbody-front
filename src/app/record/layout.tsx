@@ -7,9 +7,9 @@ export default function RecordLayout({ children }: PropsWithChildren<{}>) {
   return (
     <>
       <Header
-        left={<Image src={'/assets/logo.svg'} alt={'로고'} width={138} height={24} />}
+        left={<h4 className="font-bold text-2xl leading-[34px]">기록</h4>}
         right={<Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />}
-        className="relative z-20"
+        className="bg-backgrounds-default"
       />
       {children}
       <Footer />
