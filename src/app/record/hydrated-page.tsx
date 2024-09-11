@@ -15,39 +15,37 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui';
 import useMenu from './hooks/useMenu';
+import { useRecord } from '../api/record/query';
+import { useSession } from 'next-auth/react';
 
-const Record: React.FC = () => {
-  const [selected, setSelected] = useState<Date | undefined>(undefined); // State to keep track of selected date
+const Record = () => {
+  const [selected, setSelected] = useState<Date | undefined>(undefined);
   const handleDayClick: DayClickEventHandler = (day, { selected }) => {
-    setSelected(selected ? undefined : day); // Toggle selection on click
+    setSelected(selected ? undefined : day);
   };
   const { activeMenuId, handleMenuClick, confirmDelete, menuRef, setRecordToDelete } = useMenu();
-
+  const { data: session } = useSession();
+  const { data, error, isLoading } = useRecord({ year: '2024', month: '9', session });
   return (
     <div className="w-full min-h-screen px-3 bg-backgrounds-default text-white flex flex-col items-center pb-[58px]">
-      <Calendar
-        mode="single"
-        selected={selected} // Pass the selected date to the Calendar component
-        onSelect={setSelected} // Use setSelected to update the selected date
-        className="mt-3 mb-6"
-      />
+      <Calendar mode="single" selected={selected} onSelect={setSelected} className="mt-3 mb-6" />
 
-      {RECORD_DATA.map((data) => (
+      {data.data.records.map((data: any) => (
         <div
-          key={data.id}
+          key={data.recordId}
           className="relative w-full h-19 p-4 border border-backgrounds-light rounded-6 text-[#999999] mb-3"
         >
-          <h4 className="mb-1">{data.name}</h4>
-          <p>{data.date}</p>
+          <h4 className="mb-1 text-md">{data.recordName}</h4>
+          <p className="text-xs">{data.durationTime}</p>
           <Image
             className="absolute top-1/2 right-[15px] -translate-y-1/2 rotate-90"
             src={'/assets/menu.svg'} // Ensure the correct path for the image
-            onClick={() => handleMenuClick(data.id)}
+            onClick={() => handleMenuClick(data.recordId)}
             width={24}
             height={24}
             alt="menu"
           />
-          {activeMenuId === data.id && (
+          {activeMenuId === data.recordId && (
             <div
               ref={menuRef}
               className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
@@ -59,7 +57,7 @@ const Record: React.FC = () => {
                 <AlertDialogTrigger asChild>
                   <div
                     className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
-                    onClick={() => setRecordToDelete(data.id)}
+                    onClick={() => setRecordToDelete(data.recordId)}
                   >
                     삭제
                   </div>

@@ -1,6 +1,10 @@
+import { useDeleteRecordMutation } from '@/app/api/record/query';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 const useMenu = () => {
+  const { data: session } = useSession();
+  const deleteRecordMutation = useDeleteRecordMutation();
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
   const [recordToDelete, setRecordToDelete] = useState<number | undefined>(undefined);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -20,6 +24,10 @@ const useMenu = () => {
 
   const confirmDelete = () => {
     console.log(`${recordToDelete}가 삭제되었습니다.`);
+    deleteRecordMutation.mutate({
+      recordId: recordToDelete,
+      session,
+    });
     setRecordToDelete(undefined);
     setActiveMenuId(undefined);
   };
