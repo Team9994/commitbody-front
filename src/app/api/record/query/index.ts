@@ -18,7 +18,6 @@ export const useDeleteRecordMutation = () => {
       await queryClient.cancelQueries({ queryKey: ['get_record', '2024', '9'] });
 
       const previousRecords = queryClient.getQueryData(['get_record', '2024', '9']);
-      console.log(previousRecords);
       queryClient.setQueryData(['get_record', '2024', '9'], (oldRecords: any) => {
         if (!oldRecords || !oldRecords.data || !oldRecords.data.records) return oldRecords; // 데이터가 예상과 다를 경우 그대로 반환
 
