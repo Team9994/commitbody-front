@@ -1,12 +1,12 @@
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface SearchProps {
-  searchData: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Search = ({ searchData }: SearchProps) => {
+const Search = ({ onChange }: SearchProps) => {
   return (
     <div className="w-full h-16 bg-backgrounds-default flex items-center mb-2 px-5">
       <div className="relative flex w-full">
@@ -14,6 +14,7 @@ const Search = ({ searchData }: SearchProps) => {
           placeholder="운동 이름을 검색해보세요"
           className="pl-10 flex items-center w-full h-10 text-sm leading-5 py-2.5 rounded-6 bg-backgrounds-light border border-transparent focus:outline-none focus:ring-0 focus:border-transparent"
           style={{ boxShadow: 'none' }}
+          onChange={onChange}
         />
 
         <Image

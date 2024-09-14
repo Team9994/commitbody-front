@@ -1,10 +1,9 @@
-'use client';
-import { Input } from '@/components/ui/input';
+import AdditionalInfo from './hydrated-page';
 
-export default function AdditionalInfo() {
+export default function HydratedAdditionalInfo() {
   return (
     <div>
-      <Input className="h-[68px] text-center text-xl font-semibold" placeholder="닉네임" />
+      <AdditionalInfo />
     </div>
   );
 }

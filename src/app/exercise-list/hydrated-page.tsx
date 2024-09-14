@@ -13,20 +13,19 @@ const ExserciseList = () => {
     selectedBodyPart,
     drawerToggle,
     accentCategory,
-    searchData,
     onChange,
     toggleDrawer,
     handleCategoryClick,
     handleCategoryListClick,
     handleListClick,
-    handleLikeToggle,
-    exerciseList,
     scrollRef,
+    observerRef,
+    searchResults,
+    filters,
   } = useExerciseList();
-
   return (
     <div>
-      <Search searchData={searchData} />
+      <Search onChange={onChange} />
 
       <ToggleList
         selectedCategory={selectedCategory}
@@ -40,11 +39,13 @@ const ExserciseList = () => {
       />
 
       <ExerciseListData
+        filters={filters}
         scrollRef={scrollRef}
-        exerciseList={exerciseList}
-        handleLikeToggle={handleLikeToggle}
+        searchResults={searchResults?.pages.flat() || []}
         handleListClick={handleListClick}
+        observerRef={observerRef}
       />
+
       <ScrollUpBtn scrollRef={scrollRef} />
     </div>
   );

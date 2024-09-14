@@ -1,4 +1,4 @@
-import SocialButton from '@/components/ui/SocialButton';
+import SocialButton from '@/app/sign/components/SocialButton';
 
 export default function Sign() {
   return (

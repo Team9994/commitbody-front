@@ -7,8 +7,9 @@ export default function HomeLayout({ children }: PropsWithChildren<{}>) {
   return (
     <>
       <Header
-        left={<h1 className="text-2xl font-semibold leading-[34px] text-text-main">홈</h1>}
+        left={<Image src={'/assets/logo.svg'} alt={'로고'} width={138} height={24} />}
         right={<Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />}
+        className="relative z-20"
       />
       {children}
       <Footer />

@@ -1,5 +1,15 @@
-import { CategoryKey } from '@/constants/exerciseInform';
+import { CategoryKey } from '@/app/custom-exercise/constants';
 import Image from 'next/image';
+
+interface CategoryItemProps {
+  categoryKey: CategoryKey;
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+  hasItems: boolean;
+  selectedTool: string;
+  selectedBodyPart: string;
+}
 
 const CategoryItem = ({
   categoryKey,
@@ -9,15 +19,7 @@ const CategoryItem = ({
   hasItems,
   selectedTool,
   selectedBodyPart,
-}: {
-  categoryKey: CategoryKey;
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-  hasItems: boolean;
-  selectedTool: string;
-  selectedBodyPart: string;
-}) => (
+}: CategoryItemProps) => (
   <div
     onClick={onClick}
     className={`h-9 px-4 py-2 flex items-center  text-text-sm justify-center rounded-[18px]  border border-backgrounds-light min-w-[73px] ${

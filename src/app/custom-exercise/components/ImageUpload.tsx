@@ -1,13 +1,12 @@
 import Image from 'next/image';
 import React from 'react';
 
-const ImageUpload = ({
-  selectedImage,
-  handleImageUpload,
-}: {
+interface ImageUploadProps {
   selectedImage: string | null;
   handleImageUpload: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => (
+}
+
+const ImageUpload = ({ selectedImage, handleImageUpload }: ImageUploadProps) => (
   <label
     htmlFor="image-upload"
     className={`flex flex-col justify-center items-center w-[320px] h-[184px] rounded-6 relative ${
