@@ -1,4 +1,4 @@
-import { CategoryKey, EXERCISE_LIST } from '@/constants/exerciseInform';
+import { CategoryKey, EXERCISE_LIST } from '@/app/custom-exercise/constants';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 

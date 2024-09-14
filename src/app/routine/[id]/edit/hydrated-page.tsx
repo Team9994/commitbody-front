@@ -6,7 +6,7 @@ import { auth } from '@/auth';
 
 const RoutineEdit = async () => {
   const session = await auth();
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}/api/v1/routine/25`, {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}/api/v1/routine/53`, {
     headers: {
       Authorization: `Bearer ${session?.accessToken}`,
     },

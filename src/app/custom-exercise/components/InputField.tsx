@@ -1,15 +1,13 @@
 import { Input } from '@/components/ui/input';
 import React from 'react';
 
-const InputField = ({
-  value,
-  onChange,
-  placeholder,
-}: {
+interface InputFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-}) => (
+}
+
+const InputField = ({ value, onChange, placeholder }: InputFieldProps) => (
   <Input
     value={value}
     onChange={onChange}

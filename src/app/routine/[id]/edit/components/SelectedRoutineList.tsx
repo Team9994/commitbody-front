@@ -48,15 +48,15 @@ const SelectedRoutineList = ({ routines }: { routines: RoutineItem[] }) => {
               height={24}
             />
           </div>
-          <ExerciseTypeSet
+          {/* <ExerciseTypeSet
             routineDetailId={list.routineDetailId}
             exerciseType={list.exerciseType}
             set={list.sets}
-          />
-          <div className="flex">
+          /> */}
+          {/* <div className="flex">
             <SetCountAdjustBtn type="delete" onClick={() => {}} />
             <SetCountAdjustBtn type="add" onClick={() => {}} />
-          </div>
+          </div> */}
         </>
       ))}
     </div>

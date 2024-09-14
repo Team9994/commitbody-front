@@ -1,8 +1,8 @@
-import EXERCISE_LIST, { CategoryKey } from '@/constants/exerciseInform';
 import React from 'react';
 import CategoryItem from './CategoryItem';
 import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
+import EXERCISE_LIST, { CategoryKey } from '@/app/custom-exercise/constants';
 
 interface ToggleListProps {
   selectedCategory: string[];

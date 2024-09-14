@@ -1,15 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 
-const SelectBox = ({
-  label,
-  value,
-  onClick,
-}: {
+interface SelectBoxProps {
   label: string;
   value: string;
   onClick: () => void;
-}) => (
+}
+
+const SelectBox = ({ label, value, onClick }: SelectBoxProps) => (
   <div
     onClick={onClick}
     className={`flex items-center justify-between w-[320px] h-[52px] px-4 placeholder:text-base bg-backgrounds-sub rounded-md cursor-pointer ${

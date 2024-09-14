@@ -14,25 +14,24 @@ const ExserciseList = () => {
     selectedBodyPart,
     drawerToggle,
     accentCategory,
-    searchData,
     onChange,
     toggleDrawer,
     handleCategoryClick,
     handleCategoryListClick,
     handleListClick,
-    handleLikeToggle,
-    exerciseList,
     scrollRef,
     mode,
     routines,
     getRoutineCount,
     deleteRoutine,
     selectedExerciseIds,
+    observerRef,
+    searchResults,
+    filters,
   } = useExerciseList();
-
   return (
     <div>
-      <Search searchData={searchData} />
+      <Search onChange={onChange} />
 
       <ToggleList
         selectedCategory={selectedCategory}
@@ -46,12 +45,13 @@ const ExserciseList = () => {
       />
 
       <ExerciseListData
+        filters={filters}
         scrollRef={scrollRef}
-        exerciseList={exerciseList}
-        handleLikeToggle={handleLikeToggle}
+        searchResults={searchResults?.pages.flat() || []}
         handleListClick={handleListClick}
         mode={mode}
         selectedExerciseIds={selectedExerciseIds}
+        observerRef={observerRef}
       />
       <ScrollUpBtn scrollRef={scrollRef} mode={mode} />
 
@@ -62,6 +62,8 @@ const ExserciseList = () => {
           deleteRoutine={deleteRoutine}
         />
       )}
+
+      <ScrollUpBtn scrollRef={scrollRef} />
     </div>
   );
 };
