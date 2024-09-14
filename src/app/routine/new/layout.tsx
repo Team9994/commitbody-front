@@ -1,12 +1,9 @@
-import Header from '@/components/layouts/Header';
-import Image from 'next/image';
-import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
 export default function ExerciseListLayout({ children }: PropsWithChildren<{}>) {
   return (
-    <>
-      <Header
+    <div className="bg-backgrounds-default">
+      {/* <Header
         className={'bg-backgrounds-default'}
         left={
           <Link href="/">
@@ -14,8 +11,8 @@ export default function ExerciseListLayout({ children }: PropsWithChildren<{}>) 
           </Link>
         }
         right={<div className="text-base text-blue font-semibold">저장</div>}
-      />
+      /> */}
       {children}
-    </>
+    </div>
   );
 }

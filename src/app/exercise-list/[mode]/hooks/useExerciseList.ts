@@ -106,7 +106,7 @@ const useExerciseList = () => {
 
       router.push(`/exercise-details/${id}?type=${queryParam}`);
     } else {
-      addRoutine({ id, name });
+      addRoutine({ id, name, type });
     }
   };
 
