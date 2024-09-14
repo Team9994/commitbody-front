@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
-// TODO : 추후 공통 컴포넌트로 이동
 const PlusRoutineBtn = ({ href }: { href: string }) => {
   return (
     <Link

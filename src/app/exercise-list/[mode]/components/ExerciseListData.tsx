@@ -2,16 +2,13 @@ import React, { RefObject } from 'react';
 import Image from 'next/image';
 import { useLikeRegister } from '@/app/api/exercise/query';
 import { useSession } from 'next-auth/react';
-import { Exercise_list, Filters } from '../types';
+import { Exercise_list, Filters } from '@/app/exercise-list/types';
 
 interface ExerciseListDataProps {
-  handleListClick: (id: number, mode: 'search' | 'routine') => void;
-  handleLikeToggle: (id: number) => void;
+  handleListClick: (id: number, type: string, name: string, mode: 'search' | 'routine') => void;
   scrollRef: RefObject<HTMLDivElement>;
-  exerciseList: any; // 더미데이터
   mode: 'search' | 'routine';
   selectedExerciseIds: Set<number>;
-  // handleListClick: (id: number, type: string) => void;
   observerRef: RefObject<HTMLDivElement>;
   searchResults: Exercise_list[];
   filters: Filters;
@@ -38,8 +35,10 @@ const ExerciseListData = ({
       {searchResults.map((list) => (
         <div
           key={list.exerciseId}
-          className="flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6"
-          onClick={() => handleListClick(list.exerciseId, list.source)}
+          className={`flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6 ${
+            selectedExerciseIds.has(list.exerciseId) && 'bg-backgrounds-light'
+          }`}
+          onClick={() => handleListClick(list.exerciseId, list.source, list.exerciseName, mode)}
         >
           {/* <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} /> */}
           <span className="flex-1 ml-4">{list.exerciseName}</span>

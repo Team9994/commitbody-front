@@ -4,7 +4,7 @@ import ExerciseList from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { auth } from '@/auth';
 import { getQueryClient } from '@/lib/GetQueryClient';
-import { getSearchExercise } from '../api/exercise';
+import { getSearchExercise } from '@/app/api/exercise';
 
 const HydratedExerciseList = async () => {
   const queryClient = getQueryClient();

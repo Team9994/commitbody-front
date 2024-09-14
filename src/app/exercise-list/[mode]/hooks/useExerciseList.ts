@@ -6,7 +6,7 @@ import { useRouter, useParams } from 'next/navigation';
 import useRoutineStore from '@/store/routine';
 import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Filters } from '../types';
+import { Filters } from '@/app/exercise-list/types';
 import { useSearchExercise } from '@/app/api/exercise/query';
 
 const useExerciseList = () => {
@@ -23,7 +23,7 @@ const useExerciseList = () => {
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
-
+  const mode = params.mode as 'search' | 'routine';
   const [filters, setFilters] = useState<Filters>({
     name: '',
     target: '',
@@ -100,10 +100,14 @@ const useExerciseList = () => {
     [toggleDrawer]
   );
 
-  const handleListClick = (id: number, type: string) => {
-    const queryParam = type === 'custom' ? 'custom' : 'default';
+  const handleListClick = (id: number, type: string, name: string, mode: string) => {
+    if (mode === 'search') {
+      const queryParam = type === 'custom' ? 'custom' : 'default';
 
-    router.push(`/exercise-details/${id}?type=${queryParam}`);
+      router.push(`/exercise-details/${id}?type=${queryParam}`);
+    } else {
+      addRoutine({ id, name });
+    }
   };
 
   const {

@@ -63,7 +63,7 @@ const ExserciseList = () => {
         />
       )}
 
-      <ScrollUpBtn scrollRef={scrollRef} />
+      <ScrollUpBtn scrollRef={scrollRef} mode={mode} />
     </div>
   );
 };

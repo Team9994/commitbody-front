@@ -8,24 +8,21 @@ const useRoutineStore = create(
     (set, get) => ({
       routines: [],
       selectedExerciseIds: new Set(),
-      addRoutine: (routine) =>
+      addRoutine: ({ id, name }) =>
         set(
           produce((state) => {
-            const existingRoutine = state.routines.find((r) => r.id === routine.id);
-            if (!existingRoutine) {
-              // 기존 ID가 없는 경우에만 새 루틴 추가
-              state.routines.push(routine);
-              // 여기에서 selectedExerciseIds set에 추가
-              state.selectedExerciseIds.add(routine.id);
+            if (!state.routines.some((r) => r.id === id)) {
+              state.routines.push({ id, name });
+              state.selectedExerciseIds.add(id);
             }
           })
         ),
-      updateRoutine: (id, updatedRoutine) =>
+      updateRoutine: (id, { name }) =>
         set(
           produce((state) => {
-            const index = state.routines.findIndex((r) => r.id === id);
-            if (index !== -1) {
-              state.routines[index] = { ...state.routines[index], ...updatedRoutine };
+            const routine = state.routines.find((r) => r.id === id);
+            if (routine) {
+              routine.name = name;
             }
           })
         ),
