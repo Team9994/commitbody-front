@@ -1,10 +1,10 @@
-// Record.tsx
 'use client';
 import React from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import useCalender from './hooks/useCalender';
 import { Drawer } from '@/components/ui/drawer';
 import Image from 'next/image';
+import { RecordDay } from './types/record';
 
 const Record = () => {
   const {
@@ -32,7 +32,7 @@ const Record = () => {
         curMonth={month}
       />
 
-      {data?.data.records.map((data: any) => (
+      {data?.data.records.map((data: RecordDay) => (
         <div
           key={data.recordId}
           className="relative w-full h-19 p-4 border border-backgrounds-light rounded-6 text-[#999999] mb-3"
@@ -41,7 +41,7 @@ const Record = () => {
           <p className="text-xs">{data.durationTime}</p>
         </div>
       ))}
-
+      {data?.data.records.length === 0 && <div>루틴이 없습니다</div>}
       <Drawer open={drawerToggle} onClose={toggleDrawer}>
         <div
           className={`fixed w-full h-screen inset-0 bg-[#000000] z-40 ${
@@ -67,7 +67,7 @@ const Record = () => {
           />
 
           <div className="p-4">
-            {selectedRoutines?.map((routine, index) => (
+            {selectedRoutines?.map((routine) => (
               <div
                 key={routine.recordId}
                 className="text-left relative w-full h-19 p-4 border border-backgrounds-light rounded-6 text-[#999999] mb-3"

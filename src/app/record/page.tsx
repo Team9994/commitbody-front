@@ -9,8 +9,9 @@ const HydratedRecord = async () => {
   const queryClient = getQueryClient();
   const session = await auth();
 
-  const year = '2024';
-  const month = '9';
+  const currentDate = new Date();
+  const year = currentDate.getFullYear().toString();
+  const month = (currentDate.getMonth() + 1).toString();
 
   await queryClient.prefetchQuery({
     queryKey: ['get_record', year, month],

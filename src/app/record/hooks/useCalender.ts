@@ -2,13 +2,14 @@
 import { useRecord } from '@/app/api/record/query';
 import { useSession } from 'next-auth/react';
 import React, { useState, useEffect } from 'react';
+import { RoutineRecord } from '../types/record';
 
 const useCalender = () => {
   const { data: session } = useSession();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [selectedRoutines, setSelectedRoutines] = useState<any[]>([]); // 선택된 루틴 리스트 상태
-  const [drawerToggle, setDrawerToggle] = useState(false); // Drawer 열림 상태
+  const [selectedRoutines, setSelectedRoutines] = useState<RoutineRecord[]>([]);
+  const [drawerToggle, setDrawerToggle] = useState(false);
 
   const { data, error, isLoading, refetch } = useRecord({
     year: String(year),
@@ -38,15 +39,13 @@ const useCalender = () => {
     }
   };
 
-  // 루틴이 2개 이상 있는 경우의 클릭 핸들러
-  const handleMultipleRoutinesClick = (data: any) => {
-    setSelectedRoutines(data); // 해당 날짜의 루틴들을 상태로 저장
-    setDrawerToggle(true); // Drawer를 열기
+  const handleMultipleRoutinesClick = (data: RoutineRecord[]) => {
+    setSelectedRoutines(data);
+    setDrawerToggle(true);
     console.log(data);
   };
 
-  const handleSingleRoutineClick = (data: any) => {};
-  // Drawer를 닫는 함수
+  const handleSingleRoutineClick = () => {};
   const toggleDrawer = () => {
     setDrawerToggle(!drawerToggle);
   };
