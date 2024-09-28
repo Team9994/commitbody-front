@@ -2,9 +2,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
-  const currentPath = window.location.pathname;
+  const currentPath = usePathname();
 
   return (
     <nav className="bg-[#292C33] font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-16">
