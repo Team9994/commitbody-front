@@ -5,6 +5,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'd12ryzjapybmlj.cloudfront.net',
+        pathname: '/images/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'v2.exercisedb.io',
         pathname: '/image/**',
       },

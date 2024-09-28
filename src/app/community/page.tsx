@@ -7,11 +7,32 @@ import { COMMUNITY_LIST } from './constant/select';
 import CategoryList from './components/CategoryList';
 import WriteButton from './components/WriteButton';
 import { Drawer } from '@/components/ui/drawer';
+import Link from 'next/link';
+import { useArticleCommunity } from '../api/community/query';
+import { useSession } from 'next-auth/react';
+import {
+  mapCategoryToQueryCategory,
+  mapMenuToQueryType,
+  mapQueryCategoryToCategory,
+} from './utils';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 const Community = () => {
+  const { data: session } = useSession();
+  console.log(session);
   const [menuSelected, setMenuSelected] = useState<'certification' | 'question'>('certification');
   const [categorySelected, setCategorySelected] = useState('전체');
   const currentList = COMMUNITY_LIST[menuSelected] as { [key: string]: string };
+  const queryType = mapMenuToQueryType(menuSelected);
+  const queryCategory = mapCategoryToQueryCategory(categorySelected);
+
+  const {
+    data: articleResults,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    refetch,
+  } = useArticleCommunity({ session, type: queryType, category: queryCategory });
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
@@ -23,11 +44,26 @@ const Community = () => {
     setToggleDrawer((pre) => !pre);
   };
 
+  const observerRef = useInfiniteScroll(
+    () => {
+      if (hasNextPage && !isFetching) {
+        fetchNextPage();
+      }
+    },
+    { rootMargin: '50px', threshold: 0 }
+  );
+
   useEffect(() => {
     setCategorySelected('전체');
     setToggleDrawer(false);
-  }, [menuSelected]);
+    if (session) {
+      refetch();
+    }
+  }, [menuSelected, session, refetch]);
 
+  useEffect(() => {
+    refetch();
+  }, [categorySelected]);
   return (
     <div>
       <Header
@@ -67,56 +103,69 @@ const Community = () => {
               gap: '2px',
             }}
           >
-            {Array.from({ length: 20 }).map((_, index) => (
-              <div
-                key={index}
-                className="w-[118px] h-[118px] bg-[#1C1D21] flex items-center justify-center text-white"
-              >
-                {index + 1}
-              </div>
-            ))}
+            {articleResults?.pages.flatMap((page) =>
+              page.data.articles.map((article: any) => (
+                <Image
+                  key={article.articleId}
+                  src={article.imageUrl}
+                  width={118}
+                  height={118}
+                  alt="운동 인증 사진"
+                  style={{ width: '118px', height: '118px', objectFit: 'cover' }}
+                />
+              ))
+            )}
           </div>
+          {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
+            <div className="mt-20 text-sm flex justify-center text-text-main">
+              게시글이 없습니다.
+            </div>
+          )}
         </div>
       )}
 
       {menuSelected === 'question' && (
         <div className="px-5">
-          <div className="flex justify-between items-center py-3 border-b border-[black]">
-            <div className="flex-grow-1">
-              <div className="text-xs w-[37px] rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light">
-                정보
+          {articleResults?.pages.flatMap((page) =>
+            page.data.articles.map((article: any) => (
+              <div
+                key={article.articleId}
+                className="flex justify-between items-center py-3 border-b border-[black]"
+              >
+                <div className="flex-grow">
+                  <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
+                    {mapQueryCategoryToCategory(article.articleCategory)}
+                  </div>
+                  <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
+                  <div className="flex text-text-light text-[11px]">
+                    <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
+                    <span className="mr-2">{article.viewCount || 0}</span>
+                    <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
+                    <span>{article.commentCount || 0}</span>
+                    <span className="ml-2">{article.time}</span>
+                    <span className="ml-2">{article.member.nickname}</span>
+                  </div>
+                </div>
+                <div>
+                  {article.imageUrl && /\.(jpg|jpeg|png)$/i.test(article.imageUrl) && (
+                    <Image
+                      src={article.imageUrl}
+                      width={68}
+                      height={68}
+                      alt="게시글 썸네일"
+                      style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                    />
+                  )}
+                </div>
               </div>
-              <h4 className="text-bold text-md text-text-main my-2">게시글 제목입니다</h4>
-              <div className="flex text-text-light text-[11px]">
-                <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
-                <span>1</span>
-                <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
-                <span>2</span>
-                <span>1시간 전</span>
-                <span>작성자명</span>
-              </div>
+            ))
+          )}
+
+          {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
+            <div className="mt-20 text-sm flex justify-center text-text-main">
+              게시글이 없습니다.
             </div>
-            <div>
-              <div className="w-[68px] h-[68px] bg-black"></div>
-            </div>
-          </div>
-          <div className="flex justify-between items-center py-3 border-b border-[black]">
-            <div className="flex-grow-1">
-              <div className="text-xs w-[37px] rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light">
-                정보
-              </div>
-              <h4 className="text-bold text-md text-text-main my-2">게시글 제목입니다</h4>
-              <div className="flex text-text-light text-[11px]">
-                <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
-                <span>1</span>
-                <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
-                <span>2</span>
-                <span>1시간 전</span>
-                <span>작성자명</span>
-              </div>
-            </div>
-            <div></div>
-          </div>
+          )}
         </div>
       )}
 
@@ -146,20 +195,27 @@ const Community = () => {
             />
 
             <div className="text-white">
-              <div className="p-5 border-b-[1px] border-b-solid border-backgrounds-light active:opacity-70 hover:opacity-70">
-                <h3 className="pb-2 text-bold text-base">운동 인증</h3>
+              <Link
+                href="/community/writePost?cur=certification"
+                className="block p-5 border-b-[1px] border-b-solid border-backgrounds-light active:opacity-70 hover:opacity-70"
+              >
+                <h3 className="pb-2 font-bold text-base">운동 인증</h3>
                 <p className="text-text-light text-sm">오늘의 운동을 기록으로 남기고 공유해요</p>
-              </div>
-              <div className="p-5 active:opacity-70 hover:opacity-70">
-                <h3 className="pb-2 text-bold text-base">정보&질문</h3>
+              </Link>
+              <Link
+                href="/community/writePost?cur=question"
+                className="block p-5 active:opacity-70 hover:opacity-70"
+              >
+                <h3 className="pb-2 font-bold text-base">정보&질문</h3>
                 <p className="text-text-light text-sm">운동에 관한 정보를 공유하고 질문해요</p>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
       </Drawer>
 
       <WriteButton onClick={handleWriteClick} />
+      <div ref={observerRef} className="h-10 w-40" />
     </div>
   );
 };
