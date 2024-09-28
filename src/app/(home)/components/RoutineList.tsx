@@ -15,8 +15,9 @@ import React from 'react';
 import useRoutine from '../hooks/useRoutine';
 import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
+import { RoutineDto } from '@/app/(home)/types';
 
-const RoutineList = () => {
+const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   const {
     menuRef,
     setRoutineToDelete,
@@ -32,29 +33,29 @@ const RoutineList = () => {
   return (
     <>
       <div>
-        {RoutineData?.map((data, index) => (
+        {routineList?.map((data, index) => (
           <>
             <div
               className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
-              key={data.id}
+              key={data.routineId}
               onClick={() => toggleDrawer(index)}
             >
-              <p className="text-md leading-[22px]">{data.title}</p>
+              <p className="text-md leading-[22px]">{data.routineName}</p>
 
-              {data.parts.map((part) => (
+              {data.targets.map((part) => (
                 <span className="text-xs leading-[18px] text-text-light mr-1.5" key={part}>
                   {part}
                 </span>
               ))}
               <Image
-                onClick={() => handleMenuClick(data.id)}
+                onClick={() => handleMenuClick(data.routineId)}
                 src={'/assets/menu.svg'}
                 alt="메뉴"
                 width={24}
                 height={24}
                 className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90 cursor-pointer"
               />
-              {activeMenuId === data.id && (
+              {activeMenuId === data.routineId && (
                 <div
                   ref={menuRef}
                   className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
@@ -66,7 +67,7 @@ const RoutineList = () => {
                     <AlertDialogTrigger asChild>
                       <div
                         className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
-                        onClick={() => setRoutineToDelete(data.id)}
+                        onClick={() => setRoutineToDelete(data.routineId)}
                       >
                         삭제
                       </div>
@@ -104,7 +105,7 @@ const RoutineList = () => {
             </div>
           </>
         ))}
-        {RoutineData.length === 0 && (
+        {routineList.length === 0 && (
           <div className="flex items-center bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main">
             <p className="text-md leading-[22px] text-text-light">새로운 루틴을 추가해보세요</p>
 
@@ -131,8 +132,8 @@ const RoutineList = () => {
           >
             <DrawerContent
               toggleDrawer={toggleDrawer}
-              routineData={RoutineData[selectedId]}
-              selectedId={selectedId}
+              routineData={routineList[selectedId]}
+              selectedId={routineList[selectedId].routineId}
               moveRouter={moveRouter}
             />
           </div>
@@ -143,167 +144,3 @@ const RoutineList = () => {
 };
 
 export default RoutineList;
-
-const RoutineData = [
-  {
-    id: 1,
-    title: '무분할 상체 루틴',
-    parts: ['가슴', '등', '어깨', '삼두'],
-    exercises: [
-      {
-        exerciseId: 1,
-        exerciseName: '3/4 싯업',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 2,
-        exerciseName: '커스텀운동명',
-        gifUrl: 'http://example.com/pushup.gif',
-        exerciseType: '무게와 횟수',
-        sets: 4,
-        orders: 2,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 2,
-          },
-        ],
-      },
-      {
-        exerciseId: 3,
-        exerciseName: '커스텀2',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 4,
-        exerciseName: '커스텀3',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 5,
-        exerciseName: '커스텀4',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 6,
-        exerciseName: '커스텀5',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: '하체 루틴',
-    parts: ['햄스트링', '대퇴사부'],
-    exercises: [
-      {
-        exerciseId: 1,
-        exerciseName: '3/4 싯업',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 2,
-        exerciseName: '커스텀운동명',
-        gifUrl: 'http://example.com/pushup.gif',
-        exerciseType: '무게와 횟수',
-        sets: 4,
-        orders: 2,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 2,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: '유산소 루틴',
-    parts: ['종아리', '복부'],
-    exercises: [
-      {
-        exerciseId: 1,
-        exerciseName: '3/4 싯업',
-        gifUrl: 'https://v2.exercisedb.io/image/oAVJS-wlSfNhXd',
-        exerciseType: '횟수',
-        sets: 4,
-        orders: 1,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 1,
-          },
-        ],
-      },
-      {
-        exerciseId: 2,
-        exerciseName: '커스텀운동명',
-        gifUrl: 'http://example.com/pushup.gif',
-        exerciseType: '무게와 횟수',
-        sets: 4,
-        orders: 2,
-        routineSets: [
-          {
-            setsId: 105,
-            sets: 2,
-          },
-        ],
-      },
-    ],
-  },
-];

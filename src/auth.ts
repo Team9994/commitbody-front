@@ -24,7 +24,7 @@ export const { handlers, auth, signIn } = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log('Jwt Callback()');
+      // console.log('Jwt Callback()');
 
       // 초기 로그인 시 토큰 설정
       if (user) {
@@ -41,7 +41,6 @@ export const { handlers, auth, signIn } = NextAuth({
             socialId: googleResponse.data.kid,
           });
 
-          console.log(springResponse.data.data);
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,

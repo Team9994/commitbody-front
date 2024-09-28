@@ -11,6 +11,7 @@ const ROUTINE = {
 
 export const getRoutineList = async (session: any) => {
   try {
+    console.log('실행됨');
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_List}`,
       {
@@ -19,7 +20,7 @@ export const getRoutineList = async (session: any) => {
         },
       }
     );
-    return res.data;
+    return res.data.data;
   } catch (error) {
     console.error('Error fetching routine list:', error);
   }

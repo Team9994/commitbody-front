@@ -35,7 +35,7 @@ const useRoutine = () => {
     if (type === 'edit') {
       router.push(`/routine/${id}/edit`);
     } else if (type === 'progress') {
-      router.push(`/routine/${id}/start`);
+      router.push(`/routine/${id}/progress`);
     }
   };
 
