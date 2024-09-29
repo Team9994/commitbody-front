@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const COMMUNITY = {
+export const COMMUNITY = {
   GET_ARTICLE: '/api/v1/article',
+  GET_DETAIL_ARTICLE: '/api/v1/article',
   POST_ARTICLE: '/api/v1/article',
 };
 

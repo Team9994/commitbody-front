@@ -98,7 +98,7 @@ const useWrite = () => {
     contentChange,
     title,
     content,
-    handlePostSumit,
+    // handlePostSumit,
   };
 };
 

@@ -105,14 +105,15 @@ const Community = () => {
           >
             {articleResults?.pages.flatMap((page) =>
               page.data.articles.map((article: any) => (
-                <Image
-                  key={article.articleId}
-                  src={article.imageUrl}
-                  width={118}
-                  height={118}
-                  alt="운동 인증 사진"
-                  style={{ width: '118px', height: '118px', objectFit: 'cover' }}
-                />
+                <Link key={article.articleId} href={`./community/${article.articleId}`}>
+                  <Image
+                    src={article.imageUrl}
+                    width={118}
+                    height={118}
+                    alt="운동 인증 사진"
+                    style={{ width: '118px', height: '118px', objectFit: 'cover' }}
+                  />
+                </Link>
               ))
             )}
           </div>

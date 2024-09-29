@@ -6,7 +6,7 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'd12ryzjapybmlj.cloudfront.net',
-        pathname: '/images/**',
+        pathname: '/**',
       },
       {
         protocol: 'https',

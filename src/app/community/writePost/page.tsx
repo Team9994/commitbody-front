@@ -36,7 +36,7 @@ const WritePost = () => {
     handleMarkScopeChange,
     title,
     content,
-    handlePostSumit,
+    // handlePostSumit,
   } = useWrite();
 
   return (
@@ -54,11 +54,7 @@ const WritePost = () => {
             {cur === 'question' && '정보&질문글 작성'}
           </h4>
         }
-        right={
-          <span onClick={handlePostSumit} className="font-bold text-blue text-base">
-            완료
-          </span>
-        }
+        right={<span className="font-bold text-blue text-base">완료</span>}
       />
       <ImageUpload handleDrawerToggle={handleDrawerToggle} selectedImage={selectedImage} />
       <div className="px-5 text-text-main text-md">
