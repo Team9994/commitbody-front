@@ -50,34 +50,14 @@ const ProgressRoutineList = ({ routineDetails }: ProgressRoutineListProps) => {
       exerciseName: exercise.exerciseName,
       sets: allSetInfos[index],
     }));
-
-    // 예시: API 요청
-    /*
-    fetch('/api/submitRoutine', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataToSend),
-    })
-      .then(response => response.json())
-      .then(data => {
-        // 성공 처리
-      })
-      .catch(error => {
-        // 에러 처리
-      });
-    */
-
-    console.log('Submitting data:', dataToSend);
   };
 
   return (
     <div>
       {exercises &&
         exercises.map((exercise, index) => (
-          <div key={exercise.routineDetailId} className="mb-6">
-            <h2 className="text-xl font-bold mb-2">{exercise.exerciseName}</h2>
+          <div key={exercise.routineDetailId} className="my-6 px-5">
+            <h2 className="text-xl font-bold ">{exercise.exerciseName}</h2>
             <ExerciseSetInfo
               sets={exercise.sets}
               setInfos={allSetInfos[index]}

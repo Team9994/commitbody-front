@@ -55,7 +55,7 @@ const ExerciseSetInfo: React.FC<ExerciseSetInfoProps> = ({
       {setInfos.map((setInfo, index) => (
         <div
           key={index}
-          className="flex items-center justify-between mb-2 h-13 bg-backgrounds-sub px-[14px]"
+          className="flex items-center justify-between mb-2 h-13 bg-backgrounds-sub px-[14px] rounded-6"
         >
           <span className="text-text-light">{index + 1}세트</span>
           {exerciseType === '무게와 횟수' && (
