@@ -5,6 +5,7 @@ import { EXERCISE_TYPE } from '@/app/custom-exercise/constants/exerciseType';
 import { RoutineDetail, SetInfo } from '../types';
 import { useSession } from 'next-auth/react';
 import { postRegisterRoutine } from '@/app/api/routine';
+import { useRouter } from 'next/navigation';
 
 interface ProgressRoutineListProps {
   routineDetails: {
@@ -18,6 +19,7 @@ interface ProgressRoutineListProps {
 const ProgressRoutineList = (props: ProgressRoutineListProps) => {
   const [exercises, setExercises] = useState<RoutineDetail[]>(props.routineDetails.exercises);
   const [allSetInfos, setAllSetInfos] = useState<SetInfo[][]>([]);
+  const router = useRouter();
   const { data: session } = useSession();
   console.log(props.routineDetails);
   console.log(props.routineDetails.exercises);
@@ -79,6 +81,8 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
     console.log(dataToSend);
     try {
       const response = await postRegisterRoutine(dataToSend, session);
+      // 라우터 이동
+      router.push(`/record/${response.data}`);
     } catch (error) {
       console.error('Error submitting routine:', error);
     }
