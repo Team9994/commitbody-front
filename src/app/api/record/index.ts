@@ -8,7 +8,14 @@ const RECORD = {
   DELETE_DELETE_RECORD: (id: string) => `/api/v1/record/${id}`,
 };
 
-export const getRecordDetail = async (id: string) => {
-  const response = await axios.get(RECORD.GET_RECORD_DETAIL(id));
-  return response.data.data;
+export const getRecordDetail = async (recordId: string, session: any) => {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_DETAIL(recordId)}`,
+    {
+      headers: {
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    }
+  );
+  return res.data.data;
 };
