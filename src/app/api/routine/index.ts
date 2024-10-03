@@ -4,14 +4,13 @@ import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/type
 const ROUTINE = {
   GET_ROUTINE_List: '/api/v1/routine',
   GET_ROUTINE_DETAIL: (id: string) => `/api/v1/routine/${id}`,
-  POST_REGISTER_ROUTINE: '/api/v1/routine',
+  POST_REGISTER_ROUTINE: '/api/v1/record',
   PUT_UPDATE_ROUTINE: (id: string) => `/api/v1/routine/${id}`,
   DELETE_DELETE_ROUTINE: (id: string) => `/api/v1/routine/${id}`,
 };
 
 export const getRoutineList = async (session: any) => {
   try {
-    console.log('실행됨');
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_List}`,
       {
@@ -42,7 +41,7 @@ export const getRoutineDetail = async (id: string, session: any) => {
   }
 };
 
-export const postRegisterRoutine = async (payload: Register_Routine_Payload, session: any) => {
+export const postRegisterRoutine = async (payload: any, session: any) => {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.POST_REGISTER_ROUTINE}`,

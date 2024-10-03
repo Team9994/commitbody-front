@@ -52,26 +52,58 @@ const ExerciseSetInfo: React.FC<ExerciseSetInfoProps> = ({
 
   return (
     <div className="p-4 gap-3">
-      {setInfos.map((setInfo, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-between mb-2 h-13 bg-backgrounds-sub px-[14px] rounded-6"
-        >
-          <span className="text-text-light">{index + 1}세트</span>
-          {exerciseType === '무게와 횟수' && (
-            <>
+      {setInfos &&
+        setInfos.map((setInfo, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between mb-2 h-13 bg-backgrounds-sub px-[14px] rounded-6"
+          >
+            <span className="text-text-light">{index + 1}세트</span>
+            {exerciseType === '무게와 횟수' && (
+              <>
+                <div className="relative w-20">
+                  <input
+                    type="number"
+                    value={setInfo.weight || 0}
+                    onChange={(e) => handleChange(index, 'weight', Number(e.target.value))}
+                    className="w-full bg-backgrounds-sub text-white text-right pr-7 text-lg"
+                    placeholder="0"
+                  />
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-text-light">
+                    kg
+                  </span>
+                </div>
+                <div className="relative w-20">
+                  <input
+                    type="number"
+                    value={setInfo.reps || 0}
+                    onChange={(e) => handleChange(index, 'reps', Number(e.target.value))}
+                    className="w-full bg-backgrounds-sub text-white text-right pr-7 text-lg"
+                    placeholder="0"
+                  />
+                  <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-text-light">
+                    회
+                  </span>
+                </div>
+              </>
+            )}
+
+            {exerciseType === '시간 단위' && (
               <div className="relative w-20">
                 <input
                   type="number"
-                  value={setInfo.weight || 0}
-                  onChange={(e) => handleChange(index, 'weight', Number(e.target.value))}
+                  value={setInfo.time || 0}
+                  onChange={(e) => handleChange(index, 'time', Number(e.target.value))}
                   className="w-full bg-backgrounds-sub text-white text-right pr-7 text-lg"
                   placeholder="0"
                 />
                 <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-text-light">
-                  kg
+                  분
                 </span>
               </div>
+            )}
+
+            {exerciseType === '횟수' && (
               <div className="relative w-20">
                 <input
                   type="number"
@@ -84,42 +116,11 @@ const ExerciseSetInfo: React.FC<ExerciseSetInfoProps> = ({
                   회
                 </span>
               </div>
-            </>
-          )}
+            )}
 
-          {exerciseType === '시간 단위' && (
-            <div className="relative w-20">
-              <input
-                type="number"
-                value={setInfo.time || 0}
-                onChange={(e) => handleChange(index, 'time', Number(e.target.value))}
-                className="w-full bg-backgrounds-sub text-white text-right pr-7 text-lg"
-                placeholder="0"
-              />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-text-light">
-                분
-              </span>
-            </div>
-          )}
-
-          {exerciseType === '횟수' && (
-            <div className="relative w-20">
-              <input
-                type="number"
-                value={setInfo.reps || 0}
-                onChange={(e) => handleChange(index, 'reps', Number(e.target.value))}
-                className="w-full bg-backgrounds-sub text-white text-right pr-7 text-lg"
-                placeholder="0"
-              />
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 text-text-light">
-                회
-              </span>
-            </div>
-          )}
-
-          <input type="checkbox" className="ml-2" />
-        </div>
-      ))}
+            <input type="checkbox" className="ml-2" />
+          </div>
+        ))}
       <div className="flex w-full mt-4 gap-2 h-9">
         <button
           onClick={removeSet}

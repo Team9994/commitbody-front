@@ -11,11 +11,7 @@ export default async function Home() {
   if (!session) {
     redirect('/sign');
   }
-  // console.log(session);
-  // console.log('응?');
   const routineList = await getRoutineList(session);
-  console.log(routineList.routineDtos);
-  console.log('응?');
   return (
     <div className="flex flex-col h-screen bg-backgrounds-default">
       <div className="absolute inset-0 w-full h-[228px] bg-gradient-to-b from-[#2B3F58] to-[#212227] z-0"></div>
