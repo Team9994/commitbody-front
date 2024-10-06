@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import ExerciseSetInfo from './ExerciseSetInfo';
-import { EXERCISE_TYPE } from '@/app/custom-exercise/constants/exerciseType';
+import { EXERCISE_TYPE } from '@/constants/exerciseType';
 import { RoutineDetail, SetInfo } from '../types';
 import { useSession } from 'next-auth/react';
 import { postRegisterRoutine } from '@/app/api/routine';

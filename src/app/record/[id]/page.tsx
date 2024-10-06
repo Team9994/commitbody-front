@@ -14,12 +14,12 @@ interface RoutineCompleteProps {
 
 const HydratedRoutineComplete = async ({ params }: RoutineCompleteProps) => {
   const recordId = params.id;
-  console.log(recordId);
+  // console.log(recordId);
   const queryClient = getQueryClient();
   const session = await auth();
 
   await queryClient.prefetchQuery({
-    queryKey: ['record', recordId],
+    queryKey: ['Record_Detail', recordId],
     queryFn: () => getRecordDetail(recordId, session),
   });
   const dehydratedState = dehydrate(queryClient);
@@ -27,7 +27,7 @@ const HydratedRoutineComplete = async ({ params }: RoutineCompleteProps) => {
   return (
     <HydrationBoundary state={dehydratedState}>
       <div className="flex flex-col text-text-main overflow-hidden bg-backgrounds-default">
-        <RoutineComplete recordId={recordId} />
+        <RoutineComplete />
       </div>
     </HydrationBoundary>
   );

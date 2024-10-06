@@ -1,7 +1,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
+interface RoutineCompleteHeaderProps {
+  recordName: string;
+  startDate: string;
+  durationTime: string;
+  recordVolume: number;
+  recordSets: number;
+  recordCalorie: number;
+}
 
-const RoutineCompleteHeader = () => {
+const RoutineCompleteHeader = ({
+  recordName,
+  startDate,
+  durationTime,
+  recordVolume,
+  recordSets,
+  recordCalorie,
+}: RoutineCompleteHeaderProps) => {
   const headerClass = 'flex justify-center items-center';
   const textMainClass = 'text-text-main font-semibold';
   const textLightClass = 'text-xs text-text-light font-normal';
@@ -25,24 +40,31 @@ const RoutineCompleteHeader = () => {
             <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={28} height={28} />
           </Link>
         </div>
-        <div className={`text-xl ${textMainClass}`}>무분할 상체 루틴</div>
-      </div>
-      {/* 시간영역 */}
-      <div className={headerClass}>
-        <div className={textLightClass}>2024. 7. 30.(화) </div>
-        <div className={`${textLightClass} mx-1`}> · </div>
-        <div className={textLightClass}>19:50~20:50</div>
+        <div className={`text-xl ${textMainClass}`}>{recordName}</div>
         <div className="absolute right-5">
           <Image priority src={'/assets/dot3.svg'} alt={'더보기'} width={28} height={28} />
         </div>
       </div>
+      {/* 시간영역 */}
+      <div className={headerClass}>
+        <div className={textLightClass}>{startDate}</div>
+        <div className={`${textLightClass} mx-1`}> · </div>
+        <div className={textLightClass}>{durationTime}</div>
+      </div>
       {/* 박스영역 */}
       <div className="px-5 py-3 h-[88px]">
         <div className="rounded-6 bg-[#324151] h-16 flex items-center">
-          <StatItem label="운동시간" value={60} unit="분" />
-          <StatItem label="볼륨" value={100} unit="kg" />
-          <StatItem label="세트" value={40} unit="set" />
-          <StatItem label="칼로리" value={200} unit="kcal" />
+          <StatItem
+            label="운동시간"
+            value={
+              Number(durationTime.split('~')[1].split(':')[0]) -
+              Number(durationTime.split('~')[0].split(':')[0])
+            }
+            unit="분"
+          />
+          <StatItem label="볼륨" value={recordVolume} unit="kg" />
+          <StatItem label="세트" value={recordSets} unit="set" />
+          <StatItem label="칼로리" value={recordCalorie} unit="kcal" />
         </div>
       </div>
     </div>
