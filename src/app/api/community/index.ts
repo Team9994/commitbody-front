@@ -49,7 +49,14 @@ export interface ArticlePostCommunityPayload {
   title: string;
   content: string;
   articleType: 'EXERCISE' | 'INFO_QUESTION';
-  articleCategory: 'ALL' | 'FOLLOWING' | 'POPULAR' | 'INFORMATION' | 'FEEDBACK' | 'BODY_REVIEW';
+  articleCategory:
+    | 'ALL'
+    | 'FOLLOWING'
+    | 'POPULAR'
+    | 'INFORMATION'
+    | 'FEEDBACK'
+    | 'BODY_REVIEW'
+    | '';
   visibility: 'PUBLIC' | 'FOLLOWERS_ONLY' | 'PRIVATE';
   session: any;
   image?: File | null;

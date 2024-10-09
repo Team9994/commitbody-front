@@ -43,19 +43,19 @@ const MarkScopeDrawer = ({
 
           <div
             onClick={() => handleMarkScopeChange('PUBLIC')}
-            className="text-center py-3 text-text-main border-t border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
           >
             전체 공개
           </div>
           <div
             onClick={() => handleMarkScopeChange('FOLLOWERS_ONLY')}
-            className="text-center py-3 text-text-main border-t border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
           >
             팔로워에게만 공개
           </div>
           <div
             onClick={() => handleMarkScopeChange('PRIVATE')}
-            className="text-center py-3 text-text-main border-t border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
           >
             비공개
           </div>

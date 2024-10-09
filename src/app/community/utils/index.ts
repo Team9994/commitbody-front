@@ -32,6 +32,21 @@ export const mapCategoryToQueryCategory = (
   }
 };
 
+export const mapQueryMarkScopeToMarkScope = (
+  queryCategory: 'PUBLIC' | 'FOLLOWERS_ONLY' | 'PRIVATE'
+): string => {
+  switch (queryCategory) {
+    case 'PUBLIC':
+      return '전체 공개';
+    case 'FOLLOWERS_ONLY':
+      return '팔로우에게만 공개';
+    case 'PRIVATE':
+      return '비공개';
+    default:
+      throw new Error('Invalid query category selected');
+  }
+};
+
 export const mapQueryCategoryToCategory = (
   queryCategory: 'ALL' | 'FOLLOWING' | 'POPULAR' | 'INFORMATION' | 'FEEDBACK' | 'BODY_REVIEW'
 ): string => {
@@ -51,4 +66,36 @@ export const mapQueryCategoryToCategory = (
     default:
       throw new Error('Invalid query category selected');
   }
+};
+
+export const alertPostBoard = (
+  cur: 'certification' | 'question' | string | null,
+  title: string,
+  content: string,
+  selectedFile: File | null,
+  category: 'ALL' | 'FOLLOWING' | 'POPULAR' | 'INFORMATION' | 'FEEDBACK' | 'BODY_REVIEW' | ''
+) => {
+  if (!cur) return;
+  const errors: { [key: string]: () => string | null } = {
+    certification: () => {
+      if (!selectedFile) return '사진이나 영상을 업로드해주세요.';
+      return null;
+    },
+    question: () => {
+      if (!title) return '제목을 입력해주세요.';
+      if (!category) return '카테고리를 입력해주세요.';
+      return null;
+    },
+    default: () => {
+      if (!content) return '내용을 입력해주세요.';
+      return null;
+    },
+  };
+
+  if (errors[cur]) {
+    const errorMessage = errors[cur]();
+    if (errorMessage) return errorMessage;
+  }
+
+  return errors.default();
 };

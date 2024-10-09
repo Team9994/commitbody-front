@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { getArticleCommunity, AricleCommunityPayload, postArticleCommunity } from '..';
+import { tree } from 'next/dist/build/templates/app-page';
 
 type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category' | 'session'>;
 
@@ -14,7 +15,6 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
         size: pageParam.size,
         lastId: pageParam.lastId,
       }),
-    staleTime: 1000 * 60,
     initialPageParam: { lastId: undefined, size: 20 },
     getNextPageParam: (lastPage) => {
       if (!lastPage || lastPage.data.articles.length === 0) {
@@ -32,6 +32,9 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
 export const useArticlePostCommunityMutation = () => {
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommunity,
+    onSuccess: () => {
+      alert('게시글이 작성되었씁니다 !');
+    },
   });
 
   return articlePostCommunityMutation;

@@ -64,6 +64,7 @@ const Community = () => {
   useEffect(() => {
     refetch();
   }, [categorySelected]);
+
   return (
     <div>
       <Header
@@ -99,22 +100,31 @@ const Community = () => {
           <div
             className="grid justify-center"
             style={{
-              gridTemplateColumns: 'repeat(auto-fill, 118px)',
+              gridTemplateColumns: 'repeat(3, 1fr)', // 한 줄에 3개의 열을 고정
               gap: '2px',
             }}
           >
             {articleResults?.pages.flatMap((page) =>
-              page.data.articles.map((article: any) => (
-                <Link key={article.articleId} href={`./community/${article.articleId}`}>
-                  <Image
-                    src={article.imageUrl}
-                    width={118}
-                    height={118}
-                    alt="운동 인증 사진"
-                    style={{ width: '118px', height: '118px', objectFit: 'cover' }}
-                  />
-                </Link>
-              ))
+              page.data.articles.map((article: any) => {
+                if (article.imageUrl === '등록된 이미지가 없습니다.') {
+                  return null;
+                }
+                return (
+                  <Link key={article.articleId} href={`./community/${article.articleId}`}>
+                    <div
+                      className="relative"
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        aspectRatio: '1',
+                        objectFit: 'cover',
+                      }}
+                    >
+                      <Image src={article.imageUrl} alt="운동 인증 사진" fill />
+                    </div>
+                  </Link>
+                );
+              })
             )}
           </div>
           {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
@@ -129,36 +139,38 @@ const Community = () => {
         <div className="px-5">
           {articleResults?.pages.flatMap((page) =>
             page.data.articles.map((article: any) => (
-              <div
-                key={article.articleId}
-                className="flex justify-between items-center py-3 border-b border-[black]"
-              >
-                <div className="flex-grow">
-                  <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
-                    {mapQueryCategoryToCategory(article.articleCategory)}
+              <Link key={article.articleId} href={`./community/${article.articleId}`}>
+                <div
+                  key={article.articleId}
+                  className="flex justify-between items-center py-3 border-b border-[black]"
+                >
+                  <div className="flex-grow">
+                    <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
+                      {mapQueryCategoryToCategory(article.articleCategory)}
+                    </div>
+                    <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
+                    <div className="flex text-text-light text-[11px]">
+                      <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
+                      <span className="mr-2">{article.viewCount || 0}</span>
+                      <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
+                      <span>{article.commentCount || 0}</span>
+                      <span className="ml-2">{article.time}</span>
+                      <span className="ml-2">{article.member.nickname}</span>
+                    </div>
                   </div>
-                  <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
-                  <div className="flex text-text-light text-[11px]">
-                    <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
-                    <span className="mr-2">{article.viewCount || 0}</span>
-                    <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
-                    <span>{article.commentCount || 0}</span>
-                    <span className="ml-2">{article.time}</span>
-                    <span className="ml-2">{article.member.nickname}</span>
+                  <div>
+                    {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
+                      <Image
+                        src={article.imageUrl}
+                        width={68}
+                        height={68}
+                        alt="게시글 썸네일"
+                        style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                      />
+                    )}
                   </div>
                 </div>
-                <div>
-                  {article.imageUrl && /\.(jpg|jpeg|png)$/i.test(article.imageUrl) && (
-                    <Image
-                      src={article.imageUrl}
-                      width={68}
-                      height={68}
-                      alt="게시글 썸네일"
-                      style={{ width: '68px', height: '68px', objectFit: 'cover' }}
-                    />
-                  )}
-                </div>
-              </div>
+              </Link>
             ))
           )}
 

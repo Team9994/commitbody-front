@@ -10,9 +10,6 @@ interface ArticleInformProps {
 const ArticleInform = async ({ id }: ArticleInformProps) => {
   const session = await auth();
   console.log(session);
-  if (!session?.accessToken) {
-    throw new Error('Access token is not available');
-  }
 
   const res = await fetch(
     `${process.env.SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${id}`,
@@ -49,19 +46,31 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
             <p className="text-[11px] text-text-light">{data.data.time}</p>
           </div>
         </div>
-        {data.data.postOwner ? (
+        {!data.data.postOwner ? (
           <div className="flex justify-center items-center w-[81px] h-7 bg-[#1F3750] text-blue text-sm rounded-[4px]">
             {data.data.followStatus}
           </div>
         ) : null}
       </div>
-      <div className="w-full h-[360px] relative ">
-        <Image alt="인증 사진" src={data.data.imageUrl} fill />
-      </div>
-      <div className="px-5 py-4">오늘 운동 힘들다</div>
+      {data.data.title && (
+        <div className="flex px-5 py-4 items-center">
+          <div className="flex justify-center items-center mr-2 w-10 h-7 bg-backgrounds-sub rounded-[4px] text-text-light text-sm">
+            정보
+          </div>
+          <div>{data.data.title}</div>
+        </div>
+      )}
+      {data.data.imageUrl !== '등록된 이미지가 없습니다.' && (
+        <div className="w-full h-[360px] relative ">
+          <Image alt="인증 사진" src={data.data.imageUrl} fill />
+        </div>
+      )}
+
+      {data.data.content && <div className="px-5 py-4">오늘 운동 힘들다</div>}
+
       <div className="flex px-5 py-4">
         <Image src="/assets/recommend.svg" alt="좋아요" width={24} height={24} />
-        100
+        {data.data.likeCount}
       </div>
       <div className=" h-2 bg-[#161719]" />
     </>

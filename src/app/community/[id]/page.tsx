@@ -2,24 +2,28 @@ import Header from '@/components/layouts/Header';
 import React from 'react';
 import Image from 'next/image';
 import ArticleInform from '../components/ArticleInform';
+import Back from '@/components/common/Back';
+import ArticleComment from '../components/ArticleComment';
+import HeaderMenu from '../components/HeaderMenu';
 
 const exerciseWriteDetail = ({ params }: { params: { id: string } }) => {
   return (
     <div className="min-h-screen bg-backgrounds-default text-text-main">
       <Header
-        className="bg-backgrounds-default"
+        className="bg-backgrounds-default relative"
         left={
           <div>
-            <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={24} height={24} />
+            <Back />
           </div>
         }
         right={
           <div>
-            <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={24} height={24} />
+            <HeaderMenu id={params.id} />
           </div>
         }
       />
       <ArticleInform id={params.id} />
+      <ArticleComment />
     </div>
   );
 };

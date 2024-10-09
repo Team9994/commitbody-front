@@ -8,8 +8,9 @@ export default function ReactQueryProvider({ children }: PropsWithChildren) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        gcTime: 1000 * 60 * 60 * 24, // 24시간
-        staleTime: 1000 * 60,
+        retry: 0,
+        staleTime: 1000 * 20,
+        gcTime: 1000 * 60 * 5,
       },
     },
   });
