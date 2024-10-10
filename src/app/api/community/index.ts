@@ -160,6 +160,7 @@ export const postArticleLikeCommunity = async ({
 export interface ArticleInformGetCommunityPayload {
   articleId: string;
   session: any;
+  boardInformData?: any;
 }
 
 export const getArticleInformCommunity = async ({

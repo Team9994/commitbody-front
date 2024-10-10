@@ -16,7 +16,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
     `${process.env.SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${id}`,
     {
       method: 'GET',
-      cache: 'reload',
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${session?.accessToken}`,
@@ -29,7 +29,6 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
   }
 
   const data = await res.json();
-  console.log(data.data);
 
   return (
     <>
@@ -69,7 +68,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
 
       {data.data.content && <div className="px-5 py-4">오늘 운동 힘들다</div>}
 
-      <ArticleLike likeCount={data.data.likeCount} id={id} />
+      <ArticleLike boardInformData={data} />
       <div className=" h-2 bg-[#161719]" />
     </>
   );

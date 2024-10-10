@@ -40,6 +40,7 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
 export const useArticleInformCommunity = ({
   session,
   articleId,
+  boardInformData,
 }: ArticleInformGetCommunityPayload) => {
   return useQuery({
     queryKey: ['Article_Inform'],
@@ -48,6 +49,7 @@ export const useArticleInformCommunity = ({
         session,
         articleId,
       }),
+    initialData: boardInformData,
   });
 };
 
@@ -74,8 +76,7 @@ export const useArticleDeleteCommunityMutation = () => {
 };
 
 export const useArticlePostLikeCommunityMutation = () => {
-  const queryClient = useQueryClient(); // QueryClient에 접근
-
+  const queryClient = useQueryClient();
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleLikeCommunity,
     onSuccess: () => {
