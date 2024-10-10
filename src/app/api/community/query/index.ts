@@ -1,5 +1,13 @@
-import { useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import { getArticleCommunity, AricleCommunityPayload, postArticleCommunity } from '..';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  getArticleCommunity,
+  AricleCommunityPayload,
+  postArticleCommunity,
+  deleteArticleCommunity,
+  postArticleLikeCommunity,
+  getArticleInformCommunity,
+  ArticleInformGetCommunityPayload,
+} from '..';
 import { tree } from 'next/dist/build/templates/app-page';
 
 type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category' | 'session'>;
@@ -29,11 +37,49 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
   });
 };
 
+export const useArticleInformCommunity = ({
+  session,
+  articleId,
+}: ArticleInformGetCommunityPayload) => {
+  return useQuery({
+    queryKey: ['Article_Inform'],
+    queryFn: () =>
+      getArticleInformCommunity({
+        session,
+        articleId,
+      }),
+  });
+};
+
 export const useArticlePostCommunityMutation = () => {
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommunity,
     onSuccess: () => {
       alert('게시글이 작성되었씁니다 !');
+    },
+  });
+
+  return articlePostCommunityMutation;
+};
+
+export const useArticleDeleteCommunityMutation = () => {
+  const articlePostCommunityMutation = useMutation({
+    mutationFn: deleteArticleCommunity,
+    onSuccess: () => {
+      alert('게시글이 삭제되었습니다 !');
+    },
+  });
+
+  return articlePostCommunityMutation;
+};
+
+export const useArticlePostLikeCommunityMutation = () => {
+  const queryClient = useQueryClient(); // QueryClient에 접근
+
+  const articlePostCommunityMutation = useMutation({
+    mutationFn: postArticleLikeCommunity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['Article_Inform'] });
     },
   });
 

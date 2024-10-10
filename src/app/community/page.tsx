@@ -100,7 +100,7 @@ const Community = () => {
           <div
             className="grid justify-center"
             style={{
-              gridTemplateColumns: 'repeat(3, 1fr)', // 한 줄에 3개의 열을 고정
+              gridTemplateColumns: 'repeat(3, 1fr)',
               gap: '2px',
             }}
           >
@@ -110,7 +110,10 @@ const Community = () => {
                   return null;
                 }
                 return (
-                  <Link key={article.articleId} href={`./community/${article.articleId}`}>
+                  <Link
+                    key={article.articleId}
+                    href={`./community/${article.articleId}?type=${menuSelected}`}
+                  >
                     <div
                       className="relative"
                       style={{
@@ -139,7 +142,10 @@ const Community = () => {
         <div className="px-5">
           {articleResults?.pages.flatMap((page) =>
             page.data.articles.map((article: any) => (
-              <Link key={article.articleId} href={`./community/${article.articleId}`}>
+              <Link
+                key={article.articleId}
+                href={`./community/${article.articleId}?type=${menuSelected}`}
+              >
                 <div
                   key={article.articleId}
                   className="flex justify-between items-center py-3 border-b border-[black]"

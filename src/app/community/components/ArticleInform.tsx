@@ -2,6 +2,7 @@ import { COMMUNITY } from '@/app/api/community';
 import { auth } from '@/auth';
 import Image from 'next/image';
 import React from 'react';
+import ArticleLike from './ArticleLike';
 
 interface ArticleInformProps {
   id: string;
@@ -15,7 +16,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
     `${process.env.SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${id}`,
     {
       method: 'GET',
-      cache: 'force-cache',
+      cache: 'reload',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${session?.accessToken}`,
@@ -68,10 +69,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
 
       {data.data.content && <div className="px-5 py-4">오늘 운동 힘들다</div>}
 
-      <div className="flex px-5 py-4">
-        <Image src="/assets/recommend.svg" alt="좋아요" width={24} height={24} />
-        {data.data.likeCount}
-      </div>
+      <ArticleLike likeCount={data.data.likeCount} id={id} />
       <div className=" h-2 bg-[#161719]" />
     </>
   );

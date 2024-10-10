@@ -1,4 +1,5 @@
 'use client';
+import { useArticleDeleteCommunityMutation } from '@/app/api/community/query';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,7 +11,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface HeaderMenuProps {
@@ -18,12 +22,15 @@ interface HeaderMenuProps {
 }
 
 const HeaderMenu = ({ id }: HeaderMenuProps) => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [activeMenu, setActiveMenu] = useState<boolean>(false);
+  const params = useSearchParams();
+  const type = params.get('type');
   const [routineToDelete, setRoutineToDelete] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  console.log(id);
-
+  const { mutate } = useArticleDeleteCommunityMutation();
   const handleClickOutside = (e: Event) => {
     const isOpen =
       !routineToDelete && menuRef.current && !menuRef.current.contains(e.target as Node);
@@ -35,6 +42,11 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
 
   const confirmDelete = () => {
     console.log(`${routineToDelete}가 삭제되었습니다.`);
+    mutate({
+      articleId: id,
+      session,
+    });
+    // router.back();
     setRoutineToDelete(false);
     setActiveMenu(false);
   };
@@ -64,9 +76,12 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
           ref={menuRef}
           className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
         >
-          <div className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub">
+          <Link
+            href={`./${id}/switch?type=${type}`}
+            className="inline-block w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
+          >
             수정
-          </div>
+          </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <div
@@ -82,10 +97,10 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
             <AlertDialogContent className="w-[296px] h-[148px] bg-backgrounds-sub rounded-6 p-0 flex flex-col items-center text-text-main border-none">
               <AlertDialogHeader className="text-center">
                 <AlertDialogTitle className="text-lg py-[19px] pb-[11px] font-semibold leading-[26px]">
-                  루틴 삭제
+                  게시글 삭제
                 </AlertDialogTitle>
                 <AlertDialogDescription className="text-sm font-normal leading-5 text-text-main">
-                  해당 루틴을 삭제할까요?
+                  해당 게시글을 삭제할까요?
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <div className="flex items-center h-12">
