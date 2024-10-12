@@ -26,10 +26,13 @@ const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
       {details.map((detail) => {
         const { exerciseType, exerciseName, detailsSets, detailsReps, max1RM, sets } = detail;
 
-        const detailsText = `${detailsSets}세트 • ${detailsReps}회 • ${detail.detailsVolume}kg`;
+        let detailsText = `${detailsSets}세트`;
+        if (exerciseType === 'WEIGHT_AND_REPS') {
+          detailsText += ` • ${detailsReps}회 • ${detail.detailsVolume}kg`;
+        }
 
         switch (exerciseType) {
-          case '무게와 횟수':
+          case 'WEIGHT_AND_REPS':
             return (
               <WeightReps
                 key={detail.recordDetailId}
@@ -40,7 +43,7 @@ const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
                 sets={sets}
               />
             );
-          case '횟수':
+          case 'REPS_ONLY':
             return (
               <Reps
                 key={detail.recordDetailId}
@@ -49,7 +52,7 @@ const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
                 sets={sets}
               />
             );
-          case '시간 단위':
+          case 'TIME_ONLY':
             return (
               <Time
                 key={detail.recordDetailId}
@@ -59,7 +62,7 @@ const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
               />
             );
           default:
-            return <div>뭐임{exerciseType}</div>;
+            return <div>{exerciseType}</div>;
         }
       })}
     </div>

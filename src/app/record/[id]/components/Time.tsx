@@ -25,7 +25,7 @@ const Time = ({ exerciseName, details, sets }: TimeProps) => {
             key={set.setId}
             className="flex flex-col bg-backgrounds-sub rounded-6 items-center justify-center h-[34px]"
           >
-            <p className="text-center text-ssm font-medium mb-2">{set.time}분</p>
+            <p className="text-center text-ssm font-medium mb-2">{set.times}분</p>
           </div>
         ))}
       </div>

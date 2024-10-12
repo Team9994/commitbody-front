@@ -21,8 +21,8 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
   const [allSetInfos, setAllSetInfos] = useState<SetInfo[][]>([]);
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(props.routineDetails);
-  console.log(props.routineDetails.exercises);
+  // console.log(props.routineDetails);
+  // console.log(props.routineDetails.exercises);
   useEffect(() => {
     if (!props.routineDetails.exercises) {
       console.error('routineDetails.exercises is undefined or not an array');
@@ -70,14 +70,44 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
         orders: exercise.orders,
         exerciseId: exercise.exerciseId,
         source: exercise.source,
-        sets: allSetInfos[index].map((setInfo, setIndex) => ({
-          weight: setInfo.weight || 0,
-          times: setInfo.time || 0,
-          reps: setInfo.reps || 0,
-        })),
+        sets: allSetInfos[index]
+          .map((setInfo) => {
+            const set: {
+              weight?: number;
+              times?: number;
+              reps?: number;
+            } = {};
+            if (exercise.exerciseType === '무게와 횟수') {
+              if (
+                setInfo.weight !== undefined &&
+                setInfo.weight !== 0 &&
+                setInfo.reps !== undefined &&
+                setInfo.reps !== 0
+              ) {
+                set.weight = setInfo.weight;
+                set.reps = setInfo.reps;
+              }
+            } else if (exercise.exerciseType === '시간 단위') {
+              if (setInfo.time !== undefined && setInfo.time !== 0) {
+                set.times = setInfo.time;
+              }
+            } else if (exercise.exerciseType === '횟수') {
+              if (setInfo.reps !== undefined && setInfo.reps !== 0) {
+                set.reps = setInfo.reps;
+              }
+            }
+            return set;
+          })
+          .filter((set) => Object.keys(set).length > 0),
       })),
     };
+    // 빈 세트 배열 체크
+    const hasEmptySets = dataToSend.exercises.some((exercise) => exercise.sets.length === 0);
 
+    if (hasEmptySets) {
+      alert('모든 운동에 대해 최소한 하나의 유효한 세트를 입력해주세요.');
+      return;
+    }
     console.log(dataToSend);
     try {
       const response = await postRegisterRoutine(dataToSend, session);
