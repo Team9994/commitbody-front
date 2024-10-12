@@ -23,7 +23,7 @@ const exerciseWriteDetail = ({ params }: { params: { id: string } }) => {
         }
       />
       <ArticleInform id={params.id} />
-      <ArticleComment />
+      <ArticleComment id={params.id} />
     </div>
   );
 };

@@ -7,8 +7,11 @@ import {
   postArticleLikeCommunity,
   getArticleInformCommunity,
   ArticleInformGetCommunityPayload,
+  postArticleCommentCommunity,
+  getArticleCommentInformCommunity,
+  postArticleCommentLikeCommunity,
+  deleteArticleCommentCommunity,
 } from '..';
-import { tree } from 'next/dist/build/templates/app-page';
 
 type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category' | 'session'>;
 
@@ -36,7 +39,31 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
     enabled: false,
   });
 };
+export const useArticleCommentCommunity = (
+  articleId: string,
+  session: any,
+  selectCommentMenu: 'RECENT' | 'LIKE'
+) => {
+  return useInfiniteQuery({
+    queryKey: ['Article_Comment', articleId],
+    queryFn: ({ pageParam = { lastId: undefined, size: 20 } }) =>
+      getArticleCommentInformCommunity({
+        articleId,
+        session,
+        lastId: pageParam.lastId,
+        size: pageParam.size,
+        selectCommentMenu,
+      }),
 
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data.hasNext
+        ? { lastId: lastPage.data.comments[lastPage.data.comments.length - 1].commentId, size: 20 }
+        : undefined;
+    },
+    enabled: !!session,
+    initialPageParam: { lastId: undefined, size: 20 },
+  });
+};
 export const useArticleInformCommunity = ({
   session,
   articleId,
@@ -77,12 +104,51 @@ export const useArticleDeleteCommunityMutation = () => {
 
 export const useArticlePostLikeCommunityMutation = () => {
   const queryClient = useQueryClient();
-  const articlePostCommunityMutation = useMutation({
+  const articlePostLikeCommunityMutation = useMutation({
     mutationFn: postArticleLikeCommunity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['Article_Inform'] });
     },
   });
 
+  return articlePostLikeCommunityMutation;
+};
+
+export const useArticleCommentPostCommunityMutation = () => {
+  const queryClient = useQueryClient();
+
+  const articlePostCommunityMutation = useMutation({
+    mutationFn: postArticleCommentCommunity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
+      alert('게시글 댓글이 작성되었습니다 !');
+    },
+  });
+
   return articlePostCommunityMutation;
+};
+
+export const useArticlePostCommentLikeCommunityMutation = () => {
+  const queryClient = useQueryClient();
+  const articlePostCommentLikeCommunityMutation = useMutation({
+    mutationFn: postArticleCommentLikeCommunity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
+    },
+  });
+
+  return articlePostCommentLikeCommunityMutation;
+};
+
+export const useArticleDeleteCommentCommunityMutation = () => {
+  const queryClient = useQueryClient();
+  const articleDeleteCommentCommunityMutation = useMutation({
+    mutationFn: deleteArticleCommentCommunity,
+    onSuccess: () => {
+      alert('댓글이 삭제되었습니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
+    },
+  });
+
+  return articleDeleteCommentCommunityMutation;
 };

@@ -27,9 +27,11 @@ const ArticleLike = ({ boardInformData }: ArticleLikeProps) => {
     });
   };
 
+  console.log(data.data);
   return (
-    <div onClick={handleLikeClick} className="flex px-5 py-4">
+    <div className="flex px-5 py-4">
       <Image
+        onClick={handleLikeClick}
         src={data.data.likeStatus ? '/assets/fillRecommend.svg' : '/assets/recommend.svg'}
         alt="좋아요"
         width={24}

@@ -3,9 +3,13 @@ import axios from 'axios';
 export const COMMUNITY = {
   GET_ARTICLE: '/api/v1/article',
   GET_DETAIL_ARTICLE: '/api/v1/article',
+  GET_ARTICLE_COMMENT: '/api/v1/article',
   POST_ARTICLE: '/api/v1/article',
   DELTE_ARTICLE: '/api/v1/article',
   POST_ARTICLE_LIKE: '/api/v1/article/like',
+  POST_ARTICLE_COMMENT: '/api/v1/article/comment',
+  POST_ARTICLE_COMMENT_LIKE: '/api/v1/article/comment/like',
+  DLETE_ARTICLE_COMMENT: '/api/v1/article/comment',
 };
 
 export interface AricleCommunityPayload {
@@ -150,6 +154,34 @@ export const postArticleLikeCommunity = async ({
         },
       }
     );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch exercises:', error);
+    throw error;
+  }
+};
+
+interface ArticlePostCommentLikeCommunityPayload {
+  commentId: string;
+  session: any;
+}
+
+export const postArticleCommentLikeCommunity = async ({
+  commentId,
+  session,
+}: ArticlePostCommentLikeCommunityPayload) => {
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.POST_ARTICLE_COMMENT_LIKE}`,
+      {
+        commentId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
     console.log(res);
     return res.data;
   } catch (error) {
@@ -157,6 +189,7 @@ export const postArticleLikeCommunity = async ({
     throw error;
   }
 };
+
 export interface ArticleInformGetCommunityPayload {
   articleId: string;
   session: any;
@@ -170,6 +203,108 @@ export const getArticleInformCommunity = async ({
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${articleId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch exercises:', error);
+    throw error;
+  }
+};
+
+interface ArticleCommentPostCommunityPayload {
+  articleId: string;
+  content: string;
+  session: any;
+  parentId?: string;
+  reply: boolean;
+  replyNickname?: string;
+}
+
+export const postArticleCommentCommunity = async ({
+  articleId,
+  content,
+  session,
+  parentId,
+  replyNickname,
+}: ArticleCommentPostCommunityPayload) => {
+  const payload = {
+    articleId,
+    content,
+    ...(parentId && { parentId }),
+    ...(replyNickname && { replyNickname }),
+  };
+
+  try {
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.POST_ARTICLE_COMMENT}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('댓글 작성 실패:', error);
+    throw error;
+  }
+};
+
+export interface ArticleCommentInformGetCommunityPayload {
+  articleId: string;
+  session: any;
+  lastId?: number;
+  size: number;
+  selectCommentMenu: 'RECENT' | 'LIKE';
+}
+
+export const getArticleCommentInformCommunity = async ({
+  articleId,
+  session,
+  lastId,
+  size,
+  selectCommentMenu,
+}: ArticleCommentInformGetCommunityPayload) => {
+  const params = {
+    lastId,
+    size,
+    sortOrder: selectCommentMenu,
+  };
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_ARTICLE_COMMENT}/${articleId}/comment`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        params,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch exercises:', error);
+    throw error;
+  }
+};
+
+interface ArticleDeleteCommentCommunityPayload {
+  commentId: string;
+  session: any;
+}
+
+export const deleteArticleCommentCommunity = async ({
+  commentId,
+  session,
+}: ArticleDeleteCommentCommunityPayload) => {
+  try {
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.DLETE_ARTICLE_COMMENT}/${commentId}`,
       {
         headers: {
           Authorization: `Bearer ${session?.accessToken}`,

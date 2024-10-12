@@ -7,6 +7,9 @@ function useInput(initialValue = '') {
     setValue(e.target.value);
   };
 
+  const handleValueChange = (state: string) => {
+    setValue(state);
+  };
   const reset = () => {
     setValue(initialValue);
   };
@@ -15,6 +18,7 @@ function useInput(initialValue = '') {
     value,
     onChange: handleChange,
     reset,
+    handleValueChange,
   };
 }
 
