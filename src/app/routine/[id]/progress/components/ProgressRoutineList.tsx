@@ -6,6 +6,7 @@ import { RoutineDetail, SetInfo } from '../types';
 import { useSession } from 'next-auth/react';
 import { postRegisterRoutine } from '@/app/api/routine';
 import { useRouter } from 'next/navigation';
+import TimeBox from './TimeBox';
 
 interface ProgressRoutineListProps {
   routineDetails: {
@@ -17,12 +18,18 @@ interface ProgressRoutineListProps {
 }
 
 const ProgressRoutineList = (props: ProgressRoutineListProps) => {
+  const [startTime, setStartTime] = useState<Date | null>(null);
   const [exercises, setExercises] = useState<RoutineDetail[]>(props.routineDetails.exercises);
   const [allSetInfos, setAllSetInfos] = useState<SetInfo[][]>([]);
+  const [exerciseDurationSeconds, setExerciseDurationSeconds] = useState<number>(0);
+
   const router = useRouter();
   const { data: session } = useSession();
-  // console.log(props.routineDetails);
-  // console.log(props.routineDetails.exercises);
+
+  useEffect(() => {
+    setStartTime(new Date());
+  }, []);
+
   useEffect(() => {
     if (!props.routineDetails.exercises) {
       console.error('routineDetails.exercises is undefined or not an array');
@@ -56,13 +63,13 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
   };
 
   const handleSubmit = async () => {
-    // 모든 운동의 세트 정보를 포함한 데이터 전송
-
-    console.log(allSetInfos);
+    const endTime = new Date(startTime.getTime() + exerciseDurationSeconds * 1000);
+    console.log(startTime);
+    console.log(endTime);
     const dataToSend = {
       recordName: props.routineDetails.routineName,
-      startTime: new Date().toISOString(),
-      endTime: new Date().toISOString(),
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
       exercises: props.routineDetails.exercises.map((exercise, index) => ({
         recordDetailId: exercise.routineDetailId,
         endTime: new Date().toISOString(),
@@ -144,6 +151,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
       <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         운동 완료 및 제출
       </button>
+      <TimeBox setExerciseDurationSeconds={setExerciseDurationSeconds} />
     </div>
   );
 };
