@@ -2,9 +2,10 @@ import { redirect } from 'next/navigation';
 import AdditionalInfo from './hydrated-page';
 import { auth } from '@/auth';
 
-export default function HydratedAdditionalInfo() {
-  const session = auth();
-  if (!session.nickname) {
+export default async function HydratedAdditionalInfo() {
+  const session = await auth();
+
+  if (session?.nickname) {
     redirect('/');
   }
   return (
