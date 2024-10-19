@@ -11,7 +11,29 @@ import {
   getArticleCommentInformCommunity,
   postArticleCommentLikeCommunity,
   deleteArticleCommentCommunity,
+  getDetailCommentCommunity,
+  AricleDetailCommentCommunityPayload,
 } from '..';
+
+export const useArticleDetailCommentCommunity = ({
+  session,
+  commentId,
+  lastId,
+  size = 50,
+}: AricleDetailCommentCommunityPayload) => {
+  return useQuery({
+    queryKey: ['Article_Detail_Comment', commentId],
+    queryFn: () => {
+      return getDetailCommentCommunity({
+        session,
+        commentId,
+        lastId,
+        size,
+      });
+    },
+    enabled: !!commentId,
+  });
+};
 
 type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category' | 'session'>;
 
@@ -134,6 +156,7 @@ export const useArticlePostCommentLikeCommunityMutation = () => {
     mutationFn: postArticleCommentLikeCommunity,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
+      queryClient.invalidateQueries({ queryKey: ['Article_Detail_Comment'] });
     },
   });
 

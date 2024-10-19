@@ -1,4 +1,4 @@
-import Header from '@/components/layouts/Header';
+import Header from '@/components/layouts/header';
 import React from 'react';
 import Image from 'next/image';
 import ArticleInform from '../components/ArticleInform';

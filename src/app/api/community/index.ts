@@ -4,12 +4,47 @@ export const COMMUNITY = {
   GET_ARTICLE: '/api/v1/article',
   GET_DETAIL_ARTICLE: '/api/v1/article',
   GET_ARTICLE_COMMENT: '/api/v1/article',
+  GET_DETAIL_COMMENT: '/api/v1/article/comment',
   POST_ARTICLE: '/api/v1/article',
   DELTE_ARTICLE: '/api/v1/article',
   POST_ARTICLE_LIKE: '/api/v1/article/like',
   POST_ARTICLE_COMMENT: '/api/v1/article/comment',
   POST_ARTICLE_COMMENT_LIKE: '/api/v1/article/comment/like',
   DLETE_ARTICLE_COMMENT: '/api/v1/article/comment',
+};
+
+export interface AricleDetailCommentCommunityPayload {
+  commentId: number | null;
+  lastId?: number;
+  size?: number;
+  session: any;
+}
+
+export const getDetailCommentCommunity = async ({
+  commentId,
+  size,
+  lastId,
+  session,
+}: AricleDetailCommentCommunityPayload) => {
+  const params = {
+    lastId,
+    size,
+  };
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_COMMENT}/${commentId}/reply`,
+      {
+        headers: {
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+        params,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Failed to fetch exercises:', error);
+    throw error;
+  }
 };
 
 export interface AricleCommunityPayload {

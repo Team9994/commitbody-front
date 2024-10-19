@@ -1,10 +1,5 @@
 'use client';
 import {
-  useArticleCommentCommunity,
-  useArticleCommentPostCommunityMutation,
-  useArticlePostCommentLikeCommunityMutation,
-} from '@/app/api/community/query';
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -15,191 +10,37 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui';
-import { Input } from '@/components/ui/input';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import useInput from '@/hooks/useInput';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import useRoutine from '../hooks/useRoutine';
 
-interface ArticleCommentProps {
-  id: string;
-}
-
-const ArticleComment = ({ id }: ArticleCommentProps) => {
-  const { data: session } = useSession();
-  const { mutate } = useArticleCommentPostCommunityMutation();
-  const { mutate: commentMutate } = useArticlePostCommentLikeCommunityMutation();
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const { value: content, onChange, reset, handleValueChange } = useInput('');
-  const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
-  const [routineToDelete, setRoutineToDelete] = useState<number | undefined>(undefined);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-  const [selectCommentMenu, setSelectCommentMenu] = useState<'RECENT' | 'LIKE'>('RECENT');
-  const [replyData, setReplyData] = useState<{ commentId: string | null; nickname: string }>({
-    commentId: null,
-    nickname: '',
-  });
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useArticleCommentCommunity(
-    id,
-    session,
-    selectCommentMenu
-  );
-  const scrollRef = useInfiniteScroll(
-    () => {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    },
-    { rootMargin: '0px' }
-  );
-
-  const allComments = data?.pages.flatMap((page) => page.data.comments) || [];
-
-  const handleSendComment = () => {
-    if (!content.trim()) {
-      alert('댓글을 입력해주세요!');
-      return;
-    }
-
-    const [user, ...commentArray] = content.split(' ');
-    const userContent = commentArray.join(' ').trim();
-    const isMention = user.startsWith('@');
-
-    // 멘션된 유저가 있는지 찾기
-    const isFindUser = allComments.some((comment) => '@' + comment.nickname === user);
-
-    const isReply = !!replyData.commentId && isFindUser && isMention;
-
-    if (isMention && !isFindUser) {
-      alert('유저를 찾지 못했습니다!');
-      return;
-    }
-
-    mutate({
-      articleId: id,
-      content: isReply ? userContent : content,
-      session,
-      reply: isReply,
-      parentId: isReply ? (replyData.commentId as string) : undefined,
-      replyNickname: isReply ? replyData.nickname : undefined,
-    });
-
-    reset();
-    setReplyData({ commentId: null, nickname: '' });
-  };
-
-  const handleMenuClick = (id: number) => {
-    setActiveMenuId(id);
-  };
-
-  const handleClickOutside = (e: Event) => {
-    const isOpen =
-      !routineToDelete && menuRef.current && !menuRef.current.contains(e.target as Node);
-
-    if (isOpen) {
-      setActiveMenuId(undefined);
-    }
-  };
-
-  const confirmDelete = () => {
-    console.log(`${routineToDelete}가 삭제되었습니다.`);
-    setRoutineToDelete(undefined);
-    setActiveMenuId(undefined);
-  };
-
-  useEffect(() => {
-    if (activeMenuId === undefined) return;
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [activeMenuId, routineToDelete]);
+const RoutineList = () => {
+  const { menuRef, setRoutineToDelete, activeMenuId, handleMenuClick, confirmDelete } =
+    useRoutine();
 
   return (
-    <div className="pb-10">
-      <div className="flex justify-between py-3 px-5 text-md font-bold">
-        <div>댓글 {data?.pages?.[0]?.data?.totalCount || 0}개</div>
-        <div className="flex">
-          <div
-            className={`mr-4 ${selectCommentMenu !== 'RECENT' && 'text-[#777777]'}`}
-            onClick={() => setSelectCommentMenu('RECENT')}
-          >
-            등록순
-          </div>
-          <div
-            className={`${selectCommentMenu !== 'LIKE' && 'text-[#777777]'}`}
-            onClick={() => setSelectCommentMenu('LIKE')}
-          >
-            인기순
-          </div>
-        </div>
-      </div>
-      {allComments.map((comment: any, index: number) => (
-        <div key={index} className="relative flex px-5 py-3 text-xs">
-          <div className="w-6 h-6 rounded-lg mr-2">
-            <Image
-              src={'/assets/default.svg'}
-              alt={comment.nickname}
-              width={24}
-              height={24}
-              className="rounded-full"
-            />
-          </div>
-          <div className="flex flex-col">
-            <div>
-              <span className="text-text-sub mr-2">{comment.nickname}</span>
-              <span className="text-text-light">{comment.time}</span>
-            </div>
-            <span className="my-2">{comment.content}</span>
-            <div className="flex items-center text-text-sub">
-              <div
-                onClick={() => {
-                  commentMutate({ commentId: comment.commentId, session });
-                }}
-                className="flex items-center mr-5"
-              >
-                <Image
-                  src={comment.likeStatus ? '/assets/fillRecommend.svg' : '/assets/recommend.svg'}
-                  alt="추천"
-                  width={24}
-                  height={24}
-                />
-                <span className={comment.likeStatus ? 'text-[#198DF7]' : ''}>
-                  {comment.likeCount}
-                </span>
-              </div>
-              <span
-                onClick={() => {
-                  setReplyData({ commentId: comment.commentId, nickname: comment.nickname });
-                  handleValueChange('@' + comment.nickname + ' ');
-                  if (inputRef.current) {
-                    inputRef.current.focus();
-                  }
-                }}
-              >
-                답글 달기
-              </span>
-            </div>
-            {comment.replyCount !== 0 && (
-              <p className="mt-2 font-bold text-sm text-[#198DF7]">
-                답글 {comment.replyCount}개 보기
-              </p>
-            )}
-          </div>
-          {comment.writer && (
-            <Image
-              onClick={() => handleMenuClick(comment.commentId)}
-              src="/assets/menu.svg"
-              alt="메뉴"
-              width={24}
-              height={24}
-              className="absolute top-3 right-5"
-            />
-          )}
-          {activeMenuId === comment.commentId && (
+    <div>
+      {RoutineData?.map((data) => (
+        <div
+          className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
+          key={data.id}
+        >
+          <p className="text-md leading-[22px]">{data.title}</p>
+
+          {data.parts.map((part) => (
+            <span className="text-xs leading-[18px] text-text-light mr-1.5" key={part}>
+              {part}
+            </span>
+          ))}
+          <Image
+            onClick={() => handleMenuClick(data.id)}
+            src={'/assets/menu.svg'}
+            alt="메뉴"
+            width={24}
+            height={24}
+            className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90 cursor-pointer"
+          />
+          {activeMenuId === data.id && (
             <div
               ref={menuRef}
               className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
@@ -211,7 +52,7 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
                 <AlertDialogTrigger asChild>
                   <div
                     className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
-                    onClick={() => setRoutineToDelete(comment.commentId)}
+                    onClick={() => setRoutineToDelete(data.id)}
                   >
                     삭제
                   </div>
@@ -248,35 +89,39 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
           )}
         </div>
       ))}
-      {allComments.length === 0 && (
-        <div className="py-10 flex justify-center text-sm">
-          작성된 댓글이 없습니다. 한번 댓글을 남겨볼까요?
+      {RoutineData.length === 0 && (
+        <div className="flex items-center bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main">
+          <p className="text-md leading-[22px] text-text-light">새로운 루틴을 추가해보세요</p>
+
+          <Image
+            src={'/assets/plus.svg'}
+            alt="추가하기"
+            width={14}
+            height={14}
+            className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90"
+          />
         </div>
       )}
-      <div className="fixed bottom-0 left-0 right-0 px-5 py-3">
-        <div className="bg-backgrounds-light rounded-6 relative">
-          <Input
-            id="comment-input"
-            placeholder="댓글을 작성해보세요"
-            className="h-10 bg-backgrounds-light placeholder-text-light focus:outline-none focus:ring-0 focus:shadow-none border-none"
-            style={{ boxShadow: 'none' }}
-            onChange={onChange}
-            value={content}
-            ref={inputRef}
-          />
-          <Image
-            src="/assets/send.svg"
-            alt="보내기 버튼"
-            width={20}
-            height={20}
-            className="absolute top-5 right-2 translate-y-[-50%]"
-            onClick={handleSendComment}
-          />
-        </div>
-      </div>
-      <div ref={scrollRef} className="h-10 invisible" />
     </div>
   );
 };
 
-export default ArticleComment;
+export default RoutineList;
+
+const RoutineData = [
+  {
+    id: 1,
+    title: '무분할 상체 루틴',
+    parts: ['가슴', '등', '어깨', '삼두'],
+  },
+  {
+    id: 2,
+    title: '하체 루틴',
+    parts: ['햄스트링', '대퇴사부'],
+  },
+  {
+    id: 3,
+    title: '유산소 루틴',
+    parts: ['종아리', '복부'],
+  },
+];
