@@ -77,6 +77,7 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
     });
     setRoutineToDelete(false);
     setActiveMenu(false);
+    router.push('/community');
   };
 
   useEffect(() => {

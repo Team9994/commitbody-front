@@ -45,7 +45,7 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
 
   const allComments = data?.pages.flatMap((page) => page.data.comments) || [];
   selectCommentMenu === 'LIKE' && allComments.sort((a, b) => b.likeCount - a.likeCount);
-  selectCommentMenu === 'RECENT' && allComments.sort((a, b) => a.likeCount - b.likeCount);
+  selectCommentMenu === 'RECENT' && allComments.sort((a, b) => b.commentId - a.commentId);
 
   const handleSendComment = () => {
     if (!content.trim()) return alert('댓글을 입력해주세요!');
