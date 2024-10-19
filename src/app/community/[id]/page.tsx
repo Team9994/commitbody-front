@@ -1,6 +1,5 @@
 import Header from '@/components/layouts/header';
 import React from 'react';
-import Image from 'next/image';
 import ArticleInform from '../components/ArticleInform';
 import Back from '@/components/common/Back';
 import ArticleComment from '../components/ArticleComment';
