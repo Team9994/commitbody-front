@@ -48,5 +48,5 @@ const navItems = [
   { href: '/', label: '홈', icon: '/assets/home.svg' },
   { href: '/record', label: '기록', icon: '/assets/callander.svg' },
   { href: '/community', label: '커뮤니티', icon: '/assets/community.svg' },
-  { href: '/my', label: 'MY', icon: '/assets/my.svg' },
+  { href: '/mypage', label: 'MY', icon: '/assets/my.svg' },
 ];
