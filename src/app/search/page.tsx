@@ -3,7 +3,6 @@
 import Back from '@/components/common/Back';
 import Header from '@/components/layouts/header';
 import { Input } from '@/components/ui/input';
-import useInput from '@/hooks/useInput';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
@@ -48,6 +47,18 @@ const Search = () => {
         }
         className="relative z-20"
       />
+      <div className="flex w-full justify-between px-5 py-4 text-s border-b-[0.1px] border-text-light">
+        <div className="text-text-light">최근 검색어</div>
+        <div className="text-text-sub">전체 삭제</div>
+      </div>
+      <div className="flex w-full justify-between px-5 py-4 text-sm">
+        <div className="text-text-main">운동 잘하는 방법</div>
+        <Image src="/assets/deleteBtn.svg" width={20} height={20} alt="삭제 버튼" />
+      </div>
+      <div className="flex w-full justify-between px-5 py-4 text-sm">
+        <div className="text-text-main">운동 잘하는 방법</div>
+        <Image src="/assets/deleteBtn.svg" width={20} height={20} alt="삭제 버튼" />
+      </div>
     </div>
   );
 };
