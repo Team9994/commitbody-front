@@ -35,7 +35,6 @@ export const { handlers, auth, signIn } = NextAuth({
           const googleResponse = await axios.get(
             `https://oauth2.googleapis.com/tokeninfo?id_token=${account.id_token}`
           );
-
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'GOOGLE',
             socialId: googleResponse.data.kid,
