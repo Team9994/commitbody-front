@@ -39,12 +39,11 @@ export const { handlers, auth, signIn } = NextAuth({
             loginType: 'GOOGLE',
             socialId: googleResponse.data.kid,
           });
-
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
-            nickname: springResponse.data.data.tokenInfo?.nickname,
+            nickname: springResponse.data.data.tokenInfoDto?.nickname,
             accessTokenExpires: Date.now() + 60 * 60 * 1000, // 예: 1시간 후 만료
           };
         } else if (account?.provider === 'kakao') {

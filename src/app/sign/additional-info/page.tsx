@@ -4,8 +4,9 @@ import { auth } from '@/auth';
 
 export default async function HydratedAdditionalInfo() {
   const session = await auth();
-
-  if (session?.nickname) {
+  console.log(session?.nickname);
+  console.log('닉네임:', session?.nickname);
+  if (session?.nickname && session.nickname.trim() !== '') {
     redirect('/');
   }
   return (
