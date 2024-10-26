@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -25,7 +26,7 @@ const useAdditionalInfo = () => {
    * @type {number}
    */
   const [step, setStep] = useState<number>(0);
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
 
   // 유효성 검사 규칙 정의
   const VALIDATION_RULES = {
@@ -256,7 +257,15 @@ const useAdditionalInfo = () => {
         },
       }
     );
-    router.push('/');
+    // POST 요청이 성공하면 세션 업데이트
+    if (res.data.success) {
+      const updatedSession = await update({
+        ...session,
+        nickname: formData.nickname,
+      });
+
+      router.push('/');
+    }
   };
 
   return {

@@ -11,7 +11,11 @@ export default async function Home() {
   if (!session) {
     redirect('/sign');
   }
+  if (session?.nickname === null) {
+    redirect('/sign/additional-info');
+  }
   const routineList = await getRoutineList(session);
+  console.log(routineList);
   return (
     <div className="flex flex-col h-screen bg-backgrounds-default">
       <div className="absolute inset-0 w-full h-[228px] bg-gradient-to-b from-[#2B3F58] to-[#212227] z-0"></div>
@@ -29,7 +33,7 @@ export default async function Home() {
         <h4 className="text-[18px] font-semibold leading-[26px] py-2 pl-5 text-text-main">
           내 루틴
         </h4>
-        <RoutineList routineList={routineList.routineDtos} />
+        <RoutineList routineList={routineList?.routineDtos} />
         <PlusRoutineBtn href="/routine/new" />
       </div>
     </div>

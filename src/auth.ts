@@ -23,9 +23,12 @@ export const { handlers, auth, signIn } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, trigger, session }) {
       // console.log('Jwt Callback()');
-
+      if (trigger === 'update' && session?.nickname) {
+        // 주의: session 데이터는 클라이언트에서 온 것이므로 반드시 검증해야 합니다!
+        token.nickname = session.nickname;
+      }
       // 초기 로그인 시 토큰 설정
       if (user) {
         if (account?.provider === 'google') {
@@ -35,10 +38,14 @@ export const { handlers, auth, signIn } = NextAuth({
           const googleResponse = await axios.get(
             `https://oauth2.googleapis.com/tokeninfo?id_token=${account.id_token}`
           );
+          console.log(googleResponse.data.kid);
+          console.log(googleResponse.data.kid);
+          console.log(googleResponse.data.kid);
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'GOOGLE',
             socialId: googleResponse.data.kid,
           });
+
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
