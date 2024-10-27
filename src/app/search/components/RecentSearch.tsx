@@ -1,9 +1,22 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import useRecentSearch from '../hooks/useRecentSearch';
 
-const RecentSearch = () => {
+interface RecentSearchProps {
+  handleChangeFocus: () => void;
+}
+
+const RecentSearch = ({ handleChangeFocus }: RecentSearchProps) => {
+  const router = useRouter();
   const { data, deleteSearchMutation, handleDeleteAllSearchRecords, session } = useRecentSearch();
+
+  const handleSearchClick = (item: string) => {
+    handleChangeFocus();
+    router.push(`/search?q=${item}`);
+  };
 
   return (
     <>
@@ -17,15 +30,22 @@ const RecentSearch = () => {
         <div className="text-center mt-5 text-s">최근 검색어가 없습니다.</div>
       ) : (
         data?.data?.map((item) => (
-          <div key={item} className="flex w-full justify-between px-5 py-4 text-sm overflow-scroll">
-            <div className="text-text-main">{item}</div>
+          <div
+            key={item}
+            className="flex w-full justify-between px-5 py-4 text-sm overflow-scroll"
+            onClick={() => handleSearchClick(item)}
+          >
+            <div className="text-text-main cursor-pointer">{item}</div>
             <Image
               src="/assets/deleteBtn.svg"
               width={20}
               height={20}
               alt="삭제 버튼"
               className="cursor-pointer"
-              onClick={() => deleteSearchMutation.mutate({ title: item, session })}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteSearchMutation.mutate({ title: item, session });
+              }}
             />
           </div>
         ))

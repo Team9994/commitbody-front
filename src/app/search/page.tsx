@@ -7,15 +7,17 @@ import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import RecentSearch from './components/RecentSearch';
 import useHeader from './hooks/useHeader';
+import SearchResult from './components/SearchResult';
 
 const Search = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get('q') || '';
 
-  const { isFocused, handlePostSearch, handleBack, handleChange, handleFocus } = useHeader({
-    searchParams,
-    search,
-  });
+  const { isFocused, handleChangeFocus, handlePostSearch, handleBack, handleChange, handleFocus } =
+    useHeader({
+      searchParams,
+      search,
+    });
 
   return (
     <div className="flex flex-col bg-backgrounds-default h-screen text-text-main overflow-hidden">
@@ -53,7 +55,8 @@ const Search = () => {
         }
         className="relative z-20"
       />
-      {isFocused && <RecentSearch />}
+      {!isFocused && <SearchResult />}
+      {isFocused && <RecentSearch handleChangeFocus={handleChangeFocus} />}
     </div>
   );
 };

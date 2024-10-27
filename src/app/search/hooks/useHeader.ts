@@ -19,6 +19,10 @@ const useHeader = ({ searchParams, search }: UseHeaderProps) => {
     newParams.set('mode', 'search');
     router.replace(`?${newParams.toString()}`);
   };
+
+  const handleChangeFocus = () => {
+    setIsFocused((pre) => !pre);
+  };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const newParams = new URLSearchParams(searchParams);
@@ -52,8 +56,9 @@ const useHeader = ({ searchParams, search }: UseHeaderProps) => {
     }
 
     postSearchMutation.mutate({ title: search, session });
+    setIsFocused(false);
   };
-  return { isFocused, handlePostSearch, handleBack, handleChange, handleFocus };
+  return { isFocused, handleChangeFocus, handlePostSearch, handleBack, handleChange, handleFocus };
 };
 
 export default useHeader;
