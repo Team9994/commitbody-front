@@ -23,6 +23,7 @@ const useHeader = ({ searchParams, search }: UseHeaderProps) => {
   const handleChangeFocus = () => {
     setIsFocused((pre) => !pre);
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const newParams = new URLSearchParams(searchParams);
