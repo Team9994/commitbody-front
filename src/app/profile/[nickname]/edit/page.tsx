@@ -7,9 +7,7 @@ export default function EditPage() {
       <header className="flex items-center justify-between mb-6">
         <button className="text-2xl">&lt;</button>
         <h1 className="text-lg font-normal">프로필 수정</h1>
-        <span className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
-          1
-        </span>
+        <span className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"></span>
       </header>
       <form className="space-y-6">
         <div className="space-y-2">

@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: 'v2.exercisedb.io',
         pathname: '/image/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'd12ryzjapybmlj.cloudfront.net',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config) => {
