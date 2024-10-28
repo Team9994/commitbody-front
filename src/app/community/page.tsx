@@ -16,6 +16,7 @@ import {
   mapQueryCategoryToCategory,
 } from './utils';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Community = () => {
   const { data: session } = useSession();
@@ -28,6 +29,7 @@ const Community = () => {
 
   const {
     data: articleResults,
+    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetching,
@@ -50,7 +52,7 @@ const Community = () => {
         fetchNextPage();
       }
     },
-    { rootMargin: '50px', threshold: 0 }
+    { rootMargin: '100px', threshold: 0.5 }
   );
 
   useEffect(() => {
@@ -107,30 +109,38 @@ const Community = () => {
               gap: '2px',
             }}
           >
-            {articleResults?.pages.flatMap((page) =>
-              page.data.articles.map((article: any) => {
-                if (article.imageUrl === '등록된 이미지가 없습니다.') {
-                  return null;
-                }
-                return (
-                  <Link
-                    key={article.articleId}
-                    href={`./community/${article.articleId}?type=${menuSelected}`}
-                  >
-                    <div
-                      className="relative"
-                      style={{
-                        width: '100%',
-                        height: 'auto',
-                        aspectRatio: '1',
-                        objectFit: 'cover',
-                      }}
+            {isLoading ? (
+              <>
+                {Array.from({ length: 20 }).map((_, index) => (
+                  <SkeletonCertification key={index} />
+                ))}
+              </>
+            ) : (
+              articleResults?.pages.flatMap((page) =>
+                page.data.articles.map((article: any) => {
+                  if (article.imageUrl === '등록된 이미지가 없습니다.') {
+                    return null;
+                  }
+                  return (
+                    <Link
+                      key={article.articleId}
+                      href={`./community/${article.articleId}?type=${menuSelected}`}
                     >
-                      <Image src={article.imageUrl} alt="운동 인증 사진" fill />
-                    </div>
-                  </Link>
-                );
-              })
+                      <div
+                        className="relative"
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          aspectRatio: '1',
+                          objectFit: 'cover',
+                        }}
+                      >
+                        <Image src={article.imageUrl} alt="운동 인증 사진" fill />
+                      </div>
+                    </Link>
+                  );
+                })
+              )
             )}
           </div>
           {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
@@ -143,44 +153,57 @@ const Community = () => {
 
       {menuSelected === 'question' && (
         <div className="px-5">
-          {articleResults?.pages.flatMap((page) =>
-            page.data.articles.map((article: any) => (
-              <Link
-                key={article.articleId}
-                href={`./community/${article.articleId}?type=${menuSelected}`}
-              >
-                <div
+          {isLoading ? (
+            <div>
+              {Array.from({ length: 20 }).map((_, index) => (
+                <SkeletonQuestion key={index} />
+              ))}
+            </div>
+          ) : (
+            articleResults?.pages.flatMap((page) =>
+              page.data.articles.map((article: any) => (
+                <Link
                   key={article.articleId}
-                  className="flex justify-between items-center py-3 border-b border-[black]"
+                  href={`./community/${article.articleId}?type=${menuSelected}`}
                 >
-                  <div className="flex-grow">
-                    <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
-                      {mapQueryCategoryToCategory(article.articleCategory)}
+                  <div
+                    key={article.articleId}
+                    className="flex justify-between items-center py-3 border-b border-[black]"
+                  >
+                    <div className="flex-grow">
+                      <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
+                        {mapQueryCategoryToCategory(article.articleCategory)}
+                      </div>
+                      <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
+                      <div className="flex text-text-light text-[11px]">
+                        <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
+                        <span className="mr-2">{article.viewCount || 0}</span>
+                        <Image
+                          src={'/assets/speechBubble.svg'}
+                          alt={'댓글'}
+                          width={16}
+                          height={16}
+                        />
+                        <span>{article.commentCount || 0}</span>
+                        <span className="ml-2">{article.time}</span>
+                        <span className="ml-2">{article.member.nickname}</span>
+                      </div>
                     </div>
-                    <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
-                    <div className="flex text-text-light text-[11px]">
-                      <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
-                      <span className="mr-2">{article.viewCount || 0}</span>
-                      <Image src={'/assets/speechBubble.svg'} alt={'댓글'} width={16} height={16} />
-                      <span>{article.commentCount || 0}</span>
-                      <span className="ml-2">{article.time}</span>
-                      <span className="ml-2">{article.member.nickname}</span>
+                    <div>
+                      {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
+                        <Image
+                          src={article.imageUrl}
+                          width={68}
+                          height={68}
+                          alt="게시글 썸네일"
+                          style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                        />
+                      )}
                     </div>
                   </div>
-                  <div>
-                    {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
-                      <Image
-                        src={article.imageUrl}
-                        width={68}
-                        height={68}
-                        alt="게시글 썸네일"
-                        style={{ width: '68px', height: '68px', objectFit: 'cover' }}
-                      />
-                    )}
-                  </div>
-                </div>
-              </Link>
-            ))
+                </Link>
+              ))
+            )
           )}
 
           {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
@@ -237,9 +260,28 @@ const Community = () => {
       </Drawer>
 
       <WriteButton onClick={handleWriteClick} />
-      <div ref={observerRef} className="h-10 w-40" />
+
+      <div ref={observerRef} className="h-2 w-40" />
     </div>
   );
 };
 
 export default Community;
+
+const SkeletonCertification = () => <Skeleton className="flex-grow h-[150px]" />;
+
+const SkeletonQuestion = () => (
+  <div className="flex justify-between items-center py-3 border-b border-[black]">
+    <div className="flex-grow">
+      <Skeleton className="w-16 h-4 rounded-[4px] mb-2" />
+      <Skeleton className="w-32 h-6 mb-2" />
+      <div className="flex gap-2">
+        <Skeleton className="w-4 h-4 rounded-full" />
+        <Skeleton className="w-8 h-4" />
+        <Skeleton className="w-4 h-4 rounded-full" />
+        <Skeleton className="w-8 h-4" />
+      </div>
+    </div>
+    <Skeleton className="w-[68px] h-[68px] object-cover" />
+  </div>
+);
