@@ -8,9 +8,10 @@ export default function HomeLayout({ children }: PropsWithChildren<{}>) {
     <>
       <div className="min-h-screen bg-backgrounds-default">
         <Header
-          left={<Image src={'/assets/logo.svg'} alt={'로고'} width={138} height={24} />}
+          left={<Image src={'/assets/back.svg'} alt={'로고'} width={24} height={24} />}
           right={<Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />}
           className="relative z-20"
+          onLeftClick="back"
         />
         {children}
         <Footer />
