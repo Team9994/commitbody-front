@@ -14,7 +14,11 @@ const FindUser = () => {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   const [search, setSearch] = useState(initialSearch);
-  const { data: findUserData, refetch: findUserRefetch } = useGetFindUser({
+  const {
+    data: findUserData,
+    refetch: findUserRefetch,
+    isLoading,
+  } = useGetFindUser({
     nickname: search,
     size: '50',
     session,
@@ -82,18 +86,22 @@ const FindUser = () => {
       {findUserData?.data?.members?.length === 0 && (
         <div className="text-center text-gray-500 my-20">검색 결과가 없습니다.</div>
       )}
-      {findUserData?.data?.members?.map((user) => (
-        <div className="flex items-center px-5 py-3" key={user.memberId}>
-          <Image
-            src={user.profile}
-            width={48}
-            height={48}
-            className="pr-3 rounded-16"
-            alt="유저 프로필"
-          />
-          <p className="text-main font-bold text-md">{user.nickname}</p>
-        </div>
-      ))}
+      {!isLoading ? (
+        findUserData?.data?.members?.map((user) => (
+          <div className="flex items-center px-5 py-3" key={user.memberId}>
+            <Image
+              src={user.profile}
+              width={48}
+              height={48}
+              className="pr-3 rounded-16"
+              alt="유저 프로필"
+            />
+            <p className="text-main font-bold text-md">{user.nickname}</p>
+          </div>
+        ))
+      ) : (
+        <div className="text-center text-gray-500 my-20">회원을 찾고 있습니다..</div>
+      )}
     </div>
   );
 };
