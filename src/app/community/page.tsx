@@ -73,12 +73,15 @@ const Community = () => {
         left={<h4 className="text-xl font-semibold leading-7 text-text-main">커뮤니티</h4>}
         right={
           <div className="flex gap-4">
-            <Link href={'/search'}>
+            <Link href="/search">
               <Image src={'/assets/search.svg'} alt={'돋보기'} width={28} height={28} />
             </Link>
-
-            <Image src={'/assets/profilePlus.svg'} alt={'친구추가'} width={28} height={28} />
-            <Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />
+            <Link href="/find-user">
+              <Image src={'/assets/profilePlus.svg'} alt={'친구추가'} width={28} height={28} />
+            </Link>
+            <Link href="/notification" className="flex items-center">
+              <Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />
+            </Link>
           </div>
         }
         className="relative z-20"
