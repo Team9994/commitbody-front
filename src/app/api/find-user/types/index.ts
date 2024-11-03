@@ -4,9 +4,10 @@ export interface GetFindUserPayload {
   size?: string;
   from?: string;
   session: any;
+  enabled?: boolean;
 }
 
-interface Memebers {
+interface Members {
   memberId: number;
   nickname: string;
   profile: string;
@@ -14,7 +15,7 @@ interface Memebers {
 
 export interface GetFindUserData {
   totalCount: number;
-  members: Memebers;
+  members: Members[];
 }
 
 // 팔로잉 목록 API

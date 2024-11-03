@@ -1,17 +1,18 @@
-import { API } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { GetFindFollowersPayload, GetFindFollowingPayload, GetFindUserPayload } from '../types';
 import { getFindFollowing, getFindUser } from '..';
+import { HOUR, TODAY } from '@/lib/GetQueryClient';
 
 export const useGetFindUser = ({ nickname, size, from, session }: GetFindUserPayload) => {
   return useQuery({
-    queryKey: ['get_user'],
+    queryKey: ['get_user', nickname],
     queryFn: () => getFindUser({ nickname, size, from, session }),
-    enabled: false,
+    enabled: !!session,
+    staleTime: HOUR,
+    gcTime: TODAY,
+    retry: 3,
   });
 };
-
 export const useGetFindFollowing = ({
   id,
   lastId,
