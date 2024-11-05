@@ -3,10 +3,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { useSession } from 'next-auth/react';
 
 const Footer = () => {
   const path = usePathname();
-
+  const { data: session } = useSession();
+  // TODO : 나중에 경로 수정
+  const navItems = [
+    { href: '/', label: '홈', icon: '/assets/home.svg' },
+    { href: '/record', label: '기록', icon: '/assets/callander.svg' },
+    { href: '/community', label: '커뮤니티', icon: '/assets/community.svg' },
+    { href: `/profile/${session?.nickname}`, label: 'MY', icon: '/assets/my.svg' },
+  ];
   return (
     <nav className="bg-[#292C33] font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-16">
       <ul className="flex justify-around h-full items-center">
@@ -43,11 +51,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-// TODO : 나중에 경로 수정
-const navItems = [
-  { href: '/', label: '홈', icon: '/assets/home.svg' },
-  { href: '/record', label: '기록', icon: '/assets/callander.svg' },
-  { href: '/community', label: '커뮤니티', icon: '/assets/community.svg' },
-  { href: '/my', label: 'MY', icon: '/assets/my.svg' },
-];

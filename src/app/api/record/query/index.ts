@@ -1,56 +1,66 @@
+import { getRecordDetail } from '@/app/api/record';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteRecord, getRecord, getRecordPayload } from '..';
+// import { deleteRecord, getRecord, getRecordPayload } from '..';
 import { RoutineRecord } from '@/app/record/types/record';
 
-export const useRecord = ({ year, month, session }: getRecordPayload) => {
+export const useRecordDetail = (recordId: string, session: any) => {
   return useQuery({
-    queryKey: ['get_record', year, month],
-    queryFn: () => getRecord({ year, month, session }),
+    queryKey: ['Record_Detail', recordId],
+    queryFn: () => getRecordDetail(recordId, session),
+    staleTime: 1000 * 60 * 5,
+    enabled: !!recordId && !!session,
   });
 };
 
-export const useDeleteRecordMutation = () => {
-  const queryClient = useQueryClient();
+// export const useRecord = ({ year, month, session }: getRecordPayload) => {
+//   return useQuery({
+//     queryKey: ['get_record', year, month],
+//     queryFn: () => getRecord({ year, month, session }),
+//   });
+// };
 
-  const currentDate = new Date();
-  const year = currentDate.getFullYear().toString();
-  const month = (currentDate.getMonth() + 1).toString();
+// export const useDeleteRecordMutation = () => {
+//   const queryClient = useQueryClient();
 
-  const deleteRecordMutation = useMutation({
-    mutationFn: deleteRecord,
+//   const currentDate = new Date();
+//   const year = currentDate.getFullYear().toString();
+//   const month = (currentDate.getMonth() + 1).toString();
 
-    onMutate: async (data) => {
-      await queryClient.cancelQueries({ queryKey: ['get_record', year, month] });
+//   const deleteRecordMutation = useMutation({
+//     mutationFn: deleteRecord,
 
-      const previousRecords = queryClient.getQueryData(['get_record', year, month]);
-      queryClient.setQueryData(['get_record', year, month], (oldRecords: any) => {
-        if (!oldRecords || !oldRecords.data || !oldRecords.data.records) return oldRecords;
+//     onMutate: async (data) => {
+//       await queryClient.cancelQueries({ queryKey: ['get_record', year, month] });
 
-        return {
-          ...oldRecords,
-          data: {
-            ...oldRecords.data,
-            records: oldRecords.data.records.filter(
-              (record: RoutineRecord) => record.recordId !== data.recordId
-            ),
-          },
-        };
-      });
+//       const previousRecords = queryClient.getQueryData(['get_record', year, month]);
+//       queryClient.setQueryData(['get_record', year, month], (oldRecords: any) => {
+//         if (!oldRecords || !oldRecords.data || !oldRecords.data.records) return oldRecords;
 
-      return { previousRecords };
-    },
+//         return {
+//           ...oldRecords,
+//           data: {
+//             ...oldRecords.data,
+//             records: oldRecords.data.records.filter(
+//               (record: RoutineRecord) => record.recordId !== data.recordId
+//             ),
+//           },
+//         };
+//       });
 
-    onError: (_error, _deletedRecordId, context) => {
-      if (context?.previousRecords) {
-        queryClient.setQueryData(['get_record', year, month], context.previousRecords);
-      }
-      alert('삭제에 실패했습니다.');
-    },
+//       return { previousRecords };
+//     },
 
-    onSuccess: () => {
-      alert('기록이 삭제되었습니다.');
-    },
-  });
+//     onError: (_error, _deletedRecordId, context) => {
+//       if (context?.previousRecords) {
+//         queryClient.setQueryData(['get_record', year, month], context.previousRecords);
+//       }
+//       alert('삭제에 실패했습니다.');
+//     },
 
-  return deleteRecordMutation;
-};
+//     onSuccess: () => {
+//       alert('기록이 삭제되었습니다.');
+//     },
+//   });
+
+//   return deleteRecordMutation;
+// };

@@ -1,9 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import { useRouter } from 'next/navigation';
 const useRoutine = () => {
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
   const [routineToDelete, setRoutineToDelete] = useState<number | undefined>(undefined);
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<number>(0);
+  const router = useRouter();
+  const toggleDrawer = (index: number) => {
+    setDrawerToggle((prev) => !prev);
+    setSelectedId(index);
+  };
 
   const handleMenuClick = (id: number) => {
     setActiveMenuId(id);
@@ -24,6 +31,14 @@ const useRoutine = () => {
     setActiveMenuId(undefined);
   };
 
+  const moveRouter = (id: number, type: string) => {
+    if (type === 'edit') {
+      router.push(`/routine/${id}/edit`);
+    } else if (type === 'progress') {
+      router.push(`/routine/${id}/progress`);
+    }
+  };
+
   useEffect(() => {
     if (activeMenuId === undefined) return;
 
@@ -40,6 +55,10 @@ const useRoutine = () => {
     confirmDelete,
     menuRef,
     setRoutineToDelete,
+    drawerToggle,
+    toggleDrawer,
+    selectedId,
+    moveRouter,
   };
 };
 
