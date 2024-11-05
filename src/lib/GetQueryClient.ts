@@ -3,9 +3,6 @@ import { QueryClient, defaultShouldDehydrateQuery, isServer } from '@tanstack/re
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
-      queries: {
-        staleTime: 60 * 1000,
-      },
       dehydrate: {
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) || query.state.status === 'pending',
@@ -24,3 +21,8 @@ export function getQueryClient() {
     return browserQueryClient;
   }
 }
+
+export const SECOND = 1000;
+export const MINUTE = 1000 * 60;
+export const HOUR = 1000 * 60 * 60;
+export const TODAY = 1000 * 60 * 60 * 24;
