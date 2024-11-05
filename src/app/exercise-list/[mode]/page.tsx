@@ -1,4 +1,3 @@
-// HydratedExerciseList.js
 import React from 'react';
 import ExerciseList from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -9,7 +8,6 @@ import { getSearchExercise } from '@/app/api/exercise';
 const HydratedExerciseList = async () => {
   const queryClient = getQueryClient();
   const session = await auth();
-
   const filters = {
     name: '',
     target: '',

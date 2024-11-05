@@ -1,12 +1,12 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 import { useSession } from 'next-auth/react';
 
 const Footer = () => {
-  const currentPath = usePathname();
+  const path = usePathname();
   const { data: session } = useSession();
   // TODO : 나중에 경로 수정
   const navItems = [
@@ -19,26 +19,27 @@ const Footer = () => {
     <nav className="bg-[#292C33] font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-16">
       <ul className="flex justify-around h-full items-center">
         {navItems.map((item) => {
-          const isActive = currentPath === item.href;
+          const isActive = path === item.href;
           return (
             <li key={item.href} className="flex flex-col items-center">
-              <Image
-                src={item.icon}
-                width={28}
-                height={28}
-                alt={item.label}
-                style={{
-                  filter: isActive
-                    ? 'invert(38%) sepia(81%) saturate(3456%) hue-rotate(185deg) brightness(99%) contrast(101%)'
-                    : 'none',
-                }}
-              />
               <Link
                 href={item.href}
                 className={`leading-4 text-center ${
                   isActive ? 'text-[#198DF7]' : 'text-[#787B82]'
                 }`}
               >
+                <Image
+                  src={item.icon}
+                  width={28}
+                  height={28}
+                  alt={item.label}
+                  style={{
+                    filter: isActive
+                      ? 'invert(38%) sepia(81%) saturate(3456%) hue-rotate(185deg) brightness(99%) contrast(101%)'
+                      : 'none',
+                  }}
+                />
+
                 {item.label}
               </Link>
             </li>
