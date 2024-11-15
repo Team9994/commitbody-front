@@ -20,7 +20,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Community = () => {
   const { data: session } = useSession();
-  console.log(session);
   const [menuSelected, setMenuSelected] = useState<'certification' | 'question'>('certification');
   const [categorySelected, setCategorySelected] = useState('전체');
   const currentList = COMMUNITY_LIST[menuSelected] as { [key: string]: string };
@@ -67,6 +66,7 @@ const Community = () => {
     refetch();
   }, [categorySelected]);
 
+  console.log(articleResults);
   return (
     <div>
       <Header

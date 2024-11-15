@@ -66,7 +66,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
         </div>
       )}
 
-      {data.data.content && <div className="px-5 py-4">오늘 운동 힘들다</div>}
+      {data.data.content && <div className="px-5 py-4">{data.data.content}</div>}
 
       <ArticleLike boardInformData={data} />
       <div className=" h-2 bg-[#161719]" />
