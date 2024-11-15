@@ -112,15 +112,17 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
       {allComments.length === 0 ? (
         <div className="py-10 flex justify-center text-sm">작성된 댓글이 없습니다.</div>
       ) : (
-        allComments.map((comment) => (
-          <Comments
-            key={comment.commentId}
-            handleMention={handleMention}
-            comment={comment}
-            confirmDelete={confirmDelete}
-            setCommentToDelete={setCommentToDelete}
-          />
-        ))
+        <div>
+          {allComments.map((comment) => (
+            <Comments
+              key={comment.commentId}
+              handleMention={handleMention}
+              comment={comment}
+              confirmDelete={confirmDelete}
+              setCommentToDelete={setCommentToDelete}
+            />
+          ))}
+        </div>
       )}
 
       <div className="fixed bottom-0 left-0 right-0 px-5 py-3">
@@ -131,6 +133,11 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
             onChange={(e) => {
               onChange(e);
               handleValueChange(e.target.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSendComment();
+              }
             }}
             ref={inputRef}
             className="h-10 bg-backgrounds-light placeholder-text-light border-none focus:outline-none"
