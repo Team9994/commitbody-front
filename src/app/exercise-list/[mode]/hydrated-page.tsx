@@ -53,7 +53,6 @@ const ExserciseList = () => {
         selectedExerciseIds={selectedExerciseIds}
         observerRef={observerRef}
       />
-      <ScrollUpBtn scrollRef={scrollRef} mode={mode} />
 
       {mode === 'routine' && (
         <AddExerciseBtn

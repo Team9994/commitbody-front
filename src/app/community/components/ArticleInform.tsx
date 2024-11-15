@@ -3,7 +3,6 @@ import { auth } from '@/auth';
 import Image from 'next/image';
 import React from 'react';
 import ArticleLike from './ArticleLike';
-
 interface ArticleInformProps {
   id: string;
 }
@@ -29,7 +28,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
   }
 
   const data = await res.json();
-  console.log(data);
+
   return (
     <>
       <div className="flex justify-between items-center py-2 px-5">
@@ -62,7 +61,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
       )}
       {data.data.imageUrl !== '등록된 이미지가 없습니다.' && (
         <div className="w-full h-[360px] relative ">
-          <Image alt="인증 사진" src={data.data.imageUrl} fill />
+          <Image alt="인증 사진" src={'/assets/picture.jpg'} fill />
         </div>
       )}
 

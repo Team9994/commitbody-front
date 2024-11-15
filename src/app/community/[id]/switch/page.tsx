@@ -1,7 +1,6 @@
 'use client';
-import Header from '@/components/layouts/Header';
+import Header from '@/components/layouts/header';
 import Image from 'next/image';
-import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 import ImageUpload from '../../writePost/components/ImageUpload';
 import { Input } from '@/components/ui/input';
