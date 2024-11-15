@@ -103,10 +103,12 @@ export const useArticleInformCommunity = ({
 };
 
 export const useArticlePostCommunityMutation = () => {
+  const queryClient = useQueryClient();
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommunity,
     onSuccess: () => {
       alert('게시글이 작성되었씁니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Result'] });
     },
   });
 
@@ -137,12 +139,9 @@ export const useArticlePostLikeCommunityMutation = () => {
 };
 
 export const useArticleCommentPostCommunityMutation = () => {
-  const queryClient = useQueryClient();
-
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommentCommunity,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
       alert('게시글 댓글이 작성되었습니다 !');
     },
   });
