@@ -139,10 +139,12 @@ export const useArticlePostLikeCommunityMutation = () => {
 };
 
 export const useArticleCommentPostCommunityMutation = () => {
+  const queryClient = useQueryClient();
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommentCommunity,
     onSuccess: () => {
       alert('게시글 댓글이 작성되었습니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
     },
   });
 
