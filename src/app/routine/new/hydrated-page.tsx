@@ -18,11 +18,8 @@ const RoutineNew = () => {
             <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={24} height={24} />
           </Link>
         }
-        right={
-          <div className="text-base text-blue font-semibold" onClick={saveRoutine}>
-            저장
-          </div>
-        }
+        right={<div className="text-base text-blue font-semibold">저장</div>}
+        onRightClick={saveRoutine}
       />
       <RoutineNameInput routineName={routineName} onChange={onChange} />
       <SelectedRoutineList routines={routines} />

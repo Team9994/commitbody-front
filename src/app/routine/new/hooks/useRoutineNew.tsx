@@ -1,11 +1,16 @@
+import { postRoutine } from '@/app/api/routine';
 import useInput from '@/hooks/useInput';
 import useRoutineStore from '@/store/routine';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const useRoutineNew = () => {
   const { routines } = useRoutineStore();
   const { value: routineName, onChange } = useInput('');
+  const { data: session } = useSession();
+  const router = useRouter();
 
-  const saveRoutine = () => {
+  const saveRoutine = async () => {
     const requestBody = {
       routineName: routineName,
       routineExercises: routines.map((exercise: any, index: number) => ({
@@ -15,6 +20,10 @@ const useRoutineNew = () => {
       })),
     };
     console.log(requestBody);
+
+    const response = await postRoutine(requestBody, session);
+    console.log(response);
+    router.push('/');
   };
 
   return {

@@ -4,7 +4,7 @@ import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/type
 const ROUTINE = {
   GET_ROUTINE_List: '/api/v1/routine',
   GET_ROUTINE_DETAIL: (id: string) => `/api/v1/routine/${id}`,
-  POST_REGISTER_ROUTINE: '/api/v1/record',
+  POST_REGISTER_ROUTINE: '/api/v1/routine',
   PUT_UPDATE_ROUTINE: (id: string) => `/api/v1/routine/${id}`,
   DELETE_DELETE_ROUTINE: (id: string) => `/api/v1/routine/${id}`,
 };
@@ -41,7 +41,7 @@ export const getRoutineDetail = async (id: string, session: any) => {
   }
 };
 
-export const postRegisterRoutine = async (payload: any, session: any) => {
+export const postRoutine = async (payload: any, session: any) => {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.POST_REGISTER_ROUTINE}`,
