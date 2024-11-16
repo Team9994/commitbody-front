@@ -1,4 +1,6 @@
+import { redirect } from 'next/navigation';
 import axios from 'axios';
+import api from '@/lib/axios';
 import NextAuth, { Session } from 'next-auth';
 import { User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
@@ -10,7 +12,16 @@ type ExtendedSession = Session & {
   accessTokenExpires?: number;
 };
 
-export const { handlers, auth, signIn } = NextAuth({
+const createErrorMessage = (error: any) => {
+  return {
+    status: error.response?.status,
+    message: error.response?.data?.message,
+    url: error.config?.url,
+    method: error.config?.method?.toUpperCase(),
+  };
+};
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   providers: [
     GoogleProvider({
@@ -95,18 +106,29 @@ export const { handlers, auth, signIn } = NextAuth({
 // Access Token 재발급 함수
 async function refreshAccessToken(token: any) {
   try {
-    const response = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth/refresh`, {
-      refreshToken: token.refreshToken,
+    const response = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`, {
+      headers: {
+        Authorization: `Bearer ${token.refreshToken}`,
+      },
     });
 
     return {
       ...token,
       accessToken: response.data.data.accessToken,
-      accessTokenExpires: Date.now() + 60 * 60 * 1000, // 새로운 만료 시간 설정
-      refreshToken: response.data.data.refreshToken || token.refreshToken, // 필요 시 새로 갱신된 refreshToken 사용
+      accessTokenExpires: Date.now() + 60 * 60 * 1000,
+      refreshToken: response.data.data.refreshToken || token.refreshToken,
     };
   } catch (error) {
-    console.error('Refresh Access Token Error:', error);
+    console.error('Refresh Access Token Error:', createErrorMessage(error));
+
+    // refresh token이 만료된 경우 (400 에러)
+    // if (error.response?.status === 400) {
+    //   // 로그아웃 처리
+    //   await signOut({
+    //     redirect: true,
+    //     callbackUrl: '/sign', // 또는 '/login' 등 원하는 경로
+    //   });
+    // }
 
     return {
       ...token,
