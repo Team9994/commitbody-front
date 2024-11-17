@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { auth, signIn, signOut } from '@/auth';
+import { auth, signIn, signOut, updateSession } from '@/auth';
 
 const api = axios.create({
   baseURL: process.env.SPRING_BACKEND_URL,
@@ -14,10 +14,19 @@ const createErrorMessage = (error: any) => {
   };
 };
 
+const createResponseMessage = (response: any) => {
+  return {
+    status: response.status,
+    message: response.data?.message,
+    url: response.config?.url,
+    method: response.config?.method?.toUpperCase(),
+  };
+};
+
 api.interceptors.request.use(async (config) => {
   const session = await auth();
 
-  if (config.url?.includes('/auth/refresh')) {
+  if (config.url?.includes('/auth-refresh')) {
     console.log('리프레시토큰보냄');
     config.headers.Authorization = `Bearer ${session?.refreshToken}`;
   }
@@ -34,7 +43,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // 에러 로깅을 더 명확하게
     if (originalRequest.url?.includes('/auth/refresh')) {
       console.error('🔄 Refresh Token API Error:', createErrorMessage(error));
     } else {
@@ -44,33 +52,23 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        // console.log('인터셉트 refresh요청 ');
         const session = await auth();
-        const response = await axios.post(
-          `${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`,
-          { refreshToken: session?.refreshToken },
-          {
-            headers: {
-              Authorization: `Bearer ${session?.refreshToken}`,
-            },
-          }
-        );
-        console.log('인터셉트 refresh요청 : ', response);
-        const newAccessToken = response.data.data.accessToken;
+        const response = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`);
+        console.log('인터셉트 refresh요청 : ', createResponseMessage(response));
+        console.log(response.data.data.accessToken);
+        const newAccessToken = response.data.accessToken;
         // 세션 업데이트
-        await signIn('update', {
+        await updateSession({
           accessToken: newAccessToken,
-          accessTokenExpires: Date.now() + 60 * 60 * 1000, // 1시간
         });
 
-        // 새로운 토큰으로 원래 요청 재시도
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        //원래 요청 재시도
         return api(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
         // refresh token도 만료된 경우 로그아웃 처리
-        // if (refreshError.response?.status === 401) {
-        //   await signOut({ redirect: true, callbackUrl: '/login' });
-        // }
+        if (refreshError.response?.status === 401) {
+          await signOut({ redirectTo: '/sign' });
+        }
         return Promise.reject(refreshError);
       }
     }

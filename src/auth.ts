@@ -1,4 +1,3 @@
-import { redirect } from 'next/navigation';
 import axios from 'axios';
 import api from '@/lib/axios';
 import NextAuth, { Session } from 'next-auth';
@@ -21,7 +20,13 @@ const createErrorMessage = (error: any) => {
   };
 };
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const {
+  handlers,
+  auth,
+  signIn,
+  signOut,
+  unstable_update: updateSession,
+} = NextAuth({
   trustHost: true,
   providers: [
     GoogleProvider({
@@ -37,7 +42,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user, account, trigger, session }) {
       // console.log('Jwt Callback()');
       if (trigger === 'update' && session?.nickname) {
-        // 주의: session 데이터는 클라이언트에서 온 것이므로 반드시 검증해야 합니다!
         token.nickname = session.nickname;
       }
       // 초기 로그인 시 토큰 설정
@@ -62,7 +66,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
             nickname: springResponse.data.data.tokenInfoDto?.nickname,
-            accessTokenExpires: Date.now() + 60 * 60 * 1000, // 예: 1시간 후 만료
           };
         } else if (account?.provider === 'kakao') {
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
@@ -75,18 +78,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
             nickname: springResponse.data.data.nickname,
-            accessTokenExpires: Date.now() + 60 * 60 * 1000, // 예: 1시간 후 만료
           };
         }
       }
 
-      // 토큰 만료 확인 및 재발급 처리
-      if (Date.now() < (token.accessTokenExpires as number)) {
+      if (trigger === 'update' && session) {
+        token = { ...token, user: session };
         return token;
       }
 
-      // 토큰이 만료된 경우, refresh token으로 새로운 access token 발급
-      return await refreshAccessToken(token);
+      return token;
     },
 
     async session({ session, token }: { session: ExtendedSession; token: any }) {
