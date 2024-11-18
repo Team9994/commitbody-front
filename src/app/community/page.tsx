@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import SelectToggle from './components/SelectToggle';

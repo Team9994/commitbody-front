@@ -1,5 +1,5 @@
 import Footer from '@/components/layouts/Footer';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import { PropsWithChildren } from 'react';
 

@@ -23,12 +23,7 @@ export const getRoutineList = async (session: any) => {
 export const getRoutineDetail = async (id: string, session: any) => {
   try {
     const res = await api.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_DETAIL(id)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_DETAIL(id)}`
     );
     return res.data;
   } catch (error) {
@@ -38,18 +33,16 @@ export const getRoutineDetail = async (id: string, session: any) => {
 
 export const postRoutine = async (payload: any, session: any) => {
   try {
+    console.log('Attempting to make request...'); // 요청 시도 로그
     const res = await api.post(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.POST_REGISTER_ROUTINE}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      ROUTINE.POST_REGISTER_ROUTINE, // 경로만 지정
+      payload
     );
+    console.log('Request successful'); // 성공 로그
     return res.data;
   } catch (error) {
-    // console.error('Error registering routine:', error);
+    console.error('Error registering routine:', error);
+    throw error;
   }
 };
 

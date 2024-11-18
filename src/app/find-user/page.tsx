@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import React, { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';

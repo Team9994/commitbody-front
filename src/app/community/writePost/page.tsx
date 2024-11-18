@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import React, { useCallback, useState } from 'react';
 import Image from 'next/image';
 import ImageUpload from './components/ImageUpload';

@@ -1,4 +1,4 @@
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import React from 'react';
 import ArticleInform from '../components/ArticleInform';
 import Back from '@/components/common/Back';

@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import { PropsWithChildren } from 'react';
 import Back from '../../components/common/Back';
 import { useRouter, useSearchParams } from 'next/navigation';
