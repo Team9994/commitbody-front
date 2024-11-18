@@ -33,7 +33,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   return (
     <>
       <div>
-        {routineList.length > 0 &&
+        {routineList?.length > 0 &&
           routineList?.map((data, index) => (
             <>
               <div
@@ -106,7 +106,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               </div>
             </>
           ))}
-        {routineList.length === 0 && (
+        {routineList?.length === 0 && (
           <div className="flex items-center bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main">
             <p className="text-md leading-[22px] text-text-light">새로운 루틴을 추가해보세요</p>
 
@@ -131,7 +131,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               drawerToggle ? 'translate-y-0' : 'translate-y-full'
             }`}
           >
-            {routineList.length > 0 && (
+            {routineList?.length > 0 && (
               <DrawerContent
                 toggleDrawer={toggleDrawer}
                 routineData={routineList[selectedId]}

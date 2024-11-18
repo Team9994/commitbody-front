@@ -50,10 +50,22 @@ api.interceptors.response.use(
     }
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+      console.log('여기 실행됨?1');
 
       try {
         const session = await auth();
-        const response = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`);
+        console.log('억세스토큰 발급을 위한 리프레시토큰 보냄');
+        const response = await axios.post(
+          `${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`,
+          {
+            refreshToken: session?.refreshToken,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${session?.refreshToken}`,
+            },
+          }
+        );
         console.log('인터셉트 refresh요청 : ', createResponseMessage(response));
         console.log(response.data.data.accessToken);
         const newAccessToken = response.data.accessToken;
@@ -66,6 +78,8 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError: any) {
         // refresh token도 만료된 경우 로그아웃 처리
+        console.log('리프레시토큰 발급 실패');
+        console.log(createErrorMessage(refreshError));
         if (refreshError.response?.status === 401) {
           await signOut({ redirectTo: '/sign' });
         }
