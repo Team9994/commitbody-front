@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '@/lib/axios';
 import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/types';
 
 const ROUTINE = {
@@ -11,23 +11,18 @@ const ROUTINE = {
 
 export const getRoutineList = async (session: any) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_List}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await api.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_List}`
     );
     return res.data.data;
   } catch (error) {
-    console.error('Error fetching routine list:', error);
+    // console.error('Error fetching routine list:', error);
   }
 };
 
 export const getRoutineDetail = async (id: string, session: any) => {
   try {
-    const res = await axios.get(
+    const res = await api.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_DETAIL(id)}`,
       {
         headers: {
@@ -37,13 +32,13 @@ export const getRoutineDetail = async (id: string, session: any) => {
     );
     return res.data;
   } catch (error) {
-    console.error('Error fetching routine detail:', error);
+    // console.error('Error fetching routine detail:', error);
   }
 };
 
 export const postRoutine = async (payload: any, session: any) => {
   try {
-    const res = await axios.post(
+    const res = await api.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.POST_REGISTER_ROUTINE}`,
       payload,
       {
@@ -54,7 +49,7 @@ export const postRoutine = async (payload: any, session: any) => {
     );
     return res.data;
   } catch (error) {
-    console.error('Error registering routine:', error);
+    // console.error('Error registering routine:', error);
   }
 };
 
@@ -64,7 +59,7 @@ export const putUpdateRoutine = async (
   session: any
 ) => {
   try {
-    const res = await axios.put(
+    const res = await api.put(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.PUT_UPDATE_ROUTINE(id)}`,
       payload,
       {
@@ -75,13 +70,13 @@ export const putUpdateRoutine = async (
     );
     return res.data;
   } catch (error) {
-    console.error('Error updating routine:', error);
+    // console.error('Error updating routine:', error);
   }
 };
 
 export const deleteDeleteRoutine = async (id: string, session: any) => {
   try {
-    const res = await axios.delete(
+    const res = await api.delete(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.DELETE_DELETE_ROUTINE(id)}`,
       {
         headers: {
@@ -91,6 +86,6 @@ export const deleteDeleteRoutine = async (id: string, session: any) => {
     );
     return res.data;
   } catch (error) {
-    console.error('Error deleting routine:', error);
+    // console.error('Error deleting routine:', error);
   }
 };
