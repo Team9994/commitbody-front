@@ -1,4 +1,6 @@
+import { API } from '@/types';
 import axios from 'axios';
+import { GetCommentPayload, GetDetailsInfoType } from './type';
 
 const EXERCISE = {
   GET_COMMENT: '/api/v1/comment-exercise',
@@ -8,14 +10,6 @@ const EXERCISE = {
   DELETE_COMMENT: '/api/v1/comment-exercise',
   GET_DETAILS_INFO: '/api/v1/exercise',
 };
-
-interface GetCommentPayload {
-  id: string;
-  source: 'custom' | 'default';
-  lastId?: number | null;
-  size: number;
-  session: any;
-}
 
 export const getComment = async ({
   session,
@@ -158,9 +152,13 @@ export interface GetDetailsInfoPayload {
   session: any;
 }
 
-export const getDetailsInfo = async ({ id, session, source }: GetDetailsInfoPayload) => {
+export const getDetailsInfo = async ({
+  id,
+  session,
+  source,
+}: GetDetailsInfoPayload): Promise<API<GetDetailsInfoType>> => {
   try {
-    const res = await axios.get(
+    const res = await axios.get<API<GetDetailsInfoType>>(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`,
       {
         headers: {
@@ -170,6 +168,7 @@ export const getDetailsInfo = async ({ id, session, source }: GetDetailsInfoPayl
     );
     return res.data;
   } catch (error) {
-    console.log('Error postLike:', error);
+    console.error('Error postLike:', error);
+    throw error;
   }
 };

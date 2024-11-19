@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import Header from '@/components/layouts/Header';
+import Header from '@/components/layouts/header';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PropsWithChildren, useState } from 'react';

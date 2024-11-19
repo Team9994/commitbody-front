@@ -3,7 +3,7 @@ import RoutineDrawerBtn from './RoutineDrawerBtn';
 
 interface DrawerContentProps {
   toggleDrawer: (id: number) => void;
-  routineData: {};
+  routineData: any;
   selectedId: number;
   moveRouter: (id: number, type: string) => void;
 }

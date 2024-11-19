@@ -35,7 +35,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
       <div>
         {routineList?.length > 0 &&
           routineList?.map((data, index) => (
-            <>
+            <div key={data.routineId}>
               <div
                 className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
                 key={data.routineId}
@@ -104,7 +104,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                   </div>
                 )}
               </div>
-            </>
+            </div>
           ))}
         {routineList?.length === 0 && (
           <div className="flex items-center bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main">
@@ -135,7 +135,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               <DrawerContent
                 toggleDrawer={toggleDrawer}
                 routineData={routineList[selectedId]}
-                selectedId={routineList[selectedId].routineId}
+                selectedId={routineList[selectedId]?.routineId}
                 moveRouter={moveRouter}
               />
             )}
