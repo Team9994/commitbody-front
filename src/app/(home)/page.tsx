@@ -34,6 +34,7 @@ export default async function Home() {
         <h4 className="text-[18px] font-semibold leading-[26px] py-2 pl-5 text-text-main">
           내 루틴
         </h4>
+
         <RoutineList routineList={routineList?.routineDtos} />
         <PlusRoutineBtn href="/routine/new" />
       </div>
