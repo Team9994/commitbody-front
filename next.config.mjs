@@ -3,6 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
+      // Existing hostnames
       {
         protocol: 'https',
         hostname: 'd12ryzjapybmlj.cloudfront.net',
@@ -16,6 +17,17 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'd8fdoh4mfxcnk.cloudfront.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'd12ryzjapybml.cloudfront.net',
+        pathname: '/**',
+      },
+      // Add the missing hostname
+      {
+        protocol: 'https',
+        hostname: 'doyg075k8m500.cloudfront.net',
         pathname: '/**',
       },
     ],

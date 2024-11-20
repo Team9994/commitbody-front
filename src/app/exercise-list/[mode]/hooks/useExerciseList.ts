@@ -13,17 +13,17 @@ const useExerciseList = () => {
   const router = useRouter();
   const params = useParams();
   const scrollRef = useRef(null);
+  const mode = params.mode as 'search' | 'routine';
   const { routines, addRoutine, getRoutineCount, deleteRoutine, selectedExerciseIds } =
     useRoutineStore();
 
   const { data: session } = useSession();
-  const { value: searchData, onChange } = useInput('');
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedTool, setSelectedTool] = useState('');
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [accentCategory, setAccentCategory] = useState<CategoryKey>('tool');
-  const mode = params.mode as 'search' | 'routine';
+  const [searchData, setSearchData] = useState('');
   const [filters, setFilters] = useState<Filters>({
     name: '',
     target: '',
@@ -31,6 +31,24 @@ const useExerciseList = () => {
     interest: null,
     source: '',
   });
+
+  //debounce
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleDebounceChange = (value: string) => {
+    if (debounceTimeout.current) {
+      console.log(debounceTimeout.current);
+      clearTimeout(debounceTimeout.current);
+    }
+
+    debounceTimeout.current = setTimeout(() => {
+      setSearchData(value);
+    }, 500);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    handleDebounceChange(e.target.value);
+  };
 
   const updateFilters = useCallback(() => {
     setFilters({
@@ -138,7 +156,7 @@ const useExerciseList = () => {
     drawerToggle,
     accentCategory,
     searchData,
-    onChange,
+    handleChange,
     toggleDrawer,
     handleCategoryClick,
     handleCategoryListClick,

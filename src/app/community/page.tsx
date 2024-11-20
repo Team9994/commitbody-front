@@ -53,7 +53,7 @@ const Community = () => {
     },
     { rootMargin: '50px', threshold: 0 }
   );
-
+  console.log(articleResults);
   return (
     <div>
       <Header
@@ -125,7 +125,8 @@ const Community = () => {
                           objectFit: 'cover',
                         }}
                       >
-                        <Image src={'/assets/picture.jpg'} alt="운동 인증 사진" fill />
+                        {/* <Image src={'/assets/picture.jpg'} alt="운동 인증 사진" fill /> */}
+                        <Image src={article.imageUrl} alt="운동 인증 사진" fill />
                       </div>
                     </Link>
                   );
