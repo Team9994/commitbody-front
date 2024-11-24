@@ -131,7 +131,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               drawerToggle ? 'translate-y-0' : 'translate-y-full'
             }`}
           >
-            {routineList?.length > 0 && (
+            {routineList?.length > 0 && selectedId !== undefined && (
               <DrawerContent
                 toggleDrawer={toggleDrawer}
                 routineData={routineList[selectedId]}

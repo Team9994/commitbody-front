@@ -1,7 +1,6 @@
 import axios from 'axios';
 import api from '@/lib/axios';
 import NextAuth, { Session } from 'next-auth';
-import { User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
 
@@ -53,14 +52,28 @@ export const {
           const googleResponse = await axios.get(
             `https://oauth2.googleapis.com/tokeninfo?id_token=${account.id_token}`
           );
+          // 쿠키에서 FCM 토큰 읽기
+          const { cookies } = await import('next/headers');
+          const fcmToken = cookies().get('fcm_token')?.value;
+          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
+          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
+          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
+          console.log(googleResponse.data.kid);
           console.log(googleResponse.data.kid);
           console.log(googleResponse.data.kid);
           console.log(googleResponse.data.kid);
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'GOOGLE',
             socialId: googleResponse.data.kid,
+            fcmToken: fcmToken || '',
           });
 
+          // FCM 토큰 사용 후 쿠키 삭제
+          cookies().delete('fcm_token');
+
+          console.log(googleResponse.data.kid);
+
+          console.log('여기');
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
@@ -71,6 +84,7 @@ export const {
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'KAKAO',
             socialId: account.providerAccountId,
+            fmcToken: (account as any).fcmToken || '',
           });
 
           return {

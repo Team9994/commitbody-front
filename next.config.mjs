@@ -18,6 +18,11 @@ const nextConfig = {
         hostname: 'd12ryzjapybmlj.cloudfront.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'doyg075k8m500.cloudfront.net',
+        pathname: '/**',
+      },
     ],
   },
   webpack: (config) => {

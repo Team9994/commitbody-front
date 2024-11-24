@@ -7,9 +7,11 @@ const useRoutine = () => {
   const [drawerToggle, setDrawerToggle] = useState<boolean>(false);
   const [selectedId, setSelectedId] = useState<number>(0);
   const router = useRouter();
-  const toggleDrawer = (index: number) => {
+  const toggleDrawer = (index?: number) => {
     setDrawerToggle((prev) => !prev);
-    setSelectedId(index);
+    if (index !== undefined) {
+      setSelectedId(index);
+    }
   };
 
   const handleMenuClick = (id: number) => {
