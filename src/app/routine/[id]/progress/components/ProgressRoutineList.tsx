@@ -4,7 +4,7 @@ import ExerciseSetInfo from './ExerciseSetInfo';
 import { EXERCISE_TYPE } from '@/constants/exerciseType';
 import { RoutineDetail, SetInfo } from '../types';
 import { useSession } from 'next-auth/react';
-import { postRegisterRoutine } from '@/app/api/routine';
+import { postRegisterRecord } from '@/app/api/record';
 import { useRouter } from 'next/navigation';
 import TimeBox from './TimeBox';
 
@@ -117,7 +117,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
     }
     console.log(dataToSend);
     try {
-      const response = await postRegisterRoutine(dataToSend, session);
+      const response = await postRegisterRecord(dataToSend);
       // 라우터 이동
       router.push(`/record/${response.data}`);
     } catch (error) {

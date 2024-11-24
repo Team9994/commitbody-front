@@ -15,7 +15,7 @@ export default async function Home() {
     redirect('/sign/additional-info');
   }
   // TODO : 만료된 토큰 재발급 처리 with refresh token
-  const routineList = await getRoutineList(session);
+  const routineList = await getRoutineList();
   console.log(routineList);
   return (
     <div className="flex flex-col h-screen bg-backgrounds-default">

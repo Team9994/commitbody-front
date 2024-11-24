@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from '@/lib/axios';
 import { useSession } from 'next-auth/react';
 
 const RECORD = {
@@ -18,6 +19,11 @@ export const getRecordDetail = async (recordId: string, session: any) => {
       },
     }
   );
+  return res.data.data;
+};
+
+export const postRegisterRecord = async (payload: any) => {
+  const res = await api.post(RECORD.POST_REGISTER_RECORD, payload);
   return res.data.data;
 };
 

@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { auth, signOut } from '@/auth';
+'use client';
 
-const api = axios.create({
+import axios from 'axios';
+import { getSession } from 'next-auth/react';
+
+const clientApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SPRING_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
@@ -17,31 +19,31 @@ const createErrorMessage = (error: any) => {
   };
 };
 
-const createResponseMessage = (response: any) => {
-  return {
-    status: response.status,
-    message: response.data?.message,
-    url: response.config?.url,
-    method: response.config?.method?.toUpperCase(),
-  };
-};
+// 클라이언트 사이드에서만 실행되는 인터셉터
+clientApi.interceptors.request.use(async (config) => {
+  try {
+    const session = await getSession();
 
-api.interceptors.request.use(async (config) => {
-  const session = await auth();
-  if (config.url?.includes('/auth-refresh')) {
-    config.headers.Authorization = `Bearer ${session?.refreshToken}`;
-  }
+    // 리프레시 토큰 요청인 경우
+    if (config.url?.includes('/auth-refresh')) {
+      config.headers.Authorization = `Bearer ${session?.refreshToken}`;
+      return config;
+    }
 
-  if (session?.accessToken) {
-    config.headers.Authorization = `Bearer ${session.accessToken}`;
+    // 일반 요청인 경우
+    if (session?.accessToken) {
+      config.headers.Authorization = `Bearer ${session.accessToken}`;
+    }
+    return config;
+  } catch (error) {
+    console.error('Request interceptor error:', error);
+    return config;
   }
-  return config;
 });
 
-api.interceptors.response.use(
+clientApi.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // error.config이 정의되지 않은 경우를 처리
     if (!error.config) {
       console.error('API Error without config:', error);
       return Promise.reject(error);
@@ -49,18 +51,11 @@ api.interceptors.response.use(
 
     const originalRequest = error.config;
 
-    if (originalRequest.url?.includes('/auth-refresh')) {
-      console.error('🔄 Refresh Token API Error:', createErrorMessage(error));
-    } else {
-      console.error('🔴 API Error:', createErrorMessage(error));
-    }
-
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const session = await auth();
-        console.log('Sending refresh token...');
+        const session = await getSession();
         const response = await axios.post(
           `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}/api/v1/auth-refresh`,
           {
@@ -74,11 +69,11 @@ api.interceptors.response.use(
         );
 
         const newAccessToken = response.data.data.accessToken;
-
         if (!newAccessToken) {
           throw new Error('New access token is undefined');
         }
 
+        // 세션 업데이트
         await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/session`, {
           method: 'POST',
           headers: {
@@ -87,20 +82,14 @@ api.interceptors.response.use(
           body: JSON.stringify({ accessToken: newAccessToken }),
         });
 
+        // 새 토큰으로 헤더 업데이트
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-        api.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+        clientApi.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
-        console.log('Retrying request with new token:', {
-          token: newAccessToken,
-          url: originalRequest.url,
-          headers: originalRequest.headers,
-        });
-
-        return api.request(originalRequest);
+        // 원래 요청 재시도
+        return clientApi.request(originalRequest);
       } catch (refreshError: any) {
-        console.log('Failed to refresh token');
-        console.log(refreshError);
-        console.log(createErrorMessage(refreshError));
+        console.error('Token refresh failed:', createErrorMessage(refreshError));
         if (refreshError.response?.status === 401) {
           await signOut({ redirectTo: '/sign' });
         }
@@ -108,8 +97,10 @@ api.interceptors.response.use(
       }
     }
 
+    // 401 이외의 에러인 경우
+    console.error('API Error:', createErrorMessage(error));
     return Promise.reject(error);
   }
 );
 
-export default api;
+export default clientApi;

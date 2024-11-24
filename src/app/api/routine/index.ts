@@ -1,4 +1,5 @@
 import api from '@/lib/axios';
+import clientApi from '@/lib/clientAxios';
 import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/types';
 
 const ROUTINE = {
@@ -9,11 +10,9 @@ const ROUTINE = {
   DELETE_DELETE_ROUTINE: (id: string) => `/api/v1/routine/${id}`,
 };
 
-export const getRoutineList = async (session: any) => {
+export const getRoutineList = async () => {
   try {
-    const res = await api.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_List}`
-    );
+    const res = await api.get(ROUTINE.GET_ROUTINE_List);
     return res.data.data;
   } catch (error) {
     // console.error('Error fetching routine list:', error);
@@ -33,19 +32,24 @@ export const getRoutineDetail = async (id: string, session: any) => {
 
 export const postRoutine = async (payload: any, session: any) => {
   try {
-    console.log('Attempting to make request...'); // 요청 시도 로그
-    const res = await api.post(
-      ROUTINE.POST_REGISTER_ROUTINE, // 경로만 지정
-      payload
-    );
-    console.log('Request successful'); // 성공 로그
+    console.log('Attempting to make POST request...');
+    console.log('POST URL:', ROUTINE.POST_REGISTER_ROUTINE);
+    console.log('Payload:', payload);
+
+    const res = await clientApi.post(ROUTINE.POST_REGISTER_ROUTINE, payload);
+    console.log('Request successful:', res.data);
     return res.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error registering routine:', error);
+    if (error.response) {
+      console.error('Error status:', error.response.status);
+      console.error('Error data:', error.response.data);
+    } else {
+      console.error('Error message:', error.message);
+    }
     throw error;
   }
 };
-
 export const putUpdateRoutine = async (
   id: string,
   payload: Register_Routine_Payload,
