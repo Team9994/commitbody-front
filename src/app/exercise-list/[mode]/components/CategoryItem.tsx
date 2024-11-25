@@ -23,7 +23,7 @@ const CategoryItem = ({
   <div
     onClick={onClick}
     className={`h-9 px-4 py-2 flex items-center text-text-sm justify-center rounded-[18px]  border border-backgrounds-light min-w-[73px] ${
-      selected ? 'border-blue text-blue' : 'bg-transparent text-text-sub'
+      selected ? 'border-blue text-blue bg-[#1F3750]' : 'bg-transparent text-text-sub'
     } cursor-pointer`}
   >
     {!hasItems && <span className="flex-shrink-0">{label}</span>}

@@ -5,7 +5,7 @@ import InputField from './components/InputField';
 import SelectBox from './components/SelectBox';
 import SubmitButton from './components/SubmitButton';
 import useCustomPage from './hooks/useCustomPage';
-import DrawerContent from '../exercise-list/components/DrawerContent';
+import DrawerContent from '../exercise-list/[mode]/components/DrawerContent';
 
 const ExerciseCustom = () => {
   const {
