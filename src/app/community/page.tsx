@@ -127,13 +127,7 @@ const Community = () => {
                       >
                         {article.imageUrl &&
                           article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
-                            <Image
-                              src={article.imageUrl}
-                              width={68}
-                              height={68}
-                              alt="게시글 썸네일"
-                              style={{ width: '68px', height: '68px', objectFit: 'cover' }}
-                            />
+                            <Image src={article.imageUrl} fill alt="게시글 썸네일" />
                           )}
                       </div>
                     </Link>
@@ -189,15 +183,16 @@ const Community = () => {
                       </div>
                     </div>
                     <div>
-                      {/* {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
-                        <Image
-                          src={article.imageUrl}
-                          width={68}
-                          height={68}
-                          alt="게시글 썸네일"
-                          style={{ width: '68px', height: '68px', objectFit: 'cover' }}
-                        />
-                      )} */}
+                      {article.imageUrl &&
+                        article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                          <Image
+                            src={article.imageUrl}
+                            width={68}
+                            height={68}
+                            alt="게시글 썸네일"
+                            style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                          />
+                        )}
                     </div>
                   </div>
                 </Link>
