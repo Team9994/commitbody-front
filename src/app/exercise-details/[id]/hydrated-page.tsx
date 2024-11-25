@@ -82,7 +82,7 @@ const ExerciseDetails = () => {
           <h4 className="text-lg text-text-main font-bold mb-2">운동 순서</h4>
           {data?.data?.exerciseMethods.map((order, index) => {
             return (
-              <p key={index} className="mb-2">
+              <p key={index} className="mb-2 text-s">
                 {index + 1}. {order}
               </p>
             );

@@ -61,7 +61,7 @@ export const useCommentPostMutation = (id: string, session: any, type: 'custom' 
     mutationFn: postComment,
     onSuccess: () => {
       alert('댓글이 등록되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+      queryClient.invalidateQueries({ queryKey: ['get_comment'] });
     },
   });
 

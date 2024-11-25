@@ -24,10 +24,10 @@ const Comment = () => {
   } = useExplain();
 
   const pathname = usePathname();
-
   return (
     <>
       <h3 className="font-lg font-bold leading-[26px] text-text-main mb-2">댓글</h3>
+
       <div className="relative mb-6">
         <Input
           style={{ boxShadow: 'none' }}
@@ -52,6 +52,11 @@ const Comment = () => {
           }}
         />
       </div>
+      {commentLists?.pages[0]?.data?.commentList.length === 0 && (
+        <div className="text-sm text-center my-10">
+          작성된 댓글이 없습니다. 한번 댓글을 남겨볼까요?
+        </div>
+      )}
       {commentLists?.pages
         ?.flatMap((page) => page?.data?.commentList)
         ?.map((data: CommentList) => (
