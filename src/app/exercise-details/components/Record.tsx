@@ -74,8 +74,9 @@ const Record = ({ info }: RecordType) => {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tick={{ style: { fill: '#c2c2c2' } }}
+                tick={{ fill: '#c2c2c2' }}
               />
+
               <Bar dataKey="desktop" radius={2} fill="#198DF7" minPointSize={4}>
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.desktop === 0 ? '#555555' : '#198df7'} />

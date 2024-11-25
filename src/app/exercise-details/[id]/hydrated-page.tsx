@@ -60,15 +60,17 @@ const ExerciseDetails = () => {
                 width={24}
                 height={24}
               />
-              <Image
-                onClick={handleHeartChange}
-                priority
-                src={'/assets/menu.svg'}
-                alt={'찜하기'}
-                width={28}
-                height={28}
-                className="ml-4 rotate-90"
-              />
+              {type === 'custom' && (
+                <Image
+                  onClick={handleHeartChange}
+                  priority
+                  src={'/assets/menu.svg'}
+                  alt={'찜하기'}
+                  width={28}
+                  height={28}
+                  className="ml-4 rotate-90"
+                />
+              )}
             </div>
           }
         />
