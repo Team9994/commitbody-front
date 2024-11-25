@@ -15,7 +15,6 @@ interface ExerciseInfoProps {
 const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const heartToggle = true;
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isActiveMenu, setIsActiveMenu] = useState<boolean>(false);
   const handleClickOutside = (e: Event) => {
@@ -30,6 +29,7 @@ const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   const { deleteCustomExerciseMutation } = useDeleteCustomExerciseMutation();
   return (
     <div className="mx-auto px-5">
@@ -84,16 +84,7 @@ const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
         {info?.exerciseTarget} : {info?.exerciseEquipment}
       </p>
       <div className="w-full h-[184px] bg-backgrounds-light mb-4 relative">
-        {/* {info?.gifUrl && <Image src={info?.gifUrl} alt="ds" width={50} height={50} />} */}
-
-        <Image
-          className="absolute top-1 right-1 z-10"
-          priority
-          src={heartToggle ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
-          alt={'찜하기'}
-          width={24}
-          height={24}
-        />
+        {info?.gifUrl && <Image src={info?.gifUrl} alt="운동 사진" fill />}
       </div>
     </div>
   );

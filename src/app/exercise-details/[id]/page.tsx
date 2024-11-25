@@ -38,7 +38,7 @@ const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) =
   return (
     <HydrationBoundary state={dehydratedState}>
       <div className="flex flex-col min-h-[calc(100vh-48px)] bg-backgrounds-default text-text-main">
-        <ExerciseDetails id={params.id} />
+        <ExerciseDetails />
       </div>
     </HydrationBoundary>
   );

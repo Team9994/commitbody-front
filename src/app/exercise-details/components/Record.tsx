@@ -20,7 +20,6 @@ const Record = ({ info }: RecordType) => {
 
   return (
     <div>
-      {/* Record Summary */}
       <div className="flex gap-3 mt-4 mb-5 overflow-x-scroll scrollbar-hide px-5">
         <div className="flex flex-col justify-center text-center bg-[#324151] rounded-6 min-w-25 h-16">
           <p className="text-xs text-text-sub leading-[18px] mb-1">1RM</p>
@@ -61,7 +60,6 @@ const Record = ({ info }: RecordType) => {
         </div>
       </div>
 
-      {/* Weekly Volume Chart */}
       <div className="mb-10 bg-backgrounds-sub rounded-6 px-4 mx-5">
         <div className="flex items-center pt-4 pb-2">
           <span className="text-sm text-text-sub leading-[18px] px-2 mr-2">주간 볼륨</span>
@@ -88,11 +86,10 @@ const Record = ({ info }: RecordType) => {
         </ChartContainer>
       </div>
 
-      {/* Record Details */}
       <div className="px-5 mb-9">
         <h3 className="text-lg font-bold leading-[26px] text-text-main mb-2">나의 기록</h3>
         <div className="flex gap-3">
-          {info?.records.map((record, index) => (
+          {info?.records.map((record) => (
             <div key={record.recordId} className="w-[120px] rounded-6 bg-backgrounds-sub">
               <div className="flex justify-center items-center bg-backgrounds-sub text-[#C2C2C2] text-xs border-b border-b-[#3A3E47] py-1.5">
                 {new Date(record.date).toLocaleDateString()}

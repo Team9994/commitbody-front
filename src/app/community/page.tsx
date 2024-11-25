@@ -125,8 +125,16 @@ const Community = () => {
                           objectFit: 'cover',
                         }}
                       >
-                        {/* <Image src={'/assets/picture.jpg'} alt="운동 인증 사진" fill /> */}
-                        <Image src={article.imageUrl} alt="운동 인증 사진" fill />
+                        {article.imageUrl &&
+                          article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                            <Image
+                              src={article.imageUrl}
+                              width={68}
+                              height={68}
+                              alt="게시글 썸네일"
+                              style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                            />
+                          )}
                       </div>
                     </Link>
                   );
