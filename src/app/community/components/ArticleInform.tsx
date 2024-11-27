@@ -61,7 +61,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
       )}
       {data.data.imageUrl !== '등록된 이미지가 없습니다.' && (
         <div className="w-full h-[360px] relative ">
-          <Image alt="인증 사진" src={'/assets/picture.jpg'} fill />
+          <Image alt="인증 사진" src={data.data.imageUrl} fill />
         </div>
       )}
 
