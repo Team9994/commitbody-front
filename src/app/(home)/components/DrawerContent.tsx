@@ -3,7 +3,7 @@ import RoutineDrawerBtn from './RoutineDrawerBtn';
 
 interface DrawerContentProps {
   toggleDrawer: (id: number) => void;
-  routineData: {};
+  routineData: any;
   selectedId: number;
   moveRouter: (id: number, type: string) => void;
 }
@@ -18,7 +18,7 @@ const DrawerContent = ({
     <>
       <div className="relative">
         <h3 className="text-xl h-16 text-white font-semibold py-5 border-b-[1px] border-b-solid border-backgrounds-light">
-          {routineData.routineName}
+          {routineData?.routineName}
         </h3>
         <Image
           onClick={() => toggleDrawer()}
@@ -32,7 +32,7 @@ const DrawerContent = ({
       <div>
         {/* 운동목록 */}
         <div className="bg-backgrounds-default w-full overflow-y-scroll max-h-[320px]">
-          {routineData.exercises.map((data: any) => (
+          {routineData?.exercises.map((data: any) => (
             <div
               key={data.routineDetailId}
               className="flex items-center w-full h-[76px] border-b border-backgrounds-default bg-backgrounds-sub pr-6 text-white"

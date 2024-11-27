@@ -59,8 +59,6 @@ const useBoardChange = () => {
       articleCategory: categoryScope,
       session,
     });
-
-    router.push('/community');
   };
 
   const handleMarkScopeChange = (scope: 'PUBLIC' | 'FOLLOWERS_ONLY' | 'PRIVATE') => {

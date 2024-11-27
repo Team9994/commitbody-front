@@ -3,7 +3,6 @@ import { auth } from '@/auth';
 import Image from 'next/image';
 import React from 'react';
 import ArticleLike from './ArticleLike';
-
 interface ArticleInformProps {
   id: string;
 }
@@ -29,7 +28,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
   }
 
   const data = await res.json();
-  console.log(data);
+
   return (
     <>
       <div className="flex justify-between items-center py-2 px-5">
@@ -66,7 +65,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
         </div>
       )}
 
-      {data.data.content && <div className="px-5 py-4">오늘 운동 힘들다</div>}
+      {data.data.content && <div className="px-5 py-4">{data.data.content}</div>}
 
       <ArticleLike boardInformData={data} />
       <div className=" h-2 bg-[#161719]" />

@@ -28,7 +28,7 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
   const params = useSearchParams();
   const type = params.get('type');
 
-  const [postOwner, setPostOwner] = useState<boolean>(false); // postOwner 상태 관리
+  const [postOwner, setPostOwner] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<boolean>(false);
   const [routineToDelete, setRoutineToDelete] = useState<boolean>(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -54,7 +54,7 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
       }
 
       const data = await res.json();
-      setPostOwner(data.data.postOwner); // postOwner 상태 설정
+      setPostOwner(data.data.postOwner);
     } catch (error) {
       console.error('Error fetching article data:', error);
     }
@@ -77,7 +77,6 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
     });
     setRoutineToDelete(false);
     setActiveMenu(false);
-    router.push('/community');
   };
 
   useEffect(() => {

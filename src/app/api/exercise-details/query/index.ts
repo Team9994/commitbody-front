@@ -27,7 +27,7 @@ export const useCommentList = (id: string, session: any, source: 'default' | 'cu
       const nextLastId = lastComment ? lastComment.exerciseCommentId : null;
       return lastPage?.data?.hasNext ? { lastId: nextLastId, size: 10 } : undefined;
     },
-    enabled: true,
+    enabled: !!session,
   });
 };
 
@@ -35,6 +35,7 @@ export const useDetailsInfo = ({ id, session, source }: GetDetailsInfoPayload) =
   return useQuery({
     queryKey: ['get_detail_exercise_info'],
     queryFn: () => getDetailsInfo({ id, session, source }),
+    enabled: !!session,
   });
 };
 
@@ -60,7 +61,7 @@ export const useCommentPostMutation = (id: string, session: any, type: 'custom' 
     mutationFn: postComment,
     onSuccess: () => {
       alert('댓글이 등록되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+      queryClient.invalidateQueries({ queryKey: ['get_comment'] });
     },
   });
 

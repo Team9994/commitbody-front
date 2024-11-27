@@ -14,7 +14,7 @@ const ExserciseList = () => {
     selectedBodyPart,
     drawerToggle,
     accentCategory,
-    onChange,
+    handleChange,
     toggleDrawer,
     handleCategoryClick,
     handleCategoryListClick,
@@ -31,7 +31,7 @@ const ExserciseList = () => {
   } = useExerciseList();
   return (
     <div>
-      <Search onChange={onChange} />
+      <Search onChange={handleChange} />
 
       <ToggleList
         selectedCategory={selectedCategory}
@@ -53,7 +53,6 @@ const ExserciseList = () => {
         selectedExerciseIds={selectedExerciseIds}
         observerRef={observerRef}
       />
-      <ScrollUpBtn scrollRef={scrollRef} mode={mode} />
 
       {mode === 'routine' && (
         <AddExerciseBtn

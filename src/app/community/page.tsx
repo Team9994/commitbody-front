@@ -2,6 +2,7 @@
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
 import SelectToggle from './components/SelectToggle';
 import { COMMUNITY_LIST } from './constant/select';
 import CategoryList from './components/CategoryList';
@@ -20,7 +21,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Community = () => {
   const { data: session } = useSession();
-  console.log(session);
   const [menuSelected, setMenuSelected] = useState<'certification' | 'question'>('certification');
   const [categorySelected, setCategorySelected] = useState('전체');
   const currentList = COMMUNITY_LIST[menuSelected] as { [key: string]: string };
@@ -33,7 +33,6 @@ const Community = () => {
     fetchNextPage,
     hasNextPage,
     isFetching,
-    refetch,
   } = useArticleCommunity({ session, type: queryType, category: queryCategory });
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
@@ -52,21 +51,9 @@ const Community = () => {
         fetchNextPage();
       }
     },
-    { rootMargin: '100px', threshold: 0.5 }
+    { rootMargin: '50px', threshold: 0 }
   );
-
-  useEffect(() => {
-    setCategorySelected('전체');
-    setToggleDrawer(false);
-    if (session) {
-      refetch();
-    }
-  }, [menuSelected, session, refetch]);
-
-  useEffect(() => {
-    refetch();
-  }, [categorySelected]);
-
+  console.log(articleResults);
   return (
     <div>
       <Header
@@ -138,7 +125,10 @@ const Community = () => {
                           objectFit: 'cover',
                         }}
                       >
-                        <Image src={article.imageUrl} alt="운동 인증 사진" fill />
+                        {article.imageUrl &&
+                          article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                            <Image src={article.imageUrl} fill alt="게시글 썸네일" />
+                          )}
                       </div>
                     </Link>
                   );
@@ -193,15 +183,16 @@ const Community = () => {
                       </div>
                     </div>
                     <div>
-                      {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
-                        <Image
-                          src={article.imageUrl}
-                          width={68}
-                          height={68}
-                          alt="게시글 썸네일"
-                          style={{ width: '68px', height: '68px', objectFit: 'cover' }}
-                        />
-                      )}
+                      {article.imageUrl &&
+                        article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                          <Image
+                            src={article.imageUrl}
+                            width={68}
+                            height={68}
+                            alt="게시글 썸네일"
+                            style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                          />
+                        )}
                     </div>
                   </div>
                 </Link>
@@ -264,7 +255,7 @@ const Community = () => {
 
       <WriteButton onClick={handleWriteClick} />
 
-      <div ref={observerRef} className="h-2 w-40" />
+      <div ref={observerRef} className="h-5 w-full" />
     </div>
   );
 };

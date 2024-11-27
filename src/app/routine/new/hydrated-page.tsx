@@ -3,7 +3,7 @@ import PlusRoutineBtn from '@/components/common/PlusRoutineBtn';
 import RoutineNameInput from './components/RoutineNameInput';
 import SelectedRoutineList from './components/SelectedRoutineList';
 import useRoutineNew from './hooks/useRoutineNew';
-import Header from '@/components/layouts/Header';
+import Header from '@/components/layouts/header';
 import Link from 'next/link';
 import Image from 'next/image';
 

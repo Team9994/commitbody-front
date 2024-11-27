@@ -7,19 +7,49 @@ const RECORD = {
   GET_RECORD_DETAIL: (id: string) => `/api/v1/record/${id}`,
   POST_REGISTER_RECORD: '/api/v1/record',
   PUT_UPDATE_RECORD: (id: string) => `/api/v1/record/${id}`,
-  DELETE_DELETE_RECORD: (id: string) => `/api/v1/record/${id}`,
+  DELETE_RECORD: (id: string) => `/api/v1/record/${id}`, // 오타 수정
+};
+
+export interface GetRecordPayload {
+  year: string;
+  month: string;
+  session: any;
+}
+
+const createAuthHeaders = (session: any) => ({
+  Authorization: `Bearer ${session?.accessToken}`,
+});
+
+export const getRecord = async ({ year, month, session }: GetRecordPayload) => {
+  const params = { year, month };
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_LIST}`,
+      {
+        headers: createAuthHeaders(session),
+        params,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Error fetching record list:', error);
+    throw error;
+  }
 };
 
 export const getRecordDetail = async (recordId: string, session: any) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_DETAIL(recordId)}`,
-    {
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  );
-  return res.data.data;
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_DETAIL(recordId)}`,
+      {
+        headers: createAuthHeaders(session),
+      }
+    );
+    return res.data.data;
+  } catch (error) {
+    console.error('Error fetching record detail:', error);
+    throw error;
+  }
 };
 
 export const postRegisterRecord = async (payload: any) => {
@@ -32,69 +62,44 @@ export const postRegisterRecord = async (payload: any) => {
 //   month: string;
 //   session: any;
 // }
+interface PutRecordPayload {
+  recordId: string;
+  session: any;
+  data: any;
+}
 
-// export const getRecord = async ({ year, month, session }: getRecordPayload) => {
-//   const params = {
-//     year,
-//     month,
-//   };
-//   try {
-//     const res = await axios.get(
-//       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${session?.accessToken}`,
-//         },
-//         params,
-//       }
-//     );
-//     return res.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const putRecord = async ({ recordId, session, data }: PutRecordPayload) => {
+  try {
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.PUT_UPDATE_RECORD(recordId)}`,
+      data,
+      {
+        headers: createAuthHeaders(session),
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Error updating record:', error);
+    throw error;
+  }
+};
 
-// interface getDetailRecordPayload {
-//   id: number;
-//   session: any;
-// }
+interface DeleteRecordPayload {
+  recordId: string;
+  session: any;
+}
 
-// export const getDetailRecord = async ({ id, session }: getDetailRecordPayload) => {
-//   try {
-//     const res = await axios.get(
-//       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_DETAIL_RECORD}/${id}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${session?.accessToken}`,
-//         },
-//       }
-//     );
-//     return res.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// interface PutRecordPayload {}
-// export const putRecord = () => {};
-
-// interface DeleteRecordPayload {
-//   recordId: number | undefined;
-//   session: any;
-// }
-
-// export const deleteRecord = async ({ recordId, session }: DeleteRecordPayload) => {
-//   try {
-//     const res = await axios.delete(
-//       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.DELETE_RECORD}/${recordId}`,
-//       {
-//         headers: {
-//           Authorization: `Bearer ${session?.accessToken}`,
-//         },
-//       }
-//     );
-//     return res.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const deleteRecord = async ({ recordId, session }: DeleteRecordPayload) => {
+  try {
+    const res = await axios.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.DELETE_RECORD(recordId)}`,
+      {
+        headers: createAuthHeaders(session),
+      }
+    );
+    return res.data;
+  } catch (error) {
+    console.error('Error deleting record:', error);
+    throw error;
+  }
+};

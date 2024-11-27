@@ -48,19 +48,19 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
         size: pageParam.size,
         lastId: pageParam.lastId,
       }),
+    staleTime: 1000 * 60 * 60,
     initialPageParam: { lastId: undefined, size: 20 },
     getNextPageParam: (lastPage) => {
-      if (!lastPage || lastPage.data.articles.length === 0) {
+      if (!lastPage || !lastPage.data.hasNext || lastPage.data.articles.length === 0) {
         return undefined;
       }
-      console.log(lastPage);
       const lastId = lastPage.data.articles[lastPage.data.articles.length - 1]?.articleId;
-      console.log(lastId);
-      return lastPage.data.articles.length === 20 ? { lastId: lastId, size: 20 } : undefined;
+      return { lastId: lastId, size: 20 };
     },
-    enabled: false,
+    enabled: !!session,
   });
 };
+
 export const useArticleCommentCommunity = (
   articleId: string,
   session: any,
@@ -103,10 +103,12 @@ export const useArticleInformCommunity = ({
 };
 
 export const useArticlePostCommunityMutation = () => {
+  const queryClient = useQueryClient();
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommunity,
     onSuccess: () => {
       alert('게시글이 작성되었씁니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Result'] });
     },
   });
 
@@ -138,12 +140,11 @@ export const useArticlePostLikeCommunityMutation = () => {
 
 export const useArticleCommentPostCommunityMutation = () => {
   const queryClient = useQueryClient();
-
   const articlePostCommunityMutation = useMutation({
     mutationFn: postArticleCommentCommunity,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
       alert('게시글 댓글이 작성되었습니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Comment'] });
     },
   });
 

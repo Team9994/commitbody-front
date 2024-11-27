@@ -40,7 +40,7 @@ const ExerciseListData = ({
           }`}
           onClick={() => handleListClick(list.exerciseId, list.source, list.exerciseName, mode)}
         >
-          {/* <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} /> */}
+          <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} />
           <span className="flex-1 ml-4">{list.exerciseName}</span>
           <Image
             onClick={(e) => {

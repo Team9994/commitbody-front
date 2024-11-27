@@ -4,16 +4,17 @@ import Image from 'next/image';
 import { useDeleteCustomExerciseMutation } from '@/app/api/exercise/query';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { GetDetailsInfoType } from '@/app/api/exercise-details/type';
 
 interface ExerciseInfoProps {
   type: string | null;
   id: string;
+  info: GetDetailsInfoType | undefined;
 }
 
-const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
+const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const heartToggle = true;
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isActiveMenu, setIsActiveMenu] = useState<boolean>(false);
   const handleClickOutside = (e: Event) => {
@@ -28,12 +29,13 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
   const { deleteCustomExerciseMutation } = useDeleteCustomExerciseMutation();
   return (
     <div className="mx-auto px-5">
       <div className="flex justify-between">
         <h3 className="font-bold text-lg leading-[26px] text-text-main mb-1 mt-3">
-          덤벨 라잉 외회전 숄더 로테이션
+          {info?.exerciseName}
         </h3>
         <div className="flex align-center">
           <div className="relative flex align-center">
@@ -78,16 +80,11 @@ const ExerciseInfo = ({ id, type }: ExerciseInfoProps) => {
         </div>
       </div>
 
-      <p className="text-sm leading-5 text-text-light mb-4">가슴 : 스미스머신</p>
+      <p className="text-sm leading-5 text-text-light mb-4">
+        {info?.exerciseTarget} : {info?.exerciseEquipment}
+      </p>
       <div className="w-full h-[184px] bg-backgrounds-light mb-4 relative">
-        <Image
-          className="absolute top-1 right-1 z-10"
-          priority
-          src={heartToggle ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
-          alt={'찜하기'}
-          width={24}
-          height={24}
-        />
+        {info?.gifUrl && <Image src={info?.gifUrl} alt="운동 사진" fill />}
       </div>
     </div>
   );

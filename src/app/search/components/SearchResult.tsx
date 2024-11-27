@@ -45,7 +45,7 @@ const SearchResult = () => {
 
       <div className="px-5">
         {data?.pages?.flatMap((page) =>
-          page.data.articles.map((article: any) => {
+          page?.data?.articles?.map((article: any) => {
             console.log(article);
             return (
               <Link

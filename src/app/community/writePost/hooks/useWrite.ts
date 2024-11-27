@@ -2,7 +2,7 @@ import { useArticlePostCommunityMutation } from '@/app/api/community/query';
 import useInput from '@/hooks/useInput';
 import { useSession } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 const useWrite = () => {
   const searchParams = useSearchParams();
@@ -104,6 +104,18 @@ const useWrite = () => {
   const handleDialogClose = () => {
     setAlertDialogOpen(false);
   };
+
+  useEffect(() => {
+    setImageDrawerOpen(false);
+  }, [selectedImage]);
+
+  useEffect(() => {
+    setMarkScopeDrawerOpen(false);
+  }, [markScope]);
+
+  useEffect(() => {
+    setCategoryDrawerOpen(false);
+  }, [categoryScope]);
 
   return {
     cur,

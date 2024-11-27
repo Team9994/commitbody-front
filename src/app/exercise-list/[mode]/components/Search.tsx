@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect } from 'react';
 
 interface SearchProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;

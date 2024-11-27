@@ -27,6 +27,7 @@ const Comment = () => {
   return (
     <>
       <h3 className="font-lg font-bold leading-[26px] text-text-main mb-2">댓글</h3>
+
       <div className="relative mb-6">
         <Input
           style={{ boxShadow: 'none' }}
@@ -51,18 +52,23 @@ const Comment = () => {
           }}
         />
       </div>
+      {commentLists?.pages[0]?.data?.commentList.length === 0 && (
+        <div className="text-sm text-center my-10">
+          작성된 댓글이 없습니다. 한번 댓글을 남겨볼까요?
+        </div>
+      )}
       {commentLists?.pages
-        ?.flatMap((page) => page.data.commentList)
+        ?.flatMap((page) => page?.data?.commentList)
         ?.map((data: CommentList) => (
-          <section key={data.exerciseCommentId} className="flex relative w-full mb-7">
+          <section key={data?.exerciseCommentId} className="flex relative w-full mb-7">
             <div className="bg-backgrounds-sub w-6 h-6 rounded-full" />
             <div className="ml-2">
               <div className="text-xs mb-2">
-                <span className="mr-2 text-text-sub">{data.nickName}</span>
-                <span className="text-[#999999]">{data.commentedAt}</span>
+                <span className="mr-2 text-text-sub">{data?.nickName}</span>
+                <span className="text-[#999999]">{data?.commentedAt}</span>
               </div>
               <p className="text-s font-medium text-text-main leading-[18px] mb-1">
-                {data.content}
+                {data?.content}
               </p>
               <div
                 onClick={() =>
@@ -72,12 +78,12 @@ const Comment = () => {
               >
                 <Image
                   className="mr-1"
-                  src={data.likeStatus ? '/assets/fillRecommend.svg' : '/assets/recommend.svg'}
+                  src={data?.likeStatus ? '/assets/fillRecommend.svg' : '/assets/recommend.svg'}
                   width={24}
                   height={24}
                   alt="추천"
                 />
-                <p className={data.likeStatus ? 'text-blue' : ''}>{data.likeCount}</p>
+                <p className={data?.likeStatus ? 'text-blue' : ''}>{data?.likeCount}</p>
               </div>
             </div>
             <Image
@@ -86,17 +92,17 @@ const Comment = () => {
               width={18}
               height={18}
               alt="menu"
-              onClick={() => handleMenuClick(data.exerciseCommentId)}
+              onClick={() => handleMenuClick(data?.exerciseCommentId)}
             />
 
-            {data.writer && activeMenuId === data.exerciseCommentId && (
+            {data?.writer && activeMenuId === data?.exerciseCommentId && (
               <div
                 ref={menuRef}
                 className="absolute top-0 z-10 right-0 shadow-main bg-backgrounds-light text-md"
               >
                 <div
                   onClick={() => {
-                    router.push(`${pathname}/edit?exerciseCommentId=${data.exerciseCommentId}`);
+                    router.push(`${pathname}/edit?exerciseCommentId=${data?.exerciseCommentId}`);
                   }}
                   className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
                 >
@@ -104,7 +110,7 @@ const Comment = () => {
                 </div>
                 <div
                   onClick={() =>
-                    deleteMutation.mutate({ exerciseId: data.exerciseCommentId, session })
+                    deleteMutation.mutate({ exerciseId: data?.exerciseCommentId, session })
                   }
                   className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
                 >

@@ -84,6 +84,20 @@ export const useLikeRegister = (filters: Filters) => {
   });
 };
 
+export const useDetailLikeRegister = () => {
+  const queryClient = useQueryClient();
+  const postDetailLikeRegisterMutation = useMutation({
+    mutationFn: postLikeRegister,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['get_detail_exercise_info'] });
+    },
+    onError: (error) => {
+      console.error('Error registering like:', error);
+    },
+  });
+  return { postDetailLikeRegisterMutation };
+};
+
 export const useDeleteCustomExerciseMutation = () => {
   const router = useRouter();
   const deleteCustomExerciseMutation = useMutation({
