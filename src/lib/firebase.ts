@@ -12,7 +12,7 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-export const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
+// export const messaging = typeof window !== 'undefined' ? getMessaging(app) : null;
 
 export const getFCMToken = async () => {
   try {
