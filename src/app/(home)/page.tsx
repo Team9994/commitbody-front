@@ -8,6 +8,7 @@ import { getRoutineList } from '@/app/api/routine';
 
 export default async function Home() {
   const session = await auth();
+  console.log(session);
   if (!session) {
     redirect('/sign');
   }
@@ -16,8 +17,6 @@ export default async function Home() {
   }
   // TODO : 만료된 토큰 재발급 처리 with refresh token
   const routineList = await getRoutineList();
-  console.log(routineList);
-  console.log(session);
   return (
     <div className="flex flex-col h-screen bg-backgrounds-default">
       <div className="absolute inset-0 w-full h-[228px] bg-gradient-to-b from-[#2B3F58] to-[#212227] z-0"></div>

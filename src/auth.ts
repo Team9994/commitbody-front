@@ -1,5 +1,4 @@
 import axios from 'axios';
-import api from '@/lib/axios';
 import NextAuth, { Session } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
@@ -39,41 +38,27 @@ export const {
   ],
   callbacks: {
     async jwt({ token, user, account, trigger, session }) {
-      // console.log('Jwt Callback()');
-      if (trigger === 'update' && session?.nickname) {
-        token.nickname = session.nickname;
-      }
       // 초기 로그인 시 토큰 설정
       if (user) {
         if (account?.provider === 'google') {
           const extendedUser = user as ExtendedSession;
 
-          // 구글서버로 인증
+          // 구글 서버로 인증
           const googleResponse = await axios.get(
             `https://oauth2.googleapis.com/tokeninfo?id_token=${account.id_token}`
           );
-          // 쿠키에서 FCM 토큰 읽기
           const { cookies } = await import('next/headers');
           const fcmToken = cookies().get('fcm_token')?.value;
-          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
-          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
-          console.log('서버에서 읽은 FCM 토큰:', fcmToken);
-          console.log(googleResponse.data.kid);
-          console.log(googleResponse.data.kid);
-          console.log(googleResponse.data.kid);
-          console.log(googleResponse.data.kid);
+
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'GOOGLE',
             socialId: googleResponse.data.kid,
             fcmToken: fcmToken || '',
           });
 
-          // FCM 토큰 사용 후 쿠키 삭제
+          // FCM 토큰 사용 후 삭제
           cookies().delete('fcm_token');
 
-          console.log(googleResponse.data.kid);
-
-          console.log('여기');
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
@@ -96,16 +81,22 @@ export const {
         }
       }
 
-      if (trigger === 'update' && session) {
-        token = { ...token, user: session };
-        return token;
+      //1732768127814
+      const currentTime = Date.now();
+      console.log('현재시각' + ' ' + currentTime);
+      console.log(session);
+      console.log('토큰 만료기간' + ' ' + token.accessTokenExpires);
+      console.log(+currentTime >= Number(token.accessTokenExpires));
+      if (token.accessTokenExpires && +currentTime >= Number(token.accessTokenExpires)) {
+        console.log('AccessToken 만료 임박, 새 토큰 갱신');
+        return await refreshAccessToken(token);
       }
 
+      // 토큰이 아직 유효한 경우
       return token;
     },
 
     async session({ session, token }: { session: ExtendedSession; token: any }) {
-      // Jwt Callback으로부터 반환받은 token값을 기존 세션에 추가
       if (token) {
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
@@ -118,33 +109,25 @@ export const {
   secret: process.env.NEXTAUTH_SECRET,
 });
 
-// Access Token 재발급 함수
 async function refreshAccessToken(token: any) {
   try {
-    const response = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`, {
-      headers: {
-        Authorization: `Bearer ${token.refreshToken}`,
-      },
-    });
-
+    const response = await axios.post(
+      `${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.refreshToken}`,
+        },
+      }
+    );
+    console.log('갱신성공');
     return {
       ...token,
       accessToken: response.data.data.accessToken,
-      accessTokenExpires: Date.now() + 60 * 60 * 1000,
       refreshToken: response.data.data.refreshToken || token.refreshToken,
     };
   } catch (error) {
-    console.error('Refresh Access Token Error:', createErrorMessage(error));
-
-    // refresh token이 만료된 경우 (400 에러)
-    // if (error.response?.status === 400) {
-    //   // 로그아웃 처리
-    //   await signOut({
-    //     redirect: true,
-    //     callbackUrl: '/sign', // 또는 '/login' 등 원하는 경로
-    //   });
-    // }
-
+    console.error('토큰 갱신 실패:', error);
     return {
       ...token,
       error: 'RefreshAccessTokenError',
