@@ -81,18 +81,11 @@ export const {
         }
       }
 
-      //1732768127814
       const currentTime = Date.now();
-      console.log('현재시각' + ' ' + currentTime);
-      console.log(session);
-      console.log('토큰 만료기간' + ' ' + token.accessTokenExpires);
-      console.log(+currentTime >= Number(token.accessTokenExpires));
       if (token.accessTokenExpires && +currentTime >= Number(token.accessTokenExpires)) {
-        console.log('AccessToken 만료 임박, 새 토큰 갱신');
         return await refreshAccessToken(token);
       }
 
-      // 토큰이 아직 유효한 경우
       return token;
     },
 
