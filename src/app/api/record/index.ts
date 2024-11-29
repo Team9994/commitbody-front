@@ -1,5 +1,5 @@
+import { api } from '@/lib/axios';
 import axios from 'axios';
-import api from '@/lib/axios';
 import { useSession } from 'next-auth/react';
 
 const RECORD = {

@@ -25,7 +25,7 @@ const useMenu = () => {
   const confirmDelete = () => {
     console.log(`${recordToDelete}가 삭제되었습니다.`);
     deleteRecordMutation.mutate({
-      recordId: recordToDelete,
+      recordId: recordToDelete as any,
       session,
     });
     setRecordToDelete(undefined);

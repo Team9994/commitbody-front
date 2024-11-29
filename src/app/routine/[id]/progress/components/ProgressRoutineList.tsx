@@ -63,12 +63,12 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
   };
 
   const handleSubmit = async () => {
-    const endTime = new Date(startTime.getTime() + exerciseDurationSeconds * 1000);
+    const endTime = new Date(startTime!.getTime() + exerciseDurationSeconds * 1000);
     console.log(startTime);
     console.log(endTime);
     const dataToSend = {
       recordName: props.routineDetails.routineName,
-      startTime: startTime.toISOString(),
+      startTime: startTime!.toISOString(),
       endTime: endTime.toISOString(),
       exercises: props.routineDetails.exercises.map((exercise, index) => ({
         recordDetailId: exercise.routineDetailId,

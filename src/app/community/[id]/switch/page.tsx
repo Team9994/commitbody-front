@@ -1,5 +1,5 @@
 'use client';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import React from 'react';
 import ImageUpload from '../../writePost/components/ImageUpload';

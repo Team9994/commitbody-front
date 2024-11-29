@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { auth, signOut } from '@/auth';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SPRING_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',

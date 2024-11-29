@@ -21,7 +21,7 @@ const useRoutineNew = () => {
     };
     console.log(requestBody);
     try {
-      const response = await postRoutine(requestBody);
+      const response = await postRoutine(requestBody, session);
       console.log(response);
       // router.push('/');
     } catch (error) {

@@ -13,8 +13,8 @@ const Mypage = ({ nickname, userInfo }: { nickname: string; userInfo: any }) => 
     <div>
       <UserInfo userInfo={userInfo} />
       <SelectToggle selected={selected} setSelected={setSelected} />
-      {selected === 'certification' && <CertificationList />}
-      {selected === 'question' && <QuestionList />}
+      {selected === 'certification' && <CertificationList certifications={[]} />}
+      {selected === 'question' && <QuestionList questions={[]} />}
     </div>
   );
 };

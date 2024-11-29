@@ -21,7 +21,7 @@ const DrawerContent = ({
           {routineData?.routineName}
         </h3>
         <Image
-          onClick={() => toggleDrawer()}
+          onClick={() => toggleDrawer(routineData.id)}
           className="absolute top-4 right-4 cursor-pointer"
           src="/assets/close.svg"
           width={30}

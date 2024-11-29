@@ -1,6 +1,6 @@
-import api from '@/lib/axios';
-import clientApi from '@/lib/clientAxios';
 import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/types';
+import { api } from '@/lib/axios';
+import clientApi from '@/lib/clientAxios';
 
 const ROUTINE = {
   GET_ROUTINE_List: '/api/v1/routine',
