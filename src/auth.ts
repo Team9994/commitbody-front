@@ -1,102 +1,129 @@
-import axios from "axios";
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { User } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { JWT } from "next-auth/jwt";
+import axios from 'axios';
+import NextAuth, { Session } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import KakaoProvider from 'next-auth/providers/kakao';
 
-type ExtendedUser = User & {
-  accessToken: string;
-  refreshToken: string;
-  customToken: string;
+type ExtendedSession = Session & {
+  accessToken?: string;
+  refreshToken?: string;
+  accessTokenExpires?: number;
 };
 
-type ExtendedToken = JWT & {
-  customToken?: string;
+const createErrorMessage = (error: any) => {
+  return {
+    status: error.response?.status,
+    message: error.response?.data?.message,
+    url: error.config?.url,
+    method: error.config?.method?.toUpperCase(),
+  };
 };
 
-export const { handlers, auth, signIn } = NextAuth({
+export const {
+  handlers,
+  auth,
+  signIn,
+  signOut,
+  unstable_update: updateSession,
+} = NextAuth({
   trustHost: true,
   providers: [
-    CredentialsProvider({
-      async authorize(credentials) {
-        console.log("credentials");
-        const authResponse = await axios.post(
-          `http://localhost:8080/api/v1/auth/sign-in`,
-          {
-            account: credentials.account,
-            password: credentials.password,
-          }
-        );
-        //토큰+기본 유저 정보가 담겨져 있는 user 객체를 반환
-        return authResponse.data;
-      },
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET,
+    }),
   ],
   callbacks: {
-    async signIn({ user, account }) {
-      console.log("SignIn Callback()");
-      //그럼 여기서 받아온 토큰으로 백엔드 넘겨서 저장해주면 될것같은데. 자체 토큰 받아오면될것같고.
-      if (account?.provider === "google") {
-        const extendedUser = user as ExtendedUser;
-        try {
-          // 백엔드로 Google 인증 정보 전송
-          // const response = await axios.post('http://your-backend-url/auth/google', {
-          //   id_token: account.id_token,
-          //   access_token: account.access_token
-          // });
-
-          // 백엔드에서 받은 커스텀 토큰을 user 객체에 추가
-          extendedUser.customToken = "custom_token";
-          console.log(user);
-          return true;
-        } catch (error) {
-          console.error("Error during backend authentication:", error);
-          return false; // 인증 실패
-        }
-      }
-      return true;
-    },
-    async jwt({ token, user, account }) {
-      console.log("Jwt Callback()");
+    async jwt({ token, user, account, trigger, session }) {
+      // 초기 로그인 시 토큰 설정
       if (user) {
-        if (account?.provider === "google") {
-          const extendedUser = user as ExtendedUser;
+        if (account?.provider === 'google') {
+          const extendedUser = user as ExtendedSession;
+
+          // 구글 서버로 인증
+          const googleResponse = await axios.get(
+            `https://oauth2.googleapis.com/tokeninfo?id_token=${account.id_token}`
+          );
+          const { cookies } = await import('next/headers');
+          const fcmToken = cookies().get('fcm_token')?.value;
+
+          const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
+            loginType: 'GOOGLE',
+            socialId: googleResponse.data.kid,
+            fcmToken: fcmToken || '',
+          });
+
+          // FCM 토큰 사용 후 삭제
+          cookies().delete('fcm_token');
+
           return {
             ...token,
-            accessToken: account.access_token,
-            refreshToken: account.refresh_token,
-            idToken: account.id_token,
-            customToken: extendedUser.customToken,
+            accessToken: springResponse.data.data.accessToken,
+            refreshToken: springResponse.data.data.refreshToken,
+            nickname: springResponse.data.data.tokenInfoDto?.nickname,
           };
-        } else if (account?.provider === "credentials") {
-          const extendedUser = user as ExtendedUser;
+        } else if (account?.provider === 'kakao') {
+          const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
+            loginType: 'KAKAO',
+            socialId: account.providerAccountId,
+            fmcToken: (account as any).fcmToken || '',
+          });
+
           return {
             ...token,
-            accessToken: extendedUser.accessToken,
-            refreshToken: extendedUser.refreshToken,
+            accessToken: springResponse.data.data.accessToken,
+            refreshToken: springResponse.data.data.refreshToken,
+            nickname: springResponse.data.data.nickname,
           };
         }
       }
+
+      const currentTime = Date.now();
+      if (token.accessTokenExpires && +currentTime >= Number(token.accessTokenExpires)) {
+        return await refreshAccessToken(token);
+      }
+
       return token;
     },
 
-    async session({ session, token }) {
-      console.log("Session Callback()");
-      const extendedToken = token as ExtendedToken;
-
-      //4.Jwt Callback으로부터 반환받은 token값을 기존 세션에 추가한다
+    async session({ session, token }: { session: ExtendedSession; token: any }) {
       if (token) {
-        session.accessToken = extendedToken.accessToken as string;
-        session.refreshToken = extendedToken.refreshToken as string;
-        session.customToken = extendedToken.customToken as string;
+        session.accessToken = token.accessToken as string;
+        session.refreshToken = token.refreshToken as string;
+        session.nickname = token.nickname as string;
+        session.accessTokenExpires = token.accessTokenExpires as number;
       }
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
 });
+
+async function refreshAccessToken(token: any) {
+  try {
+    const response = await axios.post(
+      `${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token.refreshToken}`,
+        },
+      }
+    );
+    console.log('갱신성공');
+    return {
+      ...token,
+      accessToken: response.data.data.accessToken,
+      refreshToken: response.data.data.refreshToken || token.refreshToken,
+    };
+  } catch (error) {
+    console.error('토큰 갱신 실패:', error);
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
+}

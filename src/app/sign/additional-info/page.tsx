@@ -1,10 +1,17 @@
-'use client';
-import { Input } from '@/components/ui/input';
+import { redirect } from 'next/navigation';
+import AdditionalInfo from './hydrated-page';
+import { auth } from '@/auth';
 
-export default function AdditionalInfo() {
+export default async function HydratedAdditionalInfo() {
+  const session = await auth();
+  console.log(session?.nickname);
+  console.log('닉네임:', session?.nickname);
+  if (session?.nickname !== null) {
+    redirect('/');
+  }
   return (
     <div>
-      <Input className="h-[68px] text-center text-xl font-semibold" placeholder="닉네임" />
+      <AdditionalInfo />
     </div>
   );
 }
