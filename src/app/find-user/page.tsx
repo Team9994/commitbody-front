@@ -1,6 +1,6 @@
 'use client';
+import React, { Suspense, useState, useCallback } from 'react';
 import Header from '@/components/layouts/Header';
-import React, { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
@@ -8,12 +8,13 @@ import { useGetFindUser } from '../api/find-user/query';
 import { useSession } from 'next-auth/react';
 import debounce from 'lodash/debounce';
 
-const FindUser = () => {
+const FindUserContent = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   const [search, setSearch] = useState(initialSearch);
+
   const {
     data: findUserData,
     refetch: findUserRefetch,
@@ -31,7 +32,6 @@ const FindUser = () => {
     }
     findUserRefetch();
   };
-  console.log(findUserData);
 
   const debouncedUpdateQuery = useCallback(
     debounce((value) => {
@@ -103,6 +103,14 @@ const FindUser = () => {
         <div className="text-center text-gray-500 my-20">회원을 찾고 있습니다..</div>
       )}
     </div>
+  );
+};
+
+const FindUser = () => {
+  return (
+    <Suspense fallback={<div>Loading FindUser...</div>}>
+      <FindUserContent />
+    </Suspense>
   );
 };
 

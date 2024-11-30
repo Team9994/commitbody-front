@@ -1,9 +1,9 @@
 'use client';
 
+import React, { Suspense } from 'react';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
-import React from 'react';
 import RecentSearch from './components/RecentSearch';
 import useHeader from './hooks/useHeader';
 import SearchResult from './components/SearchResult';
@@ -50,4 +50,10 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default function WrappedSearch() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Search />
+    </Suspense>
+  );
+}
