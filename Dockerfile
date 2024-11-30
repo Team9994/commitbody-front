@@ -1,13 +1,20 @@
 FROM node:18-slim
 
-RUN mkdir -p /app/front
+RUN apt-get update && apt-get install -y \
+    python3 \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app/front
+WORKDIR /app
+
+COPY package.json yarn.lock* ./
+
+RUN yarn install --frozen-lockfile
 
 COPY . .
 
-# RUN yarn install
-
 RUN yarn build
 
-CMD [ "yarn", "start" ]
+EXPOSE 3000
+
+CMD ["yarn", "start"]
