@@ -6,7 +6,7 @@ WORKDIR /app/front
 
 COPY . .
 
-RUN yarn install
+# RUN yarn install
 
 RUN yarn build
 
