@@ -23,7 +23,7 @@ jobs:
           script: |
             cd /docker/front/commitbody-front
             git pull origin CD
-            docker rmi commitbody-commit_front_api || true
-            docker stop commit-front || true
-            docker rm commit-front || true
-            docker-compose -f docker-compose.front.yml -p commit-front up -d
+            sudo docker rmi commitbody-commit_front_api || true
+            sudo docker stop commit-front || true
+            sudo docker rm commit-front || true
+            sudo docker-compose -f docker-compose.front.yml -p commit-front up -d
