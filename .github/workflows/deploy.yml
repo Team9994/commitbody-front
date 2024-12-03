@@ -21,9 +21,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd /docker/front/commitbody-front
-            git pull origin CD
-            sudo docker rmi commitbody-commit_front_api || true
-            sudo docker stop commit-front || true
-            sudo docker rm commit-front || true
-            sudo docker-compose -f docker-compose.front.yml -p commit-front up -d
+            cd /docker/front
+            # git pull origin CD
+            # sudo docker rmi commitbody-commit_front_api || true
+            # sudo docker stop commit-front || true
+            # sudo docker rm commit-front || true
+            # sudo docker-compose -f docker-compose.front.yml -p commit-front up -d
+            ./deploy.sh
