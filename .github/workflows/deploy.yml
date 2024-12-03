@@ -21,6 +21,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
+            git config --global --add safe.directory /docker/front/commitbody-front
             cd /docker/front/commitbody-front
             git pull origin CD
             docker rmi commitbody-commit_front_api
