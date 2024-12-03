@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} max-w-[500px] m-auto shadow-custom-light`}>
         <ReactQueryProvider>
           <AuthSession>{children}</AuthSession>
           {/* <ReactQueryDevtools /> */}

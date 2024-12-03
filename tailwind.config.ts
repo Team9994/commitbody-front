@@ -18,6 +18,7 @@ const config = {
         '2xl': '1400px',
       },
     },
+
     colors: {
       ...colors,
       red: '#EB4141',
@@ -61,6 +62,7 @@ const config = {
     },
     boxShadow: {
       main: '2px 2px 8px 0px #00000033',
+      'custom-light': '0 10px 20px rgba(0, 0, 0, 0.25), 0 6px 10px rgba(0, 0, 0, 0.15)',
     },
     borderRadius: {
       '6': '6px',
