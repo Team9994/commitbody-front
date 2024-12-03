@@ -21,13 +21,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            sudo chown -R $USER:$USER /commitbody/commitbody-front
-            git config --global --add safe.directory /commitbody/commitbody-front
-
             cd /commitbody/commitbody-front
             git fetch --all
-            git reset --hard origin/main
-            git pull origin main
+            git reset --hard origin/main 
+            git pull origin main || echo "Git pull failed"
 
-            cd /commitbody
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose -f docker-compose.blue.yml up -d --build --no-cache
+            cd ..
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose -f docker-compose.blue.yml up -d --build
