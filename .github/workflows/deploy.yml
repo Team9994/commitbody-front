@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: SSH into server and pull code
-        uses: appleboy/ssh-action@v0.5.8
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@v0.1.9
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -23,3 +23,4 @@ jobs:
           script: |
             cd /commitbody
             git pull origin main
+            sudo docker-compose -f docker-compose.blue.yml up -d --build
