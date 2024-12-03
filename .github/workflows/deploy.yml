@@ -23,4 +23,5 @@ jobs:
           script: |
             cd /commitbody
             git pull origin main || echo "Git pull failed"
+
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S docker-compose -f docker-compose.blue.yml up -d --build
