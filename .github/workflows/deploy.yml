@@ -23,6 +23,8 @@ jobs:
           script: |
             cd /docker/front/commitbody-front
             pwd
+            whoami
+            sudo -l
             sudo git pull origin CD
             sudo docker rmi commitbody-commit_front_api || true
             sudo docker stop commit-front || true
