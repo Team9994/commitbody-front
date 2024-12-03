@@ -25,7 +25,7 @@ jobs:
             pwd
             whoami
             sudo -l
-            sudo git pull origin CD
+            sudo git pull --force origin CD
             sudo docker rmi commitbody-commit_front_api || true
             sudo docker stop commit-front || true
             sudo docker rm commit-front || true
