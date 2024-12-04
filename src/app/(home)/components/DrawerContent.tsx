@@ -16,7 +16,7 @@ const DrawerContent = ({
 }: DrawerContentProps) => {
   return (
     <>
-      <div className="relative">
+      <div className="relative max-w-[500px]">
         <h3 className="text-xl h-16 text-white font-semibold py-5 border-b-[1px] border-b-solid border-backgrounds-light">
           {routineData?.routineName}
         </h3>

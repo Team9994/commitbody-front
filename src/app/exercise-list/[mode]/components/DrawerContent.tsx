@@ -24,7 +24,7 @@ const DrawerContent = ({
 
   return (
     <div
-      className={`fixed bg-backgrounds-sub h-[570px] w-full rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
+      className={`fixed max-w-[500px] bg-backgrounds-light mx-auto h-[570px] rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
         isVisible ? 'translate-y-0' : 'translate-y-full'
       }`}
     >

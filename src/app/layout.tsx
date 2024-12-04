@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} max-w-[500px] m-auto shadow-custom-light`}>
+    <html lang="en" className="w-full bg-gray-400">
+      <body className={`${inter.className} max-w-[500px] m-auto shadow-custom-light z-20`}>
         <ReactQueryProvider>
           <AuthSession>{children}</AuthSession>
           {/* <ReactQueryDevtools /> */}
