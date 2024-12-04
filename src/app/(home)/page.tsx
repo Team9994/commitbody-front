@@ -18,7 +18,7 @@ export default async function Home() {
   // TODO : 만료된 토큰 재발급 처리 with refresh token
   const routineList = await getRoutineList();
   return (
-    <div className="relative flex flex-col max-h-screen h-[calc(100vh-48px)] bg-backgrounds-default">
+    <div className="relative flex flex-col min-h-[calc(100vh-48px)] bg-backgrounds-default">
       <div className="absolute top-[-48px] left-0 w-full h-[228px] bg-gradient-to-b from-[#2B3F58] to-[#212227] z-10"></div>
 
       <div className="z-10">
