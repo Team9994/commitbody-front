@@ -5,7 +5,13 @@ import { useSession } from 'next-auth/react';
 import { Exercise_list, Filters } from '@/app/exercise-list/types';
 
 interface ExerciseListDataProps {
-  handleListClick: (id: number, type: string, name: string, mode: 'search' | 'routine') => void;
+  handleListClick: (
+    gif: string,
+    id: number,
+    type: string,
+    name: string,
+    mode: 'search' | 'routine'
+  ) => void;
   scrollRef: RefObject<HTMLDivElement>;
   mode: 'search' | 'routine';
   selectedExerciseIds: Set<number>;
@@ -41,7 +47,9 @@ const ExerciseListData = ({
           className={`flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6 ${
             selectedExerciseIds.has(list.exerciseId) && 'bg-backgrounds-light'
           }`}
-          onClick={() => handleListClick(list.exerciseId, list.source, list.exerciseName, mode)}
+          onClick={() =>
+            handleListClick(list.gifUrl, list.exerciseId, list.source, list.exerciseName, mode)
+          }
         >
           {list.gifUrl === '등록된 이미지 파일이 없습니다.' ? null : (
             <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} />

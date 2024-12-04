@@ -93,7 +93,7 @@ const Community = () => {
           );
         })}
       </div>
-      <LazyComponent key={categorySelected}>
+      <LazyComponent key={'certification' + categorySelected}>
         {menuSelected === 'certification' && (
           <div className="overflow-y-scroll" style={{ height: 'calc(100vh - 217px)' }}>
             <div
@@ -146,7 +146,7 @@ const Community = () => {
       </LazyComponent>
 
       {menuSelected === 'question' && (
-        <LazyComponent key={categorySelected}>
+        <LazyComponent key={'question' + categorySelected}>
           <div className="px-5">
             {isLoading ? (
               <div>

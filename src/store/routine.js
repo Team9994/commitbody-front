@@ -8,11 +8,11 @@ const useRoutineStore = create(
     (set, get) => ({
       routines: [],
       selectedExerciseIds: new Set(),
-      addRoutine: ({ id, name, type }) =>
+      addRoutine: ({ gif, id, name, type }) =>
         set(
           produce((state) => {
             if (!state.routines.some((r) => r.id === id)) {
-              state.routines.push({ id, name, type });
+              state.routines.push({ gif, id, name, type });
               state.selectedExerciseIds.add(id);
             }
           })
