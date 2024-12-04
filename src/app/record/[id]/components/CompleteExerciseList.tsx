@@ -13,6 +13,7 @@ interface ExerciseDetail {
   exerciseName: string;
   exerciseType: string;
   max1RM: number;
+  maxReps: number;
   sets: ExerciseSet[];
 }
 
@@ -21,10 +22,19 @@ interface CompleteExerciseListProps {
 }
 
 const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
+  console.log(details);
   return (
-    <div className="flex flex-col overflow-y-scroll pt-[162px]">
+    <div className="flex flex-col overflow-y-scroll pt-[120px]">
       {details.map((detail) => {
-        const { exerciseType, exerciseName, detailsSets, detailsReps, max1RM, sets } = detail;
+        const {
+          exerciseType,
+          exerciseName,
+          detailsSets,
+          detailsReps,
+          max1RM = 0,
+          maxReps = 0,
+          sets,
+        } = detail;
 
         let detailsText = `${detailsSets}세트`;
         if (exerciseType === 'WEIGHT_AND_REPS') {
@@ -37,8 +47,7 @@ const CompleteExerciseList = ({ details }: CompleteExerciseListProps) => {
               <WeightReps
                 key={detail.recordDetailId}
                 exerciseName={exerciseName}
-                details={detailsText}
-                max1RM={max1RM}
+                max1RM={maxReps ?? max1RM}
                 gifUrl={detail.gifUrl}
                 sets={sets}
               />

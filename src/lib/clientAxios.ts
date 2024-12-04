@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { getSession, signOut } from 'next-auth/react';
 
-const clientApi = axios.create({
+export const clientApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SPRING_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',

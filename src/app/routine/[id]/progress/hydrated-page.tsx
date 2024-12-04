@@ -14,7 +14,7 @@ const RoutineProgress = async ({ routineId }: RoutineProgressProps) => {
   // console.log('Routine ID:', routineId);
 
   const response = await getRoutineDetail(routineId, session);
-  const routineDetails = response.data.routineDtos[0];
+  const routineDetails = response?.data?.routineDtos[0];
 
   // console.log(routineDetails.exercises);
   return (

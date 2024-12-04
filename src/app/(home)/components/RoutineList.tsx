@@ -16,6 +16,7 @@ import useRoutine from '../hooks/useRoutine';
 import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
 import { RoutineDto } from '@/app/(home)/types';
+import Link from 'next/link';
 
 const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   const {
@@ -29,7 +30,8 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
     selectedId,
     moveRouter,
   } = useRoutine();
-
+  console.log(routineList);
+  console.log('hi' + selectedId);
   return (
     <>
       <div>
@@ -108,7 +110,10 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
             </div>
           ))}
         {routineList?.length === 0 && (
-          <div className="flex items-center bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main">
+          <Link
+            href="./routine/new"
+            className="flex items-center hover:cursor-pointer bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main"
+          >
             <p className="text-md leading-[22px] text-text-light">새로운 루틴을 추가해보세요</p>
 
             <Image
@@ -118,7 +123,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               height={14}
               className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90"
             />
-          </div>
+          </Link>
         )}
         <Drawer open={drawerToggle} onClose={() => toggleDrawer(selectedId)}>
           <div
@@ -128,7 +133,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
             onClick={() => toggleDrawer(selectedId)}
           ></div>
           <div
-            className={`fixed bg-backgrounds-sub max-h-[480px] w-full rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
+            className={`fixed bg-backgrounds-sub max-h-[480px] max-w-[500px] w-full mx-auto rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 text-center transition-transform duration-300 ease-in-out transform ${
               drawerToggle ? 'translate-y-0' : 'translate-y-full'
             }`}
           >
@@ -136,7 +141,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               <DrawerContent
                 toggleDrawer={toggleDrawer}
                 routineData={routineList[selectedId]}
-                selectedId={routineList[selectedId]?.routineId}
+                selectedId={selectedId}
                 moveRouter={moveRouter}
               />
             )}

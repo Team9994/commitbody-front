@@ -10,7 +10,7 @@ import Image from 'next/image';
 const RoutineNew = () => {
   const { routineName, onChange, routines, saveRoutine } = useRoutineNew();
   return (
-    <>
+    <div className="relative w-full max-w-[500px]">
       <Header
         className={'bg-backgrounds-default'}
         left={
@@ -24,7 +24,7 @@ const RoutineNew = () => {
       <RoutineNameInput routineName={routineName} onChange={onChange} />
       <SelectedRoutineList routines={routines} />
       <PlusRoutineBtn href="/exercise-list/routine" />
-    </>
+    </div>
   );
 };
 

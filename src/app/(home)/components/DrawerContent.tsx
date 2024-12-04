@@ -14,6 +14,7 @@ const DrawerContent = ({
   selectedId,
   moveRouter,
 }: DrawerContentProps) => {
+  console.log(selectedId);
   return (
     <>
       <div className="relative max-w-[500px]">
@@ -21,7 +22,7 @@ const DrawerContent = ({
           {routineData?.routineName}
         </h3>
         <Image
-          onClick={() => toggleDrawer(routineData.id)}
+          onClick={() => toggleDrawer(selectedId)}
           className="absolute top-4 right-4 cursor-pointer"
           src="/assets/close.svg"
           width={30}
@@ -32,9 +33,9 @@ const DrawerContent = ({
       <div>
         {/* 운동목록 */}
         <div className="bg-backgrounds-default w-full overflow-y-scroll max-h-[320px]">
-          {routineData?.exercises.map((data: any) => (
+          {routineData?.exercises?.map((data: any, index: string) => (
             <div
-              key={data.routineDetailId}
+              key={index}
               className="flex items-center w-full h-[76px] border-b border-backgrounds-default bg-backgrounds-sub pr-6 text-white"
             >
               <Image src={'/assets/exercise_picture.svg'} alt="운동사진" width={76} height={76} />

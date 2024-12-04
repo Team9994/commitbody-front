@@ -23,7 +23,7 @@ const useRoutineNew = () => {
     try {
       const response = await postRoutine(requestBody, session);
       console.log(response);
-      // router.push('/');
+      router.push('/');
     } catch (error) {
       console.log(error);
     }

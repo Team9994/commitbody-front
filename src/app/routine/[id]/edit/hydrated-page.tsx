@@ -12,8 +12,8 @@ const RoutineEdit = async () => {
     },
   });
   console.log(res.data.data);
-  const routines = res.data.data.routineDtos[0].exercises;
-  console.log('Routines:', routines);
+
+  const routines = res.data.data.routineDtos[0]?.exercises;
   return (
     <div>
       <SelectedRoutineList routines={routines} />
