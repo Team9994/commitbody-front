@@ -11,10 +11,8 @@ const AddExerciseBtn = ({
   routines: [];
   deleteRoutine: (id: number) => void;
 }) => {
-  console.log(count);
-  console.log(routines);
   return (
-    <div className="bg-backgrounds-sub w-full h-[124px] px-4 fixed bottom-0 z-90 rounded-6 flex items-center justify-center flex-col">
+    <div className="bg-backgrounds-sub max-w-[500px] w-full  h-[124px] px-4 fixed bottom-0 z-90 rounded-6 flex items-center justify-center flex-col">
       <div className="mb-4 w-full overflow-x-auto h-[20px] flex items-center">
         <div className="flex whitespace-nowrap">
           {routines.map((routine: any) => (

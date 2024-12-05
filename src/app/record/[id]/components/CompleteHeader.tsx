@@ -32,7 +32,7 @@ const RoutineCompleteHeader = ({
   );
 
   return (
-    <div className="fixed top-0 left-0 w-full z-10 h-[162px] bg-gradient-to-b from-[#2B3F58] to-[#212227]">
+    <div className="fixed max-w-[500px] mx-auto w-full top-0 z-10 h-[162px] bg-gradient-to-b from-[#2B3F58] to-[#212227]">
       {/* 헤더영역 */}
       <div className={`${headerClass} h-12`}>
         <div className="absolute left-5">

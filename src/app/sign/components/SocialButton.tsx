@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { getFCMToken } from '@/lib/firebase';
 
 export default function SocialButton(props: { type: 'google' | 'kakao' }) {
@@ -24,7 +24,7 @@ export default function SocialButton(props: { type: 'google' | 'kakao' }) {
 
       // 그 다음 소셜 로그인 진행
       await signIn(props.type, {
-        callbackUrl: 'http://localhost:3000/',
+        callbackUrl: 'http://localhost:3000',
       });
     } catch (error) {
       console.error('로그인 처리 중 상세 오류:', error);

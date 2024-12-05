@@ -1,14 +1,13 @@
 'use client';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import debounce from 'lodash.debounce';
+import Link from 'next/link';
 import SelectToggle from './components/SelectToggle';
 import { COMMUNITY_LIST } from './constant/select';
 import CategoryList from './components/CategoryList';
 import WriteButton from './components/WriteButton';
 import { Drawer } from '@/components/ui/drawer';
-import Link from 'next/link';
 import { useArticleCommunity } from '../api/community/query';
 import { useSession } from 'next-auth/react';
 import {
@@ -18,6 +17,7 @@ import {
 } from './utils';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { Skeleton } from '@/components/ui/skeleton';
+import LazyComponent from './components/LazyComponent';
 
 const Community = () => {
   const { data: session } = useSession();
@@ -53,9 +53,13 @@ const Community = () => {
     },
     { rootMargin: '50px', threshold: 0 }
   );
-  console.log(articleResults);
+
+  useEffect(() => {
+    setCategorySelected('전체');
+  }, [menuSelected]);
+
   return (
-    <div>
+    <div className="relative min-h-screen">
       <Header
         left={<h4 className="text-xl font-semibold leading-7 text-text-main">커뮤니티</h4>}
         right={
@@ -89,123 +93,121 @@ const Community = () => {
           );
         })}
       </div>
-
-      {menuSelected === 'certification' && (
-        <div className="overflow-y-scroll" style={{ height: 'calc(100vh - 217px)' }}>
-          <div
-            className="grid justify-center"
-            style={{
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '2px',
-            }}
-          >
-            {isLoading ? (
-              <>
-                {Array.from({ length: 20 }).map((_, index) => (
-                  <SkeletonCertification key={index} />
-                ))}
-              </>
-            ) : (
-              articleResults?.pages.flatMap((page) =>
-                page.data.articles.map((article: any) => {
-                  if (article.imageUrl === '등록된 이미지가 없습니다.') {
-                    return null;
-                  }
-                  return (
-                    <Link
-                      key={article.articleId}
-                      href={`./community/${article.articleId}?type=${menuSelected}`}
-                    >
-                      <div
-                        className="relative"
-                        style={{
-                          width: '100%',
-                          height: 'auto',
-                          aspectRatio: '1',
-                          objectFit: 'cover',
-                        }}
-                      >
-                        {article.imageUrl &&
-                          article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
-                            <Image src={article.imageUrl} fill alt="게시글 썸네일" />
-                          )}
-                      </div>
-                    </Link>
-                  );
-                })
-              )
+      <LazyComponent key={'certification' + categorySelected}>
+        {menuSelected === 'certification' && (
+          <div className="overflow-y-scroll" style={{ height: 'calc(100vh - 217px)' }}>
+            <div
+              className="grid justify-center"
+              style={{
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '2px',
+              }}
+            >
+              {isLoading
+                ? Array.from({ length: 20 }).map((_, index) => (
+                    <SkeletonCertification key={index} />
+                  ))
+                : articleResults?.pages.flatMap((page) =>
+                    page.data.articles.map((article: any) => {
+                      if (article.imageUrl === '등록된 이미지가 없습니다.') {
+                        return null;
+                      }
+                      return (
+                        <Link
+                          key={article.articleId}
+                          href={`./community/${article.articleId}?type=${menuSelected}`}
+                        >
+                          <div
+                            className="relative"
+                            style={{
+                              width: '100%',
+                              height: 'auto',
+                              aspectRatio: '1',
+                              objectFit: 'cover',
+                            }}
+                          >
+                            {article.imageUrl &&
+                              article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                                <Image src={article.imageUrl} fill alt="게시글 썸네일" />
+                              )}
+                          </div>
+                        </Link>
+                      );
+                    })
+                  )}
+            </div>
+            {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
+              <div className="mt-20 text-sm flex justify-center text-text-main">
+                게시글이 없습니다.
+              </div>
             )}
           </div>
-          {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
-            <div className="mt-20 text-sm flex justify-center text-text-main">
-              게시글이 없습니다.
-            </div>
-          )}
-        </div>
-      )}
-
+        )}
+      </LazyComponent>
       {menuSelected === 'question' && (
-        <div className="px-5">
-          {isLoading ? (
-            <div>
-              {Array.from({ length: 20 }).map((_, index) => (
-                <SkeletonQuestion key={index} />
-              ))}
-            </div>
-          ) : (
-            articleResults?.pages.flatMap((page) =>
-              page.data.articles.map((article: any) => (
-                <Link
-                  key={article.articleId}
-                  href={`./community/${article.articleId}?type=${menuSelected}`}
-                >
-                  <div
+        <LazyComponent key={'question' + categorySelected}>
+          <div className="px-5">
+            {isLoading ? (
+              <div>
+                {Array.from({ length: 20 }).map((_, index) => (
+                  <SkeletonQuestion key={index} />
+                ))}
+              </div>
+            ) : (
+              articleResults?.pages.flatMap((page) =>
+                page.data.articles.map((article: any) => (
+                  <Link
                     key={article.articleId}
-                    className="flex justify-between items-center py-3 border-b border-[black]"
+                    href={`./community/${article.articleId}?type=${menuSelected}`}
                   >
-                    <div className="flex-grow">
-                      <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
-                        {mapQueryCategoryToCategory(article.articleCategory)}
-                      </div>
-                      <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
-                      <div className="flex text-text-light text-[11px]">
-                        <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
-                        <span className="mr-2">{article.viewCount || 0}</span>
-                        <Image
-                          src={'/assets/speechBubble.svg'}
-                          alt={'댓글'}
-                          width={16}
-                          height={16}
-                        />
-                        <span>{article.commentCount || 0}</span>
-                        <span className="ml-2">{article.time}</span>
-                        <span className="ml-2">{article.member.nickname}</span>
-                      </div>
-                    </div>
-                    <div>
-                      {article.imageUrl &&
-                        article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                    <div
+                      key={article.articleId}
+                      className="flex justify-between items-center py-3 border-b border-[black]"
+                    >
+                      <div className="flex-grow">
+                        <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
+                          {mapQueryCategoryToCategory(article.articleCategory)}
+                        </div>
+                        <h4 className="font-bold text-md text-text-main my-2">{article.title}</h4>
+                        <div className="flex text-text-light text-[11px]">
+                          <Image src={'/assets/search.svg'} alt={'돋보기'} width={16} height={16} />
+                          <span className="mr-2">{article.viewCount || 0}</span>
                           <Image
-                            src={article.imageUrl}
-                            width={68}
-                            height={68}
-                            alt="게시글 썸네일"
-                            style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                            src={'/assets/speechBubble.svg'}
+                            alt={'댓글'}
+                            width={16}
+                            height={16}
                           />
-                        )}
+                          <span>{article.commentCount || 0}</span>
+                          <span className="ml-2">{article.time}</span>
+                          <span className="ml-2">{article.member.nickname}</span>
+                        </div>
+                      </div>
+                      <div>
+                        {article.imageUrl &&
+                          article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                            <Image
+                              src={article.imageUrl}
+                              width={68}
+                              height={68}
+                              alt="게시글 썸네일"
+                              style={{ width: '68px', height: '68px', objectFit: 'cover' }}
+                            />
+                          )}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))
-            )
-          )}
+                  </Link>
+                ))
+              )
+            )}
 
-          {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
-            <div className="mt-20 text-sm flex justify-center text-text-main">
-              게시글이 없습니다.
-            </div>
-          )}
-        </div>
+            {articleResults?.pages.flatMap((page) => page.data.articles).length === 0 && (
+              <div className="mt-20 text-sm flex justify-center text-text-main">
+                게시글이 없습니다.
+              </div>
+            )}
+          </div>
+        </LazyComponent>
       )}
 
       <Drawer open={toggleDrawer} onClose={handleWriteClick}>
@@ -216,7 +218,7 @@ const Community = () => {
           onClick={handleWriteClick}
         ></div>
         <div
-          className={`fixed bg-backgrounds-sub h-[250px] w-full rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
+          className={`fixed bg-backgrounds-sub h-[250px] max-w-[500px] w-full mx-auto rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
             toggleDrawer ? 'translate-y-0' : 'translate-y-full'
           }`}
         >

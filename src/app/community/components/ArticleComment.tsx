@@ -125,7 +125,7 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
         </div>
       )}
 
-      <div className="fixed bottom-0 left-0 right-0 px-5 py-3">
+      <div className="fixed max-w-[500px] w-full bottom-0 px-5 py-3">
         <div className="bg-backgrounds-light rounded-6 relative">
           <Input
             placeholder="댓글을 작성해보세요"

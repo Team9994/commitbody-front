@@ -1,4 +1,4 @@
-import { Register_Routine_Payload, Exercise_Attribute } from '@/app/routine/types';
+import { Register_Routine_Payload } from '@/app/routine/types';
 import { api } from '@/lib/axios';
 import clientApi from '@/lib/clientAxios';
 

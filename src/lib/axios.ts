@@ -26,17 +26,18 @@ export const api = axios.create({
 //   };
 // };
 
-// api.interceptors.request.use(async (config) => {
-//   const session = await auth();
-//   if (config.url?.includes('/auth-refresh')) {
-//     config.headers.Authorization = `Bearer ${session?.refreshToken}`;
-//   }
+api.interceptors.request.use(async (config) => {
+  const session = await auth();
+  console.log(config);
+  if (config.url?.includes('/auth-refresh')) {
+    config.headers.Authorization = `Bearer ${session?.refreshToken}`;
+  }
 
-//   if (session?.accessToken) {
-//     config.headers.Authorization = `Bearer ${session.accessToken}`;
-//   }
-//   return config;
-// });
+  if (session?.accessToken) {
+    config.headers.Authorization = `Bearer ${session.accessToken}`;
+  }
+  return config;
+});
 
 // api.interceptors.response.use(
 //   (response) => response,

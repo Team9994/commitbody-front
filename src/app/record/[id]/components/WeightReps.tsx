@@ -3,13 +3,12 @@ import { ExerciseSet } from '../types';
 
 interface WeightRepsProps {
   exerciseName: string;
-  details: string;
   max1RM: number;
   gifUrl: string;
   sets: ExerciseSet[];
 }
 
-const WeightReps = ({ exerciseName, details, max1RM, gifUrl, sets }: WeightRepsProps) => {
+const WeightReps = ({ exerciseName, max1RM, gifUrl, sets }: WeightRepsProps) => {
   return (
     <div className="p-5">
       <div className="flex items-center mb-2">
@@ -18,9 +17,7 @@ const WeightReps = ({ exerciseName, details, max1RM, gifUrl, sets }: WeightRepsP
         </div>
         <div className="flex flex-col w-full ml-4">
           <div className="text-lg text-text-main font-bold">{exerciseName}</div>
-          <div className="text-sm text-text-light">
-            {details} • 1RM: {max1RM}kg
-          </div>
+          <div className="text-sm text-text-light">1RM: {max1RM}kg</div>
         </div>
       </div>
       <div className="grid grid-cols-5 gap-2">

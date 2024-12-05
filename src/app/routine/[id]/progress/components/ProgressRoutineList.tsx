@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import ExerciseSetInfo from './ExerciseSetInfo';
 import { EXERCISE_TYPE } from '@/constants/exerciseType';
 import { RoutineDetail, SetInfo } from '../types';
-import { useSession } from 'next-auth/react';
 import { postRegisterRecord } from '@/app/api/record';
 import { useRouter } from 'next/navigation';
 import TimeBox from './TimeBox';
+import Header from '@/components/layouts/Header';
+import Back from '@/components/common/Back';
 
 interface ProgressRoutineListProps {
   routineDetails: {
@@ -19,24 +20,23 @@ interface ProgressRoutineListProps {
 
 const ProgressRoutineList = (props: ProgressRoutineListProps) => {
   const [startTime, setStartTime] = useState<Date | null>(null);
-  const [exercises, setExercises] = useState<RoutineDetail[]>(props.routineDetails.exercises);
+  const [exercises, setExercises] = useState<RoutineDetail[] | null>(
+    props?.routineDetails?.exercises
+  );
   const [allSetInfos, setAllSetInfos] = useState<SetInfo[][]>([]);
   const [exerciseDurationSeconds, setExerciseDurationSeconds] = useState<number>(0);
 
   const router = useRouter();
-  const { data: session } = useSession();
 
   useEffect(() => {
     setStartTime(new Date());
   }, []);
 
   useEffect(() => {
-    if (!props.routineDetails.exercises) {
+    if (!props?.routineDetails?.exercises) {
       console.error('routineDetails.exercises is undefined or not an array');
       return;
     }
-    console.log(props.routineDetails.exercises);
-
     setExercises(props.routineDetails.exercises);
 
     const initialSetInfos = props.routineDetails.exercises.map((exercise) => {
@@ -51,10 +51,9 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
           return Array(exercise.sets).fill({});
       }
     });
-    console.log(initialSetInfos);
 
     setAllSetInfos(initialSetInfos);
-  }, [props.routineDetails.exercises]);
+  }, [props?.routineDetails?.exercises]);
 
   const updateSetInfo = (exerciseIndex: number, setInfos: SetInfo[]) => {
     const newAllSetInfos = [...allSetInfos];
@@ -119,7 +118,8 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
     try {
       const response = await postRegisterRecord(dataToSend);
       // 라우터 이동
-      router.push(`/record/${response.data}`);
+      console.log(response);
+      router.push(`/record/${response}`);
     } catch (error) {
       console.error('Error submitting routine:', error);
     }
@@ -127,9 +127,18 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
 
   return (
     <div>
+      <Header
+        className={'bg-backgrounds-default'}
+        left={
+          <div>
+            <Back />
+          </div>
+        }
+        right={<h1 onClick={handleSubmit}>완료</h1>}
+      />
       {exercises &&
         exercises.map((exercise, index) => (
-          <div key={exercise.routineDetailId} className="my-6 px-5">
+          <div key={index} className="my-6 px-5">
             <h2 className="text-xl font-bold ">{exercise.exerciseName}</h2>
             <ExerciseSetInfo
               sets={exercise.sets}
@@ -139,7 +148,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
             />
           </div>
         ))}
-      <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+      {/* <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         운동 완료 및 제출
       </button>
       <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
@@ -150,7 +159,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
       </button>
       <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         운동 완료 및 제출
-      </button>
+      </button> */}
       <TimeBox setExerciseDurationSeconds={setExerciseDurationSeconds} />
     </div>
   );

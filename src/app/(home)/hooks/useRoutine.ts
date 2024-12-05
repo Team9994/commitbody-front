@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+
 const useRoutine = () => {
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
   const [routineToDelete, setRoutineToDelete] = useState<number | undefined>(undefined);
@@ -35,6 +36,7 @@ const useRoutine = () => {
 
   const moveRouter = (id: number, type: string) => {
     if (type === 'edit') {
+      console.log('move' + id);
       router.push(`/routine/${id}/edit`);
     } else if (type === 'progress') {
       router.push(`/routine/${id}/progress`);

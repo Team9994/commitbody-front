@@ -2,6 +2,7 @@ import { postRoutine } from '@/app/api/routine';
 import useInput from '@/hooks/useInput';
 import useRoutineStore from '@/store/routine';
 import { useSession } from 'next-auth/react';
+import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation';
 
 const useRoutineNew = () => {
@@ -11,6 +12,10 @@ const useRoutineNew = () => {
   const router = useRouter();
 
   const saveRoutine = async () => {
+    if (!routineName) {
+      alert('루틴이름을 입력해주세요.');
+      return;
+    }
     const requestBody = {
       routineName: routineName,
       routineExercises: routines.map((exercise: any, index: number) => ({
@@ -22,8 +27,7 @@ const useRoutineNew = () => {
     console.log(requestBody);
     try {
       const response = await postRoutine(requestBody, session);
-      console.log(response);
-      // router.push('/');
+      router.push('/');
     } catch (error) {
       console.log(error);
     }
