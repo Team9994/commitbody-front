@@ -263,9 +263,8 @@ const useAdditionalInfo = () => {
         ...session,
         nickname: formData.nickname,
       });
-
-      router.push('/');
     }
+    router.push('/');
   };
 
   return {

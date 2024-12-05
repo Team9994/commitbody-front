@@ -69,14 +69,14 @@ export const {
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'KAKAO',
             socialId: account.providerAccountId,
-            fmcToken: (account as any).fcmToken || '',
+            fcmToken: (account as any).fcmToken || '',
           });
-
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
             nickname: springResponse.data.data.nickname,
+            authMode: springResponse.data.data.authMode,
           };
         }
       }
