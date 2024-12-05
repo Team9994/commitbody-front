@@ -1,6 +1,6 @@
 'use client';
 import Header from '@/components/layouts/Header';
-import React, { useCallback, useState } from 'react';
+import React, { Suspense, useCallback, useState } from 'react';
 import Image from 'next/image';
 import ImageUpload from './components/ImageUpload';
 import { Input } from '@/components/ui/input';
@@ -55,7 +55,7 @@ const WritePost = () => {
   } = useWrite();
 
   return (
-    <div>
+    <Suspense fallback={'loading...'}>
       <Header
         className="bg-backgrounds-default"
         left={
@@ -175,7 +175,7 @@ const WritePost = () => {
           </div>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </Suspense>
   );
 };
 
