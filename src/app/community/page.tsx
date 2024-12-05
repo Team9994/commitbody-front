@@ -144,7 +144,6 @@ const Community = () => {
           </div>
         )}
       </LazyComponent>
-
       {menuSelected === 'question' && (
         <LazyComponent key={'question' + categorySelected}>
           <div className="px-5">

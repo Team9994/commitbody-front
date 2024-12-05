@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui';
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useRoutine from '../hooks/useRoutine';
 import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
@@ -30,86 +30,88 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
     selectedId,
     moveRouter,
   } = useRoutine();
-  console.log(routineList);
-  console.log('hi' + selectedId);
+
   return (
     <>
       <div>
-        <div className="overflow-y-scroll h-[535px]">
+        <div className="overflow-y-scroll max-h-[535px]">
           {routineList?.length > 0 &&
-            routineList?.map((data) => (
-              <div
-                className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
-                key={data.routineId}
-                onClick={() => toggleDrawer(data.routineId)}
-              >
-                <p className="text-md leading-[22px]">{data.routineName}</p>
+            routineList
+              ?.slice()
+              .reverse()
+              .map((data) => (
+                <div
+                  className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
+                  key={data.routineId}
+                  onClick={() => toggleDrawer(data.routineId)}
+                >
+                  <p className="text-md leading-[22px]">{data.routineName}</p>
 
-                {data.targets.map((part) => (
-                  <span className="text-xs leading-[18px] text-text-light mr-1.5" key={part}>
-                    {part}
-                  </span>
-                ))}
-                <Image
-                  onClick={(e: React.MouseEvent<HTMLImageElement>) => {
-                    e.stopPropagation();
-                    handleMenuClick(data.routineId);
-                  }}
-                  src={'/assets/menu.svg'}
-                  alt="메뉴"
-                  width={24}
-                  height={24}
-                  className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90 cursor-pointer"
-                />
-                {activeMenuId === data.routineId && (
-                  <div
-                    ref={menuRef}
-                    className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
-                  >
-                    <div className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub">
-                      수정
-                    </div>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <div
-                          className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
-                          onClick={() => setRoutineToDelete(data.routineId)}
-                        >
-                          삭제
-                        </div>
-                      </AlertDialogTrigger>
-                      <AlertDialogOverlay className="bg-[rgba(0, 0, 0, 0.7)]" />
-                      <AlertDialogContent className="w-[296px] h-[148px] bg-backgrounds-sub rounded-6 p-0 flex flex-col items-center text-text-main border-none">
-                        <AlertDialogHeader className="text-center">
-                          <AlertDialogTitle className="text-lg py-[19px] pb-[11px] font-semibold leading-[26px]">
-                            루틴 삭제
-                          </AlertDialogTitle>
-                          <AlertDialogDescription className="text-sm font-normal leading-5 text-text-main">
-                            해당 루틴을 삭제할까요?
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <div className="flex items-center h-12">
-                          <AlertDialogCancel
-                            className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-light text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
-                            onClick={() => setRoutineToDelete(undefined)}
-                          >
-                            취소
-                          </AlertDialogCancel>
-                          <AlertDialogAction
-                            className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-accent text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
-                            onClick={confirmDelete}
+                  {data.targets.map((part) => (
+                    <span className="text-xs leading-[18px] text-text-light mr-1.5" key={part}>
+                      {part}
+                    </span>
+                  ))}
+                  <Image
+                    onClick={(e: React.MouseEvent<HTMLImageElement>) => {
+                      e.stopPropagation();
+                      handleMenuClick(data.routineId);
+                    }}
+                    src={'/assets/menu.svg'}
+                    alt="메뉴"
+                    width={24}
+                    height={24}
+                    className="absolute top-1/2 right-5 transform -translate-y-1/2 rotate-90 cursor-pointer"
+                  />
+                  {activeMenuId === data.routineId && (
+                    <div
+                      ref={menuRef}
+                      className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
+                    >
+                      <div className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub">
+                        수정
+                      </div>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <div
+                            className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
+                            onClick={() => setRoutineToDelete(data.routineId)}
                           >
                             삭제
-                          </AlertDialogAction>
-                        </div>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                )}
-              </div>
-            ))}
+                          </div>
+                        </AlertDialogTrigger>
+                        <AlertDialogOverlay className="bg-[rgba(0, 0, 0, 0.7)]" />
+                        <AlertDialogContent className="w-[296px] h-[148px] bg-backgrounds-sub rounded-6 p-0 flex flex-col items-center text-text-main border-none">
+                          <AlertDialogHeader className="text-center">
+                            <AlertDialogTitle className="text-lg py-[19px] pb-[11px] font-semibold leading-[26px]">
+                              루틴 삭제
+                            </AlertDialogTitle>
+                            <AlertDialogDescription className="text-sm font-normal leading-5 text-text-main">
+                              해당 루틴을 삭제할까요?
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <div className="flex items-center h-12">
+                            <AlertDialogCancel
+                              className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-light text-center cursor-pointer border-none
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
+                              onClick={() => setRoutineToDelete(undefined)}
+                            >
+                              취소
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-accent text-center cursor-pointer border-none
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
+                              onClick={confirmDelete}
+                            >
+                              삭제
+                            </AlertDialogAction>
+                          </div>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  )}
+                </div>
+              ))}
         </div>
 
         <Link

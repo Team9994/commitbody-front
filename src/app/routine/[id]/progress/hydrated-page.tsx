@@ -19,15 +19,6 @@ const RoutineProgress = async ({ routineId }: RoutineProgressProps) => {
   // console.log(routineDetails.exercises);
   return (
     <div>
-      <Header
-        className={'bg-backgrounds-default'}
-        left={
-          <div>
-            <Back />
-          </div>
-        }
-        right={<h1>완료</h1>}
-      />
       <ProgressRoutineList routineDetails={routineDetails} />
     </div>
   );

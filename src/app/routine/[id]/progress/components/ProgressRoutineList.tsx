@@ -6,6 +6,8 @@ import { RoutineDetail, SetInfo } from '../types';
 import { postRegisterRecord } from '@/app/api/record';
 import { useRouter } from 'next/navigation';
 import TimeBox from './TimeBox';
+import Header from '@/components/layouts/Header';
+import Back from '@/components/common/Back';
 
 interface ProgressRoutineListProps {
   routineDetails: {
@@ -125,6 +127,15 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
 
   return (
     <div>
+      <Header
+        className={'bg-backgrounds-default'}
+        left={
+          <div>
+            <Back />
+          </div>
+        }
+        right={<h1 onClick={handleSubmit}>완료</h1>}
+      />
       {exercises &&
         exercises.map((exercise, index) => (
           <div key={index} className="my-6 px-5">
@@ -137,7 +148,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
             />
           </div>
         ))}
-      <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+      {/* <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         운동 완료 및 제출
       </button>
       <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
@@ -148,7 +159,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
       </button>
       <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
         운동 완료 및 제출
-      </button>
+      </button> */}
       <TimeBox setExerciseDurationSeconds={setExerciseDurationSeconds} />
     </div>
   );

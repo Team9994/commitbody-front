@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getRoutineList } from '@/app/api/routine';
 
+export const revalidate = 0;
 export default async function Home() {
   const session = await auth();
   console.log(session);
@@ -16,7 +17,8 @@ export default async function Home() {
     redirect('/sign/additional-info');
   }
   // TODO : 만료된 토큰 재발급 처리 with refresh token
-  const routineList = await getRoutineList();
+  const routineList = (await getRoutineList()) ?? []; // API 호출 실패 시 빈 배열 반환
+
   return (
     <div className="relative flex flex-col min-h-[calc(100vh-48px)] bg-backgrounds-default">
       <div className="absolute top-[-48px] left-0 w-full h-[228px] bg-gradient-to-b from-[#2B3F58] to-[#212227] z-10"></div>

@@ -44,7 +44,7 @@ const TimeBox = ({
   };
 
   return (
-    <div className="rounded-6 justify-between w-2/4 fixed h-[56px] bottom-2 left-1/2 transform -translate-x-1/2 z-50 bg-black text-white rounded-full px-4 py-1 flex items-center space-x-2">
+    <div className="rounded-6 justify-between max-w-[400px] p-4 w-full fixed h-[56px] bottom-2 left-1/2 transform -translate-x-1/2 z-50 bg-black text-white rounded-full py-1 flex items-center space-x-2">
       <button className="text-gray-400" onClick={resetTimer}>
         <Image src={'/assets/refresh.svg'} alt="리프레시" width={28} height={28} />
       </button>
