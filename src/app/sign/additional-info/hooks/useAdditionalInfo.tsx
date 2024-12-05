@@ -123,13 +123,13 @@ const useAdditionalInfo = () => {
         }
       } catch (error) {
         console.error('닉네임 검증 중 오류 발생:', error);
-        console.log(error.response.data.message.nickname);
+        // console.log(error.response.data.message.nickname);
         let errorMessage = '';
         setIsValid((prevIsValid) => ({
           ...prevIsValid,
           nickname: false,
         }));
-        setSystemMessage(error.response.data.message.nicknamessage);
+        // setSystemMessage(error?.response.data.message.nicknamessage);
       }
       return;
     }
@@ -263,9 +263,8 @@ const useAdditionalInfo = () => {
         ...session,
         nickname: formData.nickname,
       });
-
-      router.push('/');
     }
+    router.push('/');
   };
 
   return {

@@ -5,9 +5,13 @@ import useRecord from './hooks/useRecord';
 
 const RoutineComplete = () => {
   const { recordDetail } = useRecord();
-  console.log(recordDetail);
+
+  if (!recordDetail) {
+    return null;
+  }
+
   return (
-    <div>
+    <div className="min-h-screen">
       <RoutineCompleteHeader
         recordName={recordDetail.recordName}
         startDate={recordDetail.startDate}

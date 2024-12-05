@@ -5,7 +5,13 @@ import { useSession } from 'next-auth/react';
 import { Exercise_list, Filters } from '@/app/exercise-list/types';
 
 interface ExerciseListDataProps {
-  handleListClick: (id: number, type: string, name: string, mode: 'search' | 'routine') => void;
+  handleListClick: (
+    gif: string,
+    id: number,
+    type: string,
+    name: string,
+    mode: 'search' | 'routine'
+  ) => void;
   scrollRef: RefObject<HTMLDivElement>;
   mode: 'search' | 'routine';
   selectedExerciseIds: Set<number>;
@@ -32,15 +38,22 @@ const ExerciseListData = ({
       className="w-full overflow-y-scroll mt-5"
       style={{ height: 'calc(100vh - 148px - 20px)' }}
     >
+      {searchResults.length === 0 && (
+        <p className="text-center mt-10 text-main">검색 결과가 없습니다.</p>
+      )}
       {searchResults.map((list) => (
         <div
           key={list.exerciseId}
           className={`flex items-center w-full h-[76px] border-b border-backgrounds-light cursor-pointer pr-6 ${
             selectedExerciseIds.has(list.exerciseId) && 'bg-backgrounds-light'
           }`}
-          onClick={() => handleListClick(list.exerciseId, list.source, list.exerciseName, mode)}
+          onClick={() =>
+            handleListClick(list.gifUrl, list.exerciseId, list.source, list.exerciseName, mode)
+          }
         >
-          <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} />
+          {list.gifUrl === '등록된 이미지 파일이 없습니다.' ? null : (
+            <Image src={list.gifUrl} alt={'운동 이미지'} width={76} height={76} />
+          )}
           <span className="flex-1 ml-4">{list.exerciseName}</span>
           <Image
             onClick={(e) => {

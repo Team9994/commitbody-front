@@ -25,7 +25,7 @@ const MarkScopeDrawer = ({
           onClick={handleMarkScopeDrawerClose}
         ></div>
         <div
-          className={`fixed bg-backgrounds-sub h-[210px] w-full text-text-main rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
+          className={`fixed bg-backgrounds-sub h-[210px] max-w-[500px] w-full mx-auto text-text-main rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
             markScopeDrawerOpen ? 'translate-y-0' : 'translate-y-full'
           }`}
         >

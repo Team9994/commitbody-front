@@ -118,13 +118,13 @@ const useExerciseList = () => {
     [toggleDrawer]
   );
 
-  const handleListClick = (id: number, type: string, name: string, mode: string) => {
+  const handleListClick = (gif: string, id: number, type: string, name: string, mode: string) => {
     if (mode === 'search') {
       const queryParam = type === 'custom' ? 'custom' : 'default';
 
       router.push(`/exercise-details/${id}?type=${queryParam}`);
     } else {
-      addRoutine({ id, name, type });
+      addRoutine({ gif, id, name, type });
     }
   };
 

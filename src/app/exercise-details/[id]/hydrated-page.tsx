@@ -7,7 +7,7 @@ import Record from '../components/Record';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDetailsInfo } from '@/app/api/exercise-details/query';
 import { useSession } from 'next-auth/react';
-import Header from '@/components/layouts/header';
+import Header from '@/components/layouts/Header';
 import Link from 'next/link';
 import Back from '@/components/common/Back';
 import Image from 'next/image';
@@ -30,6 +30,7 @@ const ExerciseDetails = () => {
 
   const { data } = useDetailsInfo({ id: lastSegment, source: 'default', session });
 
+  console.log(session);
   console.log(data);
   const handleHeartChange = () => {
     postDetailLikeRegisterMutation.mutate({

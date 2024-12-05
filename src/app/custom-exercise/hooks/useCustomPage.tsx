@@ -60,7 +60,7 @@ const useCustomPage = () => {
       {
         onSuccess: (data) => {
           alert('운동 등록에 성공하셨습니다 !');
-          router.push('exercise-list');
+          router.push('exercise-list/search');
         },
         onError: (error) => {
           alert('에러');
