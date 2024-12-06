@@ -1,6 +1,7 @@
 import SocialButton from '@/app/sign/components/SocialButton';
 
 export default function Sign() {
+  console.log(process.env.NEXTAUTH_URL);
   return (
     <div className="flex flex-col h-screen bg-[#212227]">
       <div className="flex-grow overflow-auto">

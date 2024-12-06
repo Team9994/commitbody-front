@@ -66,17 +66,19 @@ export const {
             nickname: springResponse.data.data.tokenInfoDto?.nickname,
           };
         } else if (account?.provider === 'kakao') {
-          const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
-            loginType: 'KAKAO',
-            socialId: account.providerAccountId,
-            fcmToken: (account as any).fcmToken || '',
-          });
+          console.log('hi');
+          // const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
+          //   loginType: 'KAKAO',
+          //   socialId: account.providerAccountId,
+          //   fcmToken: (account as any).fcmToken || '',
+          // });
+          // console.log(springResponse);
           return {
             ...token,
-            accessToken: springResponse.data.data.accessToken,
-            refreshToken: springResponse.data.data.refreshToken,
-            nickname: springResponse.data.data.nickname,
-            authMode: springResponse.data.data.authMode,
+            // accessToken: springResponse.data.data.accessToken,
+            // refreshToken: springResponse.data.data.refreshToken,
+            // nickname: springResponse.data.data.nickname,
+            // authMode: springResponse.data.data.authMode,
           };
         }
       }

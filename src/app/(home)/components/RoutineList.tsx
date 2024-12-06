@@ -17,6 +17,7 @@ import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
 import { RoutineDto } from '@/app/(home)/types';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
 const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   const {
@@ -150,6 +151,19 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
             )}
           </div>
         </Drawer>
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          style={{
+            padding: '10px 20px',
+            backgroundColor: '#ff4757',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+          }}
+        >
+          로그아웃
+        </button>
       </div>
     </>
   );
