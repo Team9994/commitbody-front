@@ -259,12 +259,21 @@ const useAdditionalInfo = () => {
     );
     // POST 요청이 성공하면 세션 업데이트
     if (res.data.success) {
-      const updatedSession = await update({
-        ...session,
-        nickname: formData.nickname,
-      });
+      try {
+        const updatedSession = await update({
+          ...session,
+          nickname: formData.nickname,
+        });
+
+        if (updatedSession) {
+          router.push('/');
+        } else {
+          console.error('세션 업데이트 실패');
+        }
+      } catch (error) {
+        console.error('세션 업데이트 중 오류 발생:', error);
+      }
     }
-    router.push('/');
   };
 
   return {

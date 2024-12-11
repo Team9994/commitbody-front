@@ -30,8 +30,6 @@ const ExerciseDetails = () => {
 
   const { data } = useDetailsInfo({ id: lastSegment, source: 'default', session });
 
-  console.log(session);
-  console.log(data);
   const handleHeartChange = () => {
     postDetailLikeRegisterMutation.mutate({
       exerciseId: Number(lastSegment),
