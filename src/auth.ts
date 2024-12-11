@@ -7,6 +7,7 @@ type ExtendedSession = Session & {
   accessToken?: string;
   refreshToken?: string;
   accessTokenExpires?: number;
+  nickname?: string;
 };
 
 const createErrorMessage = (error: any) => {
@@ -38,6 +39,9 @@ export const {
   ],
   callbacks: {
     async jwt({ token, user, account, trigger, session }) {
+      if (trigger === 'update' && session.nickname) {
+        return { ...token, nickname: session.nickname };
+      }
       // 초기 로그인 시 토큰 설정
       if (user) {
         if (account?.provider === 'google') {
@@ -67,18 +71,18 @@ export const {
           };
         } else if (account?.provider === 'kakao') {
           console.log('hi');
-          // const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
-          //   loginType: 'KAKAO',
-          //   socialId: account.providerAccountId,
-          //   fcmToken: (account as any).fcmToken || '',
-          // });
-          // console.log(springResponse);
+          const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
+            loginType: 'KAKAO',
+            socialId: account.providerAccountId,
+            fcmToken: (account as any).fcmToken || '',
+          });
+          console.log(springResponse);
           return {
             ...token,
-            // accessToken: springResponse.data.data.accessToken,
-            // refreshToken: springResponse.data.data.refreshToken,
-            // nickname: springResponse.data.data.nickname,
-            // authMode: springResponse.data.data.authMode,
+            accessToken: springResponse.data.data.accessToken,
+            refreshToken: springResponse.data.data.refreshToken,
+            nickname: springResponse.data.data.nickname,
+            authMode: springResponse.data.data.authMode,
           };
         }
       }
