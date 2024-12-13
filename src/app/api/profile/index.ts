@@ -6,13 +6,19 @@ const Profile = {
 };
 
 export const getUserInfo = async (nickname: string, session: any) => {
-  const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${Profile.GET_USER_INFO(nickname)}`,
-    {
-      headers: {
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    }
-  );
-  return res.data.data;
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${Profile.GET_USER_INFO(nickname)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+      }
+    );
+
+    return res.data.data;
+  } catch (error) {
+    console.error('Failed to get user info:', error);
+    return null;
+  }
 };

@@ -56,7 +56,7 @@ const useHeader = ({ searchParams, search }: UseHeaderProps) => {
       return;
     }
 
-    postSearchMutation.mutate({ title: search, session });
+    postSearchMutation.mutate({ title: search });
     setIsFocused(false);
   };
   return { isFocused, handleChangeFocus, handlePostSearch, handleBack, handleChange, handleFocus };

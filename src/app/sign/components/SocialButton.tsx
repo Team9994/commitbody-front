@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { getFCMToken } from '@/lib/firebase';
 import { isProduct } from '@/constants/product';
 

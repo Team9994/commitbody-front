@@ -2,12 +2,10 @@ import React from 'react';
 import Record from './hydrated-page';
 import { getQueryClient } from '@/lib/GetQueryClient';
 import { getRecord } from '../api/record';
-import { auth } from '@/auth';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 const HydratedRecord = async () => {
   const queryClient = getQueryClient();
-  const session = await auth();
 
   const currentDate = new Date();
   const year = currentDate.getFullYear().toString();
@@ -15,7 +13,7 @@ const HydratedRecord = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['get_record', year, month],
-    queryFn: () => getRecord({ year, month, session }),
+    queryFn: () => getRecord({ year, month }),
     staleTime: 60 * 60 * 1000,
   });
 

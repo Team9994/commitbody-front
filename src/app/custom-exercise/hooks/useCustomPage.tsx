@@ -1,13 +1,11 @@
 import { useCustomExerciseEditMutation, useCustomExerciseMutation } from '@/app/api/exercise/query';
 import useInput from '@/hooks/useInput';
-import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 import { CategoryKey } from '../constants';
 
 const useCustomPage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const customExerciseCreateMutation = useCustomExerciseMutation();
   const customExerciseEditMutation = useCustomExerciseEditMutation();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -55,7 +53,6 @@ const useCustomPage = () => {
         bodyPart: selectedBodyPart,
         tool: selectedTool,
         image: selectedFile || undefined,
-        session,
       },
       {
         onSuccess: (data) => {
@@ -77,7 +74,6 @@ const useCustomPage = () => {
       tool: selectedTool,
       image: selectedFile || undefined,
       source: 'custom',
-      session,
     };
 
     customExerciseEditMutation.mutate(editPayload, {

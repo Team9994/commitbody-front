@@ -4,12 +4,12 @@ import { useSession } from 'next-auth/react';
 
 const useRecentSearch = () => {
   const { data: session } = useSession();
-  const { data } = useGetSearchRecord({ session });
+  const { data } = useGetSearchRecord();
 
   const deleteSearchMutation = useDeleteSearchRecordMutation();
 
   const handleDeleteAllSearchRecords = () => {
-    deleteSearchMutation.mutate({ type: 'all', session });
+    deleteSearchMutation.mutate({ type: 'all' });
   };
 
   return {

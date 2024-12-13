@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useDeleteCustomExerciseMutation } from '@/app/api/exercise/query';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { GetDetailsInfoType } from '@/app/api/exercise-details/type';
 
@@ -13,7 +12,6 @@ interface ExerciseInfoProps {
 }
 
 const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
-  const { data: session } = useSession();
   const router = useRouter();
   const menuRef = useRef<HTMLDivElement | null>(null);
   const [isActiveMenu, setIsActiveMenu] = useState<boolean>(false);
@@ -66,7 +64,6 @@ const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
                 <div
                   onClick={() =>
                     deleteCustomExerciseMutation.mutate({
-                      session,
                       id,
                     })
                   }

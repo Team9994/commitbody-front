@@ -26,7 +26,6 @@ const useMenu = () => {
     console.log(`${recordToDelete}가 삭제되었습니다.`);
     deleteRecordMutation.mutate({
       recordId: recordToDelete as any,
-      session,
     });
     setRecordToDelete(undefined);
     setActiveMenuId(undefined);

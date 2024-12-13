@@ -1,13 +1,11 @@
 import React from 'react';
 import ExerciseList from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { auth } from '@/auth';
 import { getQueryClient } from '@/lib/GetQueryClient';
 import { getSearchExercise } from '@/app/api/exercise';
 
 const HydratedExerciseList = async () => {
   const queryClient = getQueryClient();
-  const session = await auth();
   const filters = {
     name: '',
     target: '',
@@ -20,7 +18,6 @@ const HydratedExerciseList = async () => {
     queryKey: ['Search_Result', filters],
     queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
       getSearchExercise({
-        session,
         filters,
         size: pageParam.size,
         from: pageParam.from,

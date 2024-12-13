@@ -17,7 +17,6 @@ const Comment = () => {
     onChange,
     postCommentLikeMutation,
     postCommentMutation,
-    session,
     contentReset,
     router,
     id,
@@ -47,7 +46,7 @@ const Comment = () => {
               alert('댓글 내용을 입력해주세요.');
               return;
             }
-            postCommentMutation.mutate({ session, content, exerciseId: id });
+            postCommentMutation.mutate({ content, exerciseId: id });
             contentReset();
           }}
         />
@@ -72,7 +71,7 @@ const Comment = () => {
               </p>
               <div
                 onClick={() =>
-                  postCommentLikeMutation.mutate({ exCommentId: data.exerciseCommentId, session })
+                  postCommentLikeMutation.mutate({ exCommentId: data.exerciseCommentId })
                 }
                 className="flex items-center cursor-pointer"
               >
@@ -109,9 +108,7 @@ const Comment = () => {
                   수정
                 </div>
                 <div
-                  onClick={() =>
-                    deleteMutation.mutate({ exerciseId: data?.exerciseCommentId, session })
-                  }
+                  onClick={() => deleteMutation.mutate({ exerciseId: data?.exerciseCommentId })}
                   className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
                 >
                   삭제

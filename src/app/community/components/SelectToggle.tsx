@@ -1,6 +1,6 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 interface SelectToggleProps {
   selected: 'certification' | 'question';
@@ -12,9 +12,7 @@ const SelectToggle = ({ selected, setSelected }: SelectToggleProps) => {
   const searchParams = useSearchParams();
 
   const updateUrl = (newParam: string) => {
-    console.log(searchParams);
     const updatedParams = new URLSearchParams(searchParams.toString());
-    console.log(updatedParams.toString());
     updatedParams.set('menu', newParam);
 
     // 새로운 URL로 이동

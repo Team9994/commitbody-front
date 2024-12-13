@@ -30,7 +30,6 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
     selectedId,
     moveRouter,
   } = useRoutine();
-  console.log(routineList[0]);
   return (
     <>
       <div>

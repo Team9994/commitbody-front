@@ -3,7 +3,6 @@ export interface GetCommentPayload {
   source: 'custom' | 'default';
   lastId?: number | null;
   size: number;
-  session: any;
 }
 
 export interface Day {

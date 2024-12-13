@@ -19,10 +19,10 @@ const useExplain = () => {
   const id = pathSegments[pathSegments.length - 1];
   const menuRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
-  const { deleteMutation } = useCommentDeleteMutation(id, session, source);
+  const { deleteMutation } = useCommentDeleteMutation(id, source);
   const { value: content, onChange, reset: contentReset } = useInput();
-  const { postCommentMutation } = useCommentPostMutation(id, session, source);
-  const { postCommentLikeMutation } = useCommentPostLikeMutation(id, session, source);
+  const { postCommentMutation } = useCommentPostMutation();
+  const { postCommentLikeMutation } = useCommentPostLikeMutation(id, source);
 
   const {
     data: commentLists,
@@ -30,7 +30,7 @@ const useExplain = () => {
     hasNextPage,
     isFetching,
     isLoading,
-  } = useCommentList(id, session, source);
+  } = useCommentList(id, source);
 
   const observerRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetching) {

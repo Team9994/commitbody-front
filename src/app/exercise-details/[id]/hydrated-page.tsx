@@ -11,7 +11,7 @@ import Header from '@/components/layouts/Header';
 import Link from 'next/link';
 import Back from '@/components/common/Back';
 import Image from 'next/image';
-import { useDetailLikeRegister, useLikeRegister } from '@/app/api/exercise/query';
+import { useDetailLikeRegister } from '@/app/api/exercise/query';
 
 const ExerciseDetails = () => {
   const searchParams = useSearchParams();
@@ -28,13 +28,12 @@ const ExerciseDetails = () => {
   const { data: session } = useSession();
   const { postDetailLikeRegisterMutation } = useDetailLikeRegister();
 
-  const { data } = useDetailsInfo({ id: lastSegment, source: 'default', session });
+  const { data } = useDetailsInfo({ id: lastSegment, source: 'default' });
 
   const handleHeartChange = () => {
     postDetailLikeRegisterMutation.mutate({
       exerciseId: Number(lastSegment),
       source: type as 'custom' | 'default',
-      session,
     });
   };
   console.log(data);

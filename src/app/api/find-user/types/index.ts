@@ -3,7 +3,6 @@ export interface GetFindUserPayload {
   nickname: string;
   size?: string;
   from?: string;
-  session: any;
   enabled?: boolean;
 }
 
@@ -24,7 +23,6 @@ export interface GetFindFollowingPayload {
   lastId: number;
   size: number;
   nickname: string;
-  session: any;
 }
 
 interface Follows {
@@ -45,7 +43,6 @@ export interface GetFindFollowersPayload {
   lastId: number;
   size: number;
   nickname: string;
-  session: any;
 }
 
 interface Followers {

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   GetFindFollowersData,
   GetFindFollowersPayload,
@@ -8,6 +7,7 @@ import {
   GetFindUserPayload,
 } from './types';
 import { API } from '@/types';
+import clientApi from '@/lib/clientAxios';
 
 const FIND_USER = {
   GET_SEARCH_MEMBER: '/api/v1/search/member',
@@ -19,7 +19,6 @@ export const getFindUser = async ({
   nickname,
   size,
   from,
-  session,
 }: GetFindUserPayload): Promise<API<GetFindUserData>> => {
   const params = {
     nickname,
@@ -27,12 +26,9 @@ export const getFindUser = async ({
     from,
   };
   try {
-    const res = await axios.get<API<GetFindUserData>>(
+    const res = await clientApi.get<API<GetFindUserData>>(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${FIND_USER.GET_SEARCH_MEMBER}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -48,7 +44,6 @@ export const getFindFollowing = async ({
   lastId,
   nickname,
   size = 50,
-  session,
 }: GetFindFollowingPayload): Promise<API<GetFindFollowingData>> => {
   const params = {
     lastId,
@@ -56,12 +51,9 @@ export const getFindFollowing = async ({
     nickname,
   };
   try {
-    const res = await axios.get<API<GetFindFollowingData>>(
+    const res = await clientApi.get<API<GetFindFollowingData>>(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${FIND_USER.GET_SEARCH_FOLLOWING}/${id}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -77,7 +69,6 @@ export const getFindFollowers = async ({
   lastId,
   nickname,
   size = 50,
-  session,
 }: GetFindFollowersPayload): Promise<API<GetFindFollowersData>> => {
   const params = {
     lastId,
@@ -85,14 +76,9 @@ export const getFindFollowers = async ({
     nickname,
   };
   try {
-    const res = await axios.get<API<GetFindFollowersData>>(
+    const res = await clientApi.get<API<GetFindFollowersData>>(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${FIND_USER.POST_SEARCH_FOLLOWER}/${id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-        params,
-      }
+      {}
     );
     return res.data;
   } catch (error) {

@@ -7,7 +7,6 @@ import {
 import { Input } from '@/components/ui/input';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import useInput from '@/hooks/useInput';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Comments from './Comments';
@@ -17,7 +16,6 @@ interface ArticleCommentProps {
 }
 
 const ArticleComment = ({ id }: ArticleCommentProps) => {
-  const { data: session } = useSession();
   const [activeMenuId, setActiveMenuId] = useState<string | undefined>(undefined);
   const [commentToDelete, setCommentToDelete] = useState<number | undefined>(undefined);
   const [replyData, setReplyData] = useState<{ commentId: string | null; nickname: string }>({
@@ -35,7 +33,6 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
   const { mutate: deleteComment } = useArticleDeleteCommentCommunityMutation();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useArticleCommentCommunity(
     id,
-    session,
     selectCommentMenu
   );
 
@@ -56,7 +53,6 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
     postComment({
       articleId: id,
       content: sendMessage,
-      session,
       reply: isReply,
       parentId: isReply ? (replyData.commentId as string) : undefined,
       replyNickname: isReply ? replyData.nickname : '',
@@ -74,7 +70,7 @@ const ArticleComment = ({ id }: ArticleCommentProps) => {
   };
 
   const confirmDelete = (commentId: string) => {
-    deleteComment({ session, commentId });
+    deleteComment({ commentId });
     console.log('삭제완료');
     setCommentToDelete(undefined);
     setActiveMenuId(undefined);

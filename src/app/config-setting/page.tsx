@@ -1,7 +1,7 @@
 'use client';
 import Header from '@/components/layouts/Header';
 import { useRouter } from 'next/navigation';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Switch } from '@/components/ui/switch';
 import {
@@ -10,7 +10,6 @@ import {
   useNotificationQuery,
   useWithdrawMutation,
 } from '../api/config-setting/query';
-import { useSession } from 'next-auth/react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,19 +23,18 @@ import { AlertDialogHeader } from '@/components/ui';
 
 const Config = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [dialogType, setDialogType] = useState<string | null>(null);
-  const { data: notificationData, refetch } = useNotificationQuery({ session });
+  const { data: notificationData } = useNotificationQuery();
   const { mutate: notificationMutate } = useNotificationMutation();
   const { mutate: logoutMutate } = useLogoutMutation();
   const { mutate: withdrawMutate } = useWithdrawMutation();
   const openDialog = (type: string) => setDialogType(type);
   const confirmAction = () => {
     if (dialogType === 'logout') {
-      logoutMutate({ session });
+      logoutMutate();
       alert('로그아웃이 되었습니다.');
     } else if (dialogType === 'withdraw') {
-      withdrawMutate({ session });
+      withdrawMutate();
       alert('회원탈퇴가 되었습니다.');
     }
     setDialogType(null);
@@ -62,7 +60,7 @@ const Config = () => {
           id="airplane-mode"
           checked={notificationData?.data}
           onClick={() => {
-            notificationMutate({ session });
+            notificationMutate();
           }}
         />
       </div>
