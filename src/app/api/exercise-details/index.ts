@@ -31,30 +31,6 @@ export const getComment = async ({ id, source = 'default', lastId, size }: GetCo
   }
 };
 
-export const getServerComment = async ({
-  id,
-  source = 'default',
-  lastId,
-  size,
-}: GetCommentPayload) => {
-  const params = {
-    source,
-    lastId,
-    size,
-  };
-  try {
-    const res = await api.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_COMMENT}/${id}`,
-      {
-        params,
-      }
-    );
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 interface PostCommentPayload {
   exerciseId: string;
   source?: 'default' | 'custom';
@@ -143,21 +119,6 @@ export interface GetDetailsInfoPayload {
 }
 
 export const getDetailsInfo = async ({
-  id,
-  source,
-}: GetDetailsInfoPayload): Promise<API<GetDetailsInfoType>> => {
-  try {
-    const res = await clientApi.get<API<GetDetailsInfoType>>(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`
-    );
-    return res.data;
-  } catch (error) {
-    console.error('Error postLike:', error);
-    throw error;
-  }
-};
-
-export const getServerDetailsInfo = async ({
   id,
   source,
 }: GetDetailsInfoPayload): Promise<API<GetDetailsInfoType>> => {

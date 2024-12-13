@@ -2,7 +2,7 @@ import React from 'react';
 import ExerciseDetails from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/GetQueryClient';
-import { getServerComment, getServerDetailsInfo } from '@/app/api/exercise-details';
+import { getComment, getDetailsInfo } from '@/app/api/exercise-details';
 
 const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) => {
   const queryClient = getQueryClient();
@@ -12,7 +12,7 @@ const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) =
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['get_comment', id, source],
     queryFn: ({ pageParam = { lastId: null, size: 10 } }) =>
-      getServerComment({
+      getComment({
         id,
         source,
         lastId: pageParam.lastId,
@@ -28,7 +28,7 @@ const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) =
   });
   await queryClient.prefetchQuery({
     queryKey: ['get_detail_exercise_info', id, source],
-    queryFn: () => getServerDetailsInfo({ id, source }),
+    queryFn: () => getDetailsInfo({ id, source }),
   });
 
   return (
