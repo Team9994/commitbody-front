@@ -11,7 +11,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3\
+
+      - name: env setting
+        run: |
+          echo "${{secrets.ENV}}" > .env
+          echo "created env."
+
+      - name: env file
+        run: cat .env
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@v0.1.9
