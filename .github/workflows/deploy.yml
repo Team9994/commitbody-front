@@ -21,6 +21,13 @@ jobs:
       - name: env file
         run: cat .env
 
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_ID }}
+          password: ${{ secrets.DOCKER_PWD }}
+
+
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@v0.1.9
         with:
