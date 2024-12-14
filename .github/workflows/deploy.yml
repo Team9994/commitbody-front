@@ -27,6 +27,9 @@ jobs:
           username: ${{ secrets.DOCKER_ID }}
           password: ${{ secrets.DOCKER_PWD }}
 
+      - name: docker image bulid
+        run: |
+          docker build ${{ secrets.DOCKER_ID }}/${{ secrets.DOCKER_REPOSITORY }}:${{ secrets.DOCKER_TAG }} .
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@v0.1.9
