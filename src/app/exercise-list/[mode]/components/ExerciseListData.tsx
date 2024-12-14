@@ -1,7 +1,6 @@
 import React, { RefObject } from 'react';
 import Image from 'next/image';
 import { useLikeRegister } from '@/app/api/exercise/query';
-import { useSession } from 'next-auth/react';
 import { Exercise_list, Filters } from '@/app/exercise-list/types';
 
 interface ExerciseListDataProps {
@@ -29,8 +28,6 @@ const ExerciseListData = ({
   observerRef,
   filters,
 }: ExerciseListDataProps) => {
-  console.log(searchResults);
-  const { data: session } = useSession();
   const mutation = useLikeRegister(filters);
   return (
     <div
@@ -61,7 +58,6 @@ const ExerciseListData = ({
               mutation.mutate({
                 exerciseId: list.exerciseId,
                 source: list.source,
-                session: session,
               });
             }}
             width={24}

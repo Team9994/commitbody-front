@@ -16,7 +16,6 @@ import {
 } from '..';
 
 export const useArticleDetailCommentCommunity = ({
-  session,
   commentId,
   lastId,
   size = 50,
@@ -25,7 +24,6 @@ export const useArticleDetailCommentCommunity = ({
     queryKey: ['Article_Detail_Comment', commentId],
     queryFn: () => {
       return getDetailCommentCommunity({
-        session,
         commentId,
         lastId,
         size,
@@ -35,14 +33,13 @@ export const useArticleDetailCommentCommunity = ({
   });
 };
 
-type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category' | 'session'>;
+type ArticleCommunityBasicInfo = Pick<AricleCommunityPayload, 'type' | 'category'>;
 
-export const useArticleCommunity = ({ category, type, session }: ArticleCommunityBasicInfo) => {
+export const useArticleCommunity = ({ category, type }: ArticleCommunityBasicInfo) => {
   return useInfiniteQuery({
     queryKey: ['Article_Result', category, type],
     queryFn: ({ pageParam = { lastId: undefined, size: 20 } }) =>
       getArticleCommunity({
-        session,
         category,
         type,
         size: pageParam.size,
@@ -57,13 +54,11 @@ export const useArticleCommunity = ({ category, type, session }: ArticleCommunit
       const lastId = lastPage.data.articles[lastPage.data.articles.length - 1]?.articleId;
       return { lastId: lastId, size: 20 };
     },
-    enabled: !!session,
   });
 };
 
 export const useArticleCommentCommunity = (
   articleId: string,
-  session: any,
   selectCommentMenu: 'RECENT' | 'LIKE'
 ) => {
   return useInfiniteQuery({
@@ -71,7 +66,6 @@ export const useArticleCommentCommunity = (
     queryFn: ({ pageParam = { lastId: undefined, size: 20 } }) =>
       getArticleCommentInformCommunity({
         articleId,
-        session,
         lastId: pageParam.lastId,
         size: pageParam.size,
         selectCommentMenu,
@@ -82,12 +76,10 @@ export const useArticleCommentCommunity = (
         ? { lastId: lastPage.data.comments[lastPage.data.comments.length - 1].commentId, size: 20 }
         : undefined;
     },
-    enabled: !!session,
     initialPageParam: { lastId: undefined, size: 20 },
   });
 };
 export const useArticleInformCommunity = ({
-  session,
   articleId,
   boardInformData,
 }: ArticleInformGetCommunityPayload) => {
@@ -95,7 +87,6 @@ export const useArticleInformCommunity = ({
     queryKey: ['Article_Inform'],
     queryFn: () =>
       getArticleInformCommunity({
-        session,
         articleId,
       }),
     initialData: boardInformData,
@@ -116,10 +107,12 @@ export const useArticlePostCommunityMutation = () => {
 };
 
 export const useArticleDeleteCommunityMutation = () => {
+  const queryClient = useQueryClient();
   const articlePostCommunityMutation = useMutation({
     mutationFn: deleteArticleCommunity,
     onSuccess: () => {
       alert('게시글이 삭제되었습니다 !');
+      queryClient.invalidateQueries({ queryKey: ['Article_Result'] });
     },
   });
 

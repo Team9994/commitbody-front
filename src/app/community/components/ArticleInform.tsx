@@ -9,7 +9,6 @@ interface ArticleInformProps {
 
 const ArticleInform = async ({ id }: ArticleInformProps) => {
   const session = await auth();
-  console.log(session);
 
   const res = await fetch(
     `${process.env.SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${id}`,

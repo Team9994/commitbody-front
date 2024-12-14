@@ -31,7 +31,6 @@ const WritePost = () => {
     handleDrawerClose,
     handleMarkScopeDrawerToggle,
     handleMarkScopeDrawerClose,
-    handleDialogOpen,
     handleDialogClose,
     selectedImage,
     imageDrawerOpen,

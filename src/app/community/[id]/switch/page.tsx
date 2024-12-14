@@ -30,7 +30,6 @@ const BoardChange = () => {
     handleDrawerClose,
     handleMarkScopeDrawerToggle,
     handleMarkScopeDrawerClose,
-    handleDialogOpen,
     handleDialogClose,
     handleMarkScopeChange,
     selectedImage,

@@ -1,6 +1,7 @@
 import { API } from '@/types';
-import axios from 'axios';
 import { GetCommentPayload, GetDetailsInfoType } from './type';
+import clientApi from '@/lib/clientAxios';
+import { api } from '@/lib/axios';
 
 const EXERCISE = {
   GET_COMMENT: '/api/v1/comment-exercise',
@@ -11,25 +12,16 @@ const EXERCISE = {
   GET_DETAILS_INFO: '/api/v1/exercise',
 };
 
-export const getComment = async ({
-  session,
-  id,
-  source = 'default',
-  lastId,
-  size,
-}: GetCommentPayload) => {
+export const getComment = async ({ id, source = 'default', lastId, size }: GetCommentPayload) => {
   const params = {
     source,
     lastId,
     size,
   };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_COMMENT}/${id}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -41,13 +33,11 @@ export const getComment = async ({
 
 interface PostCommentPayload {
   exerciseId: string;
-  session: any;
   source?: 'default' | 'custom';
   content: string;
 }
 
 export const postComment = async ({
-  session,
   exerciseId,
   source = 'default',
   content,
@@ -58,14 +48,9 @@ export const postComment = async ({
     content,
   };
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_COMMENT}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      body
     );
     return res.data;
   } catch (error) {
@@ -76,23 +61,17 @@ export const postComment = async ({
 interface PutCommentPayload {
   exerciseCommentId: string | null;
   content: string;
-  session: any;
 }
 
-export const putComment = async ({ exerciseCommentId, content, session }: PutCommentPayload) => {
+export const putComment = async ({ exerciseCommentId, content }: PutCommentPayload) => {
   const body = {
     exerciseCommentId,
     content,
   };
   try {
-    const res = await axios.put(
+    const res = await clientApi.put(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.PUT_COMMENT}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      body
     );
     return res.data;
   } catch (error) {
@@ -102,18 +81,12 @@ export const putComment = async ({ exerciseCommentId, content, session }: PutCom
 
 interface DeleteCommentPayload {
   exerciseId: number;
-  session: any;
 }
 
-export const deleteComment = async ({ exerciseId, session }: DeleteCommentPayload) => {
+export const deleteComment = async ({ exerciseId }: DeleteCommentPayload) => {
   try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.DELETE_COMMENT}/${exerciseId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.DELETE_COMMENT}/${exerciseId}`
     );
     return res.data;
   } catch (error) {
@@ -123,22 +96,16 @@ export const deleteComment = async ({ exerciseId, session }: DeleteCommentPayloa
 
 interface PostCommentLikePayload {
   exCommentId: number;
-  session: any;
 }
 
-export const postCommentLike = async ({ session, exCommentId }: PostCommentLikePayload) => {
+export const postCommentLike = async ({ exCommentId }: PostCommentLikePayload) => {
   const body = {
     exCommentId,
   };
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_COMMENT_LIKE}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      body
     );
     return res.data;
   } catch (error) {
@@ -149,22 +116,15 @@ export const postCommentLike = async ({ session, exCommentId }: PostCommentLikeP
 export interface GetDetailsInfoPayload {
   id: string;
   source: 'default' | 'custom';
-  session: any;
 }
 
 export const getDetailsInfo = async ({
   id,
-  session,
   source,
 }: GetDetailsInfoPayload): Promise<API<GetDetailsInfoType>> => {
   try {
-    const res = await axios.get<API<GetDetailsInfoType>>(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.get<API<GetDetailsInfoType>>(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`
     );
     return res.data;
   } catch (error) {

@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui';
-import { useSession } from 'next-auth/react';
 import { useArticleDeleteCommentCommunityMutation } from '@/app/api/community/query';
 
 interface ReplyProps {
@@ -22,7 +21,6 @@ interface ReplyProps {
 }
 
 const Replys = ({ reply, handleLike, setCommentToDelete }: ReplyProps) => {
-  const { data: session } = useSession();
   const [activeReplyMenu, setActiveReplyMenu] = useState<boolean>(false);
   const { mutate: deleteComment } = useArticleDeleteCommentCommunityMutation();
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -41,7 +39,7 @@ const Replys = ({ reply, handleLike, setCommentToDelete }: ReplyProps) => {
   };
 
   const confirmDelete = (commentId: string) => {
-    deleteComment({ session, commentId });
+    deleteComment({ commentId });
     setActiveReplyMenu(false);
   };
 

@@ -11,13 +11,12 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useRoutine from '../hooks/useRoutine';
 import { Drawer } from '@/components/ui/drawer';
 import DrawerContent from './DrawerContent';
 import { RoutineDto } from '@/app/(home)/types';
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
 
 const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   const {
@@ -31,7 +30,6 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
     selectedId,
     moveRouter,
   } = useRoutine();
-
   return (
     <>
       <div>
@@ -144,7 +142,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
             {routineList?.length > 0 && selectedId !== undefined && (
               <DrawerContent
                 toggleDrawer={toggleDrawer}
-                routineData={routineList[selectedId]}
+                routineData={routineList.filter((item) => item.routineId === selectedId)[0]}
                 selectedId={selectedId}
                 moveRouter={moveRouter}
               />

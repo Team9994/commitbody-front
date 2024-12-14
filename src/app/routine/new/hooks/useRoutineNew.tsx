@@ -2,7 +2,6 @@ import { postRoutine } from '@/app/api/routine';
 import useInput from '@/hooks/useInput';
 import useRoutineStore from '@/store/routine';
 import { useSession } from 'next-auth/react';
-import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation';
 
 const useRoutineNew = () => {
@@ -26,7 +25,7 @@ const useRoutineNew = () => {
     };
     console.log(requestBody);
     try {
-      const response = await postRoutine(requestBody, session);
+      const response = await postRoutine(requestBody);
       router.push('/');
     } catch (error) {
       console.log(error);

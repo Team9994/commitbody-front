@@ -3,7 +3,6 @@ import {
   useArticleInformCommunity,
   useArticlePostLikeCommunityMutation,
 } from '@/app/api/community/query';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -12,10 +11,7 @@ interface ArticleLikeProps {
 }
 
 const ArticleLike = ({ boardInformData }: ArticleLikeProps) => {
-  const { data: session } = useSession();
-
   const { data } = useArticleInformCommunity({
-    session,
     articleId: boardInformData.data.articleId,
     boardInformData,
   });
@@ -23,11 +19,9 @@ const ArticleLike = ({ boardInformData }: ArticleLikeProps) => {
   const handleLikeClick = () => {
     mutate({
       articleId: data.data.articleId,
-      session,
     });
   };
 
-  console.log(data.data);
   return (
     <div className="flex px-5 py-4">
       <Image

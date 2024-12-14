@@ -4,7 +4,7 @@ import { getUserInfo } from '@/app/api/profile';
 import ProfileEdit from './components/ProfileEdit';
 
 export default async function EditPage({ params }: { params: { nickname: string } }) {
-  const session = await auth();
+  const session = auth();
   const userInfo = await getUserInfo(params.nickname, session);
 
   return (

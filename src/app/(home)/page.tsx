@@ -5,7 +5,6 @@ import PlusRoutineBtn from '@/components/common/PlusRoutineBtn';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getRoutineList } from '@/app/api/routine';
-import { signOut } from 'next-auth/react';
 
 export const revalidate = 0;
 export default async function Home() {

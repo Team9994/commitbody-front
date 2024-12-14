@@ -3,11 +3,10 @@ import { GetFindFollowersPayload, GetFindFollowingPayload, GetFindUserPayload } 
 import { getFindFollowing, getFindUser } from '..';
 import { HOUR, TODAY } from '@/lib/GetQueryClient';
 
-export const useGetFindUser = ({ nickname, size, from, session }: GetFindUserPayload) => {
+export const useGetFindUser = ({ nickname, size, from }: GetFindUserPayload) => {
   return useQuery({
     queryKey: ['get_user', nickname],
-    queryFn: () => getFindUser({ nickname, size, from, session }),
-    enabled: !!session,
+    queryFn: () => getFindUser({ nickname, size, from }),
     staleTime: HOUR,
     gcTime: TODAY,
     retry: 3,
@@ -18,11 +17,10 @@ export const useGetFindFollowing = ({
   lastId,
   nickname,
   size = 50,
-  session,
 }: GetFindFollowingPayload) => {
   return useQuery({
     queryKey: ['get_following'],
-    queryFn: () => getFindFollowing({ id, lastId, nickname, size, session }),
+    queryFn: () => getFindFollowing({ id, lastId, nickname, size }),
     enabled: false,
   });
 };
@@ -32,11 +30,10 @@ export const useGetFindFollowers = ({
   lastId,
   nickname,
   size = 50,
-  session,
 }: GetFindFollowersPayload) => {
   return useQuery({
     queryKey: ['get_followers'],
-    queryFn: () => getFindFollowing({ id, lastId, nickname, size, session }),
+    queryFn: () => getFindFollowing({ id, lastId, nickname, size }),
     enabled: false,
   });
 };

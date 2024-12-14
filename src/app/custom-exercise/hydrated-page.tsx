@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React from 'react';
 import ImageUpload from './components/ImageUpload';
 import InputField from './components/InputField';
 import SelectBox from './components/SelectBox';

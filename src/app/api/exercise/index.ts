@@ -1,4 +1,5 @@
 import { Filters } from '@/app/exercise-list/types';
+import clientApi from '@/lib/clientAxios';
 import axios from 'axios';
 
 const EXERCISE = {
@@ -13,27 +14,18 @@ interface SearchExercisePayload {
   filters: Filters;
   size: number;
   from: number;
-  session: any;
 }
 
-export const getSearchExercise = async ({
-  session,
-  filters,
-  size,
-  from,
-}: SearchExercisePayload) => {
+export const getSearchExercise = async ({ filters, size, from }: SearchExercisePayload) => {
   const params = {
     ...filters,
     from,
     size,
   };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_SEARCH}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -50,7 +42,6 @@ interface CustomExercisePayload {
   bodyPart: string;
   tool: string;
   image?: File;
-  session: any;
 }
 
 export const postCustomExercise = async ({
@@ -58,7 +49,6 @@ export const postCustomExercise = async ({
   bodyPart,
   tool,
   image,
-  session,
 }: CustomExercisePayload) => {
   const formData = new FormData();
   const customExerciseRequest = JSON.stringify({
@@ -73,14 +63,9 @@ export const postCustomExercise = async ({
   }
 
   try {
-    const response = await axios.post(
+    const response = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_CUSTOM_EXERCISE}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      formData
     );
 
     return response;
@@ -97,7 +82,6 @@ interface PutCustomExercisePayload {
   tool: string;
   source: string;
   image?: File;
-  session: any;
 }
 
 export const putCustomExercise = async ({
@@ -107,7 +91,6 @@ export const putCustomExercise = async ({
   tool,
   source,
   image,
-  session,
 }: PutCustomExercisePayload) => {
   const formData = new FormData();
 
@@ -126,14 +109,9 @@ export const putCustomExercise = async ({
   }
 
   try {
-    const response = await axios.post(
+    const response = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.PUT_CUSTOM_EXERCISE}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      formData
     );
 
     return response;
@@ -146,24 +124,18 @@ export const putCustomExercise = async ({
 interface LikeRegister {
   exerciseId: number;
   source: 'custom' | 'default';
-  session: any;
 }
 
-export const postLikeRegister = async ({ exerciseId, source, session }: LikeRegister) => {
+export const postLikeRegister = async ({ exerciseId, source }: LikeRegister) => {
   try {
     const body = {
       exerciseId: exerciseId,
       source: source + '_',
     };
 
-    const response = await axios.post(
+    const response = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.POST_LIKE_REGISTER}`,
-      body,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      body
     );
 
     return response.data;
@@ -175,20 +147,16 @@ export const postLikeRegister = async ({ exerciseId, source, session }: LikeRegi
 
 interface DeleteCustomExcercisePayload {
   id: string;
-  session: any;
 }
-export const deleteCustomExercise = async ({ id, session }: DeleteCustomExcercisePayload) => {
+export const deleteCustomExercise = async ({ id }: DeleteCustomExcercisePayload) => {
   const params = {
     id,
   };
 
   try {
-    const response = await axios.delete(
+    const response = await clientApi.delete(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.DELETE_CUSTOM_EXERCISE}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );

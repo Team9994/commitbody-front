@@ -1,7 +1,8 @@
 import axios from 'axios';
-import NextAuth, { Session } from 'next-auth';
+import NextAuth, { Session, User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 type ExtendedSession = Session & {
   accessToken?: string;
@@ -35,6 +36,23 @@ export const {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID,
       clientSecret: process.env.KAKAO_CLIENT_SECRET,
+    }),
+    CredentialsProvider({
+      authorize: async (credentials, request) => {
+        console.log('Received session:', credentials?.session);
+        console.log('Access Token:', credentials?.accessToken);
+
+        try {
+          const sessionData = credentials?.session ? JSON.parse(credentials.session as string) : {};
+
+          return {
+            ...sessionData,
+            accessToken: credentials?.accessToken,
+          };
+        } catch (error) {
+          console.error('Session parsing error:', error);
+        }
+      },
     }),
   ],
   callbacks: {
@@ -70,7 +88,6 @@ export const {
             nickname: springResponse.data.data.tokenInfoDto?.nickname,
           };
         } else if (account?.provider === 'kakao') {
-          console.log('hi');
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
             loginType: 'KAKAO',
             socialId: account.providerAccountId,
@@ -85,11 +102,6 @@ export const {
             authMode: springResponse.data.data.authMode,
           };
         }
-      }
-
-      const currentTime = Date.now();
-      if (token.accessTokenExpires && +currentTime >= Number(token.accessTokenExpires)) {
-        return await refreshAccessToken(token);
       }
 
       return token;
@@ -107,29 +119,3 @@ export const {
   },
   secret: process.env.NEXTAUTH_SECRET,
 });
-
-async function refreshAccessToken(token: any) {
-  try {
-    const response = await axios.post(
-      `${process.env.SPRING_BACKEND_URL}/api/v1/auth-refresh`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token.refreshToken}`,
-        },
-      }
-    );
-    console.log('갱신성공');
-    return {
-      ...token,
-      accessToken: response.data.data.accessToken,
-      refreshToken: response.data.data.refreshToken || token.refreshToken,
-    };
-  } catch (error) {
-    console.error('토큰 갱신 실패:', error);
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    };
-  }
-}

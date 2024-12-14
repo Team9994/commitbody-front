@@ -2,12 +2,12 @@ import { getRecordDetail, getRecord, deleteRecord } from '@/app/api/record';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { RoutineRecord } from '@/app/record/types/record';
 
-export const useRecordDetail = (recordId: string, session: any) => {
+export const useRecordDetail = (recordId: string) => {
   return useQuery({
     queryKey: ['Record_Detail', recordId],
-    queryFn: () => getRecordDetail(recordId, session),
+    queryFn: () => getRecordDetail(recordId),
     staleTime: 1000 * 60 * 5,
-    enabled: !!recordId && !!session,
+    enabled: !!recordId,
   });
 };
 
@@ -17,12 +17,12 @@ interface UseRecordPayload {
   session: any;
 }
 
-export const useRecord = ({ year, month, session }: UseRecordPayload) => {
+export const useRecord = ({ year, month }: UseRecordPayload) => {
   return useQuery({
     queryKey: ['get_record', year, month],
-    queryFn: () => getRecord({ year, month, session }),
+    queryFn: () => getRecord({ year, month }),
     staleTime: 1000 * 60 * 5,
-    enabled: !!year && !!month && !!session,
+    enabled: !!year && !!month,
   });
 };
 

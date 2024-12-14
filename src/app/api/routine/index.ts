@@ -19,7 +19,7 @@ export const getRoutineList = async () => {
   }
 };
 
-export const getRoutineDetail = async (id: string, session: any) => {
+export const getRoutineDetail = async (id: string) => {
   try {
     const res = await api.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.GET_ROUTINE_DETAIL(id)}`
@@ -30,7 +30,7 @@ export const getRoutineDetail = async (id: string, session: any) => {
   }
 };
 
-export const postRoutine = async (payload: any, session: any) => {
+export const postRoutine = async (payload: any) => {
   try {
     console.log('Attempting to make POST request...');
     console.log('POST URL:', ROUTINE.POST_REGISTER_ROUTINE);
@@ -50,20 +50,11 @@ export const postRoutine = async (payload: any, session: any) => {
     throw error;
   }
 };
-export const putUpdateRoutine = async (
-  id: string,
-  payload: Register_Routine_Payload,
-  session: any
-) => {
+export const putUpdateRoutine = async (id: string, payload: Register_Routine_Payload) => {
   try {
     const res = await api.put(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.PUT_UPDATE_ROUTINE(id)}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      payload
     );
     return res.data;
   } catch (error) {
@@ -71,15 +62,10 @@ export const putUpdateRoutine = async (
   }
 };
 
-export const deleteDeleteRoutine = async (id: string, session: any) => {
+export const deleteDeleteRoutine = async (id: string) => {
   try {
     const res = await api.delete(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.DELETE_DELETE_ROUTINE(id)}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.DELETE_DELETE_ROUTINE(id)}`
     );
     return res.data;
   } catch (error) {

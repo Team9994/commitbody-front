@@ -12,7 +12,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui';
-import { useSession } from 'next-auth/react';
 import {
   useArticleDetailCommentCommunity,
   useArticlePostCommentLikeCommunityMutation,
@@ -27,20 +26,18 @@ interface CommentProps {
 }
 
 const Comments = ({ comment, confirmDelete, setCommentToDelete, handleMention }: CommentProps) => {
-  const { data: session } = useSession();
   const [activeCommentId, setActiveCommentId] = useState<number | null>(null);
   const [activeMenu, setActiveMenu] = useState<number | undefined>(undefined);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const { data: detailComments, refetch } = useArticleDetailCommentCommunity({
     commentId: activeCommentId,
-    session,
   });
 
   const { mutate: likeComment } = useArticlePostCommentLikeCommunityMutation();
 
   const handleLike = (commentId: string) => {
-    likeComment({ commentId, session });
+    likeComment({ commentId });
   };
 
   const toggleMenu = (id: number) => {

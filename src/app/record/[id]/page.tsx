@@ -14,13 +14,11 @@ interface RoutineCompleteProps {
 
 const HydratedRoutineComplete = async ({ params }: RoutineCompleteProps) => {
   const recordId = params.id;
-  // console.log(recordId);
   const queryClient = getQueryClient();
-  const session = await auth();
 
   await queryClient.prefetchQuery({
     queryKey: ['Record_Detail', recordId],
-    queryFn: () => getRecordDetail(recordId, session),
+    queryFn: () => getRecordDetail(recordId),
   });
   const dehydratedState = dehydrate(queryClient);
 

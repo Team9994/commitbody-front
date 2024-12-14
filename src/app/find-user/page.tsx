@@ -5,12 +5,10 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { useGetFindUser } from '../api/find-user/query';
-import { useSession } from 'next-auth/react';
 import debounce from 'lodash/debounce';
 
 const FindUserContent = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   const [search, setSearch] = useState(initialSearch);
@@ -22,7 +20,6 @@ const FindUserContent = () => {
   } = useGetFindUser({
     nickname: search,
     size: '50',
-    session,
   });
 
   const handlePostSearch = () => {

@@ -2,20 +2,17 @@ import React from 'react';
 import ExerciseDetails from './hydrated-page';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/GetQueryClient';
-import { auth } from '@/auth';
 import { getComment, getDetailsInfo } from '@/app/api/exercise-details';
 
 const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) => {
   const queryClient = getQueryClient();
-  const session = await auth();
   const dehydratedState = dehydrate(queryClient);
   const id = params.id;
   const source = 'default';
   await queryClient.prefetchInfiniteQuery({
-    queryKey: ['get_comment', id, session, source],
+    queryKey: ['get_comment', id, source],
     queryFn: ({ pageParam = { lastId: null, size: 10 } }) =>
       getComment({
-        session,
         id,
         source,
         lastId: pageParam.lastId,
@@ -29,10 +26,9 @@ const HydratedExerciseDetails = async ({ params }: { params: { id: string } }) =
       return lastPage?.data?.hasNext ? { lastId: nextLastId, size: 10 } : undefined;
     },
   });
-  console.log(session);
   await queryClient.prefetchQuery({
-    queryKey: ['get_detail_exercise_info', id, session, source],
-    queryFn: () => getDetailsInfo({ id, session, source }),
+    queryKey: ['get_detail_exercise_info', id, source],
+    queryFn: () => getDetailsInfo({ id, source }),
   });
 
   return (

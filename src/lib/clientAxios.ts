@@ -1,13 +1,10 @@
 'use client';
 
 import axios from 'axios';
-import { getSession, signOut } from 'next-auth/react';
+import { getSession, signIn, signOut } from 'next-auth/react';
 
 export const clientApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SPRING_BACKEND_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 const createErrorMessage = (error: any) => {
@@ -23,14 +20,11 @@ const createErrorMessage = (error: any) => {
 clientApi.interceptors.request.use(async (config) => {
   try {
     const session = await getSession();
-
     // 리프레시 토큰 요청인 경우
     if (config.url?.includes('/auth-refresh')) {
       config.headers.Authorization = `Bearer ${session?.refreshToken}`;
       return config;
     }
-
-    // 일반 요청인 경우
     if (session?.accessToken) {
       config.headers.Authorization = `Bearer ${session.accessToken}`;
     }
@@ -53,7 +47,6 @@ clientApi.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
       try {
         const session = await getSession();
         const response = await axios.post(
@@ -67,25 +60,21 @@ clientApi.interceptors.response.use(
             },
           }
         );
-
         const newAccessToken = response.data.data.accessToken;
+
         if (!newAccessToken) {
           throw new Error('New access token is undefined');
         }
-
         // 세션 업데이트
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/auth/session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ accessToken: newAccessToken }),
+        await signIn('credentials', {
+          redirect: false,
+          session: JSON.stringify(session), // 세션 데이터 전달
+          accessToken: newAccessToken,
         });
-
+        console.log('갱신성공');
         // 새 토큰으로 헤더 업데이트
         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         clientApi.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-
         // 원래 요청 재시도
         return clientApi.request(originalRequest);
       } catch (refreshError: any) {

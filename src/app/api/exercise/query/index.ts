@@ -9,12 +9,11 @@ import {
 import { Filters } from '@/app/exercise-list/types';
 import { useRouter } from 'next/navigation';
 
-export const useSearchExercise = (filters: Filters, session: any) => {
+export const useSearchExercise = (filters: Filters) => {
   return useInfiniteQuery({
     queryKey: ['Search_Result', filters],
     queryFn: ({ pageParam = { from: 0, size: 20 } }) =>
       getSearchExercise({
-        session,
         filters,
         size: pageParam.size,
         from: pageParam.from,

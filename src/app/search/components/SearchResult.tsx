@@ -5,17 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchResult } from '@/app/api/search/query';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import { useSession } from 'next-auth/react';
 import { mapCategoryToQueryCategory, mapQueryCategoryToCategory } from '../utils';
 import { useSearchParams } from 'next/navigation';
 
 const SearchResult = () => {
-  const { data: session } = useSession();
   const [categorySelected, setCategorySelected] = useState('전체');
   const searchParams = useSearchParams();
   const search = searchParams.get('q') || '';
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useSearchResult({
-    session,
     title: search,
     category: mapCategoryToQueryCategory(categorySelected),
     size: 10,

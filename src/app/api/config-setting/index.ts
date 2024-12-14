@@ -1,3 +1,4 @@
+import clientApi from '@/lib/clientAxios';
 import axios from 'axios';
 
 const CONFIG = {
@@ -7,15 +8,10 @@ const CONFIG = {
   POST_NOTIFICATION: '/api/v1/notification/settings',
 };
 
-export const postLogout = async ({ session }: { session: any }) => {
+export const postLogout = async () => {
   try {
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.POST_LOGOUT}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.post(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.POST_LOGOUT}`
     );
 
     return res.data;
@@ -25,16 +21,11 @@ export const postLogout = async ({ session }: { session: any }) => {
   }
 };
 
-export const postWithDraw = async ({ session }: { session: any }) => {
+export const postWithDraw = async () => {
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.POST_WITH_DRAW}`,
-      { check: true },
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      { check: true }
     );
 
     return res.data;
@@ -44,15 +35,10 @@ export const postWithDraw = async ({ session }: { session: any }) => {
   }
 };
 
-export const getNotification = async ({ session }: { session: any }) => {
+export const getNotification = async () => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.GET_NOTIFICATION}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.GET_NOTIFICATION}`
     );
 
     return res.data;
@@ -62,16 +48,11 @@ export const getNotification = async ({ session }: { session: any }) => {
   }
 };
 
-export const postNotification = async ({ session }: { session: any }) => {
+export const postNotification = async () => {
   try {
     const res = await axios.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.POST_NOTIFICATION}`,
-      { check: true },
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      { check: true }
     );
 
     return res.data;
