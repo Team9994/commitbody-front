@@ -44,7 +44,7 @@ const RecentSearch = ({ handleChangeFocus }: RecentSearchProps) => {
               className="cursor-pointer"
               onClick={(e) => {
                 e.stopPropagation();
-                deleteSearchMutation.mutate({ title: item, session });
+                deleteSearchMutation.mutate({ title: item });
               }}
             />
           </div>

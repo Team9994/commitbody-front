@@ -11,12 +11,11 @@ interface PageParam {
   lastId: number | null;
 }
 
-export const useSearchResult = ({ session, title, category, size = 20 }: SearchListsPayload) => {
+export const useSearchResult = ({ title, category, size = 20 }: SearchListsPayload) => {
   return useInfiniteQuery<any>({
     queryKey: ['article_search_result', title, category],
     queryFn: ({ pageParam = { lastId: null } }) => {
       const result = getArticleSearchResult({
-        session,
         title,
         category,
         size,
@@ -37,17 +36,15 @@ export const useSearchResult = ({ session, title, category, size = 20 }: SearchL
       }
       return undefined;
     },
-    enabled: !!session,
   });
 };
 
-export const useGetSearchRecord = ({ session }: { session: any }) => {
+export const useGetSearchRecord = () => {
   return useQuery({
     queryKey: ['search_record'],
-    queryFn: () => getSearchRecord({ session }),
+    queryFn: () => getSearchRecord(),
     staleTime: 0,
     gcTime: 0,
-    enabled: !!session,
   });
 };
 

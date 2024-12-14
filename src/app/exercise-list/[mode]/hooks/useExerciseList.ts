@@ -1,10 +1,8 @@
 'use client';
 import { CategoryKey } from '@/app/custom-exercise/constants';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
-import useInput from '@/hooks/useInput';
 import { useRouter, useParams } from 'next/navigation';
 import useRoutineStore from '@/store/routine';
-import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Filters } from '@/app/exercise-list/types';
 import { useSearchExercise } from '@/app/api/exercise/query';
@@ -17,7 +15,6 @@ const useExerciseList = () => {
   const { routines, addRoutine, getRoutineCount, deleteRoutine, selectedExerciseIds } =
     useRoutineStore();
 
-  const { data: session } = useSession();
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
   const [selectedTool, setSelectedTool] = useState('');
   const [selectedBodyPart, setSelectedBodyPart] = useState('');
@@ -134,7 +131,7 @@ const useExerciseList = () => {
     hasNextPage,
     isFetching,
     refetch,
-  } = useSearchExercise(filters, session);
+  } = useSearchExercise(filters);
 
   useEffect(() => {
     refetch();

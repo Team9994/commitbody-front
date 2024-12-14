@@ -1,6 +1,5 @@
 import { useArticlePostCommunityMutation } from '@/app/api/community/query';
 import useInput from '@/hooks/useInput';
-import { useSession } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -8,7 +7,6 @@ const useWrite = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const cur = searchParams.get('cur');
-  const { data: session } = useSession();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageDrawerOpen, setImageDrawerOpen] = useState(false);
@@ -57,7 +55,6 @@ const useWrite = () => {
       image: selectedFile,
       visibility: markScope,
       articleCategory: categoryScope,
-      session,
     });
 
     router.push('/community');

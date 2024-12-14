@@ -9,7 +9,7 @@ interface CertificationListProps {
   certifications: Certification[];
 }
 
-const CertificationList: React.FC<CertificationListProps> = ({ certifications }) => {
+const CertificationList: React.FC<CertificationListProps> = () => {
   const mock_certifications = [
     { id: '1', imageUrl: '/assets/heart_on.svg' },
     { id: '2', imageUrl: '/assets/heart_on.svg' },

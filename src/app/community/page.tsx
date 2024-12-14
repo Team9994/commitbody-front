@@ -9,7 +9,6 @@ import CategoryList from './components/CategoryList';
 import WriteButton from './components/WriteButton';
 import { Drawer } from '@/components/ui/drawer';
 import { useArticleCommunity } from '../api/community/query';
-import { useSession } from 'next-auth/react';
 import {
   mapCategoryToQueryCategory,
   mapMenuToQueryType,
@@ -20,7 +19,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import LazyComponent from './components/LazyComponent';
 
 const Community = () => {
-  const { data: session } = useSession();
   const [menuSelected, setMenuSelected] = useState<'certification' | 'question'>('certification');
   const [categorySelected, setCategorySelected] = useState('전체');
   const currentList = COMMUNITY_LIST[menuSelected] as { [key: string]: string };
@@ -33,7 +31,7 @@ const Community = () => {
     fetchNextPage,
     hasNextPage,
     isFetching,
-  } = useArticleCommunity({ session, type: queryType, category: queryCategory });
+  } = useArticleCommunity({ type: queryType, category: queryCategory });
 
   const [toggleDrawer, setToggleDrawer] = useState(false);
 

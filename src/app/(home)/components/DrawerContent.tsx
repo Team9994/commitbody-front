@@ -38,8 +38,7 @@ const DrawerContent = ({
               key={index}
               className="flex items-center w-full h-[76px] border-b border-backgrounds-default bg-backgrounds-sub pr-6 text-white"
             >
-              <Image src={'/assets/exercise_picture.svg'} alt="운동사진" width={76} height={76} />
-              {/* <div className="w-[76px]">사진영역</div> */}
+              <Image src={data.gifUrl} alt="운동사진" width={76} height={76} />
               <div className="flex justify-between flex-1 items-center">
                 <div className="text-left ml-4 text-md">{data.exerciseName}</div>
                 <div className="text-[#999999] min-w-8 text-xs font-normal">{data.sets}세트</div>

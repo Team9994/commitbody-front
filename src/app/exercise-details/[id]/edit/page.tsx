@@ -1,6 +1,6 @@
 'use client';
 import Header from '@/components/layouts/Header';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'; // useRouter import
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
@@ -16,7 +16,7 @@ const Edit = () => {
   const { data: session } = useSession();
   const pathSegments = pathname.split('/');
   const exerciseId = pathSegments[pathSegments.length - 2];
-  const { putCommentMutation } = useCommentPutMutation(exerciseId, session, 'default');
+  const { putCommentMutation } = useCommentPutMutation(exerciseId, 'default');
 
   const handleBack = () => {
     router.push(`/exercise-details/${exerciseId}?type=default`);
@@ -45,7 +45,6 @@ const Edit = () => {
               putCommentMutation.mutate({
                 exerciseCommentId,
                 content,
-                session,
               });
               handleBack();
             }}

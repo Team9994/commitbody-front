@@ -73,10 +73,10 @@ const HeaderMenu = ({ id }: HeaderMenuProps) => {
   const confirmDelete = () => {
     mutate({
       articleId: id,
-      session,
     });
     setRoutineToDelete(false);
     setActiveMenu(false);
+    router.push('./');
   };
 
   useEffect(() => {

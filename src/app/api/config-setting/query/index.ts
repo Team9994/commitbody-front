@@ -13,11 +13,10 @@ export const useWithdrawMutation = () => {
   });
 };
 
-export const useNotificationQuery = ({ session }: any) => {
+export const useNotificationQuery = () => {
   return useQuery({
     queryKey: ['notificationSettings'],
-    queryFn: () => getNotification({ session }),
-    enabled: !!session,
+    queryFn: () => getNotification(),
   });
 };
 

@@ -1,33 +1,24 @@
-import { api } from '@/lib/axios';
 import clientApi from '@/lib/clientAxios';
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
 
 const RECORD = {
   GET_RECORD_LIST: '/api/v1/record',
   GET_RECORD_DETAIL: (id: string) => `/api/v1/record/${id}`,
   POST_REGISTER_RECORD: '/api/v1/record',
   PUT_UPDATE_RECORD: (id: string) => `/api/v1/record/${id}`,
-  DELETE_RECORD: (id: string) => `/api/v1/record/${id}`, // 오타 수정
+  DELETE_RECORD: (id: string) => `/api/v1/record/${id}`,
 };
 
 export interface GetRecordPayload {
   year: string;
   month: string;
-  session: any;
 }
 
-const createAuthHeaders = (session: any) => ({
-  Authorization: `Bearer ${session?.accessToken}`,
-});
-
-export const getRecord = async ({ year, month, session }: GetRecordPayload) => {
+export const getRecord = async ({ year, month }: GetRecordPayload) => {
   const params = { year, month };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_LIST}`,
       {
-        headers: createAuthHeaders(session),
         params,
       }
     );
@@ -38,13 +29,10 @@ export const getRecord = async ({ year, month, session }: GetRecordPayload) => {
   }
 };
 
-export const getRecordDetail = async (recordId: string, session: any) => {
+export const getRecordDetail = async (recordId: string) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_DETAIL(recordId)}`,
-      {
-        headers: createAuthHeaders(session),
-      }
+    const res = await clientApi.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.GET_RECORD_DETAIL(recordId)}`
     );
     return res.data.data;
   } catch (error) {
@@ -65,18 +53,14 @@ export const postRegisterRecord = async (payload: any) => {
 // }
 interface PutRecordPayload {
   recordId: string;
-  session: any;
   data: any;
 }
 
-export const putRecord = async ({ recordId, session, data }: PutRecordPayload) => {
+export const putRecord = async ({ recordId, data }: PutRecordPayload) => {
   try {
-    const res = await axios.put(
+    const res = await clientApi.put(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.PUT_UPDATE_RECORD(recordId)}`,
-      data,
-      {
-        headers: createAuthHeaders(session),
-      }
+      data
     );
     return res.data;
   } catch (error) {
@@ -87,16 +71,12 @@ export const putRecord = async ({ recordId, session, data }: PutRecordPayload) =
 
 interface DeleteRecordPayload {
   recordId: string;
-  session: any;
 }
 
-export const deleteRecord = async ({ recordId, session }: DeleteRecordPayload) => {
+export const deleteRecord = async ({ recordId }: DeleteRecordPayload) => {
   try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.DELETE_RECORD(recordId)}`,
-      {
-        headers: createAuthHeaders(session),
-      }
+    const res = await clientApi.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${RECORD.DELETE_RECORD(recordId)}`
     );
     return res.data;
   } catch (error) {

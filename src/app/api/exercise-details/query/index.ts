@@ -9,12 +9,11 @@ import {
   putComment,
 } from '..';
 
-export const useCommentList = (id: string, session: any, source: 'default' | 'custom') => {
+export const useCommentList = (id: string, source: 'default' | 'custom') => {
   return useInfiniteQuery({
-    queryKey: ['get_comment', id, session, source],
+    queryKey: ['get_comment', id, source],
     queryFn: ({ pageParam = { lastId: null, size: 10 } }) =>
       getComment({
-        session,
         id,
         source,
         lastId: pageParam.lastId,
@@ -27,35 +26,29 @@ export const useCommentList = (id: string, session: any, source: 'default' | 'cu
       const nextLastId = lastComment ? lastComment.exerciseCommentId : null;
       return lastPage?.data?.hasNext ? { lastId: nextLastId, size: 10 } : undefined;
     },
-    enabled: !!session,
   });
 };
 
-export const useDetailsInfo = ({ id, session, source }: GetDetailsInfoPayload) => {
+export const useDetailsInfo = ({ id, source }: GetDetailsInfoPayload) => {
   return useQuery({
     queryKey: ['get_detail_exercise_info'],
-    queryFn: () => getDetailsInfo({ id, session, source }),
-    enabled: !!session,
+    queryFn: () => getDetailsInfo({ id, source }),
   });
 };
 
-export const useCommentPostLikeMutation = (
-  id: string,
-  session: any,
-  type: 'custom' | 'default'
-) => {
+export const useCommentPostLikeMutation = (id: string, type: 'custom' | 'default') => {
   const queryClient = useQueryClient();
   const postCommentLikeMutation = useMutation({
     mutationFn: postCommentLike,
     onSuccess: () => {
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+      queryClient.refetchQueries({ queryKey: ['get_comment', id, type] });
     },
   });
 
   return { postCommentLikeMutation };
 };
 
-export const useCommentPostMutation = (id: string, session: any, type: 'custom' | 'default') => {
+export const useCommentPostMutation = () => {
   const queryClient = useQueryClient();
   const postCommentMutation = useMutation({
     mutationFn: postComment,
@@ -68,20 +61,20 @@ export const useCommentPostMutation = (id: string, session: any, type: 'custom' 
   return { postCommentMutation };
 };
 
-export const useCommentPutMutation = (id: string, session: any, type: 'custom' | 'default') => {
+export const useCommentPutMutation = (id: string, type: 'custom' | 'default') => {
   const queryClient = useQueryClient();
   const putCommentMutation = useMutation({
     mutationFn: putComment,
     onSuccess: () => {
       alert('댓글이 수정되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+      queryClient.refetchQueries({ queryKey: ['get_comment', id, type] });
     },
   });
 
   return { putCommentMutation };
 };
 
-export const useCommentDeleteMutation = (id: string, session: any, type: 'custom' | 'default') => {
+export const useCommentDeleteMutation = (id: string, type: 'custom' | 'default') => {
   const queryClient = useQueryClient();
 
   const deleteMutation = useMutation({
@@ -89,7 +82,7 @@ export const useCommentDeleteMutation = (id: string, session: any, type: 'custom
 
     onSuccess: () => {
       alert('댓글이 삭제되었습니다.');
-      queryClient.refetchQueries({ queryKey: ['get_comment', id, session, type] });
+      queryClient.refetchQueries({ queryKey: ['get_comment', id, type] });
     },
   });
 

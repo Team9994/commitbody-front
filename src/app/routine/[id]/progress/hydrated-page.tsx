@@ -1,8 +1,6 @@
 import { auth } from '@/auth';
 import ProgressRoutineList from '@/app/routine/[id]/progress/components/ProgressRoutineList';
 import { getRoutineDetail } from '@/app/api/routine';
-import Header from '@/components/layouts/Header';
-import Back from '@/components/common/Back';
 interface RoutineProgressProps {
   routineId: string;
 }
@@ -13,7 +11,7 @@ const RoutineProgress = async ({ routineId }: RoutineProgressProps) => {
   // const routineId = params.id;
   // console.log('Routine ID:', routineId);
 
-  const response = await getRoutineDetail(routineId, session);
+  const response = await getRoutineDetail(routineId);
   const routineDetails = response?.data?.routineDtos[0];
 
   // console.log(routineDetails.exercises);

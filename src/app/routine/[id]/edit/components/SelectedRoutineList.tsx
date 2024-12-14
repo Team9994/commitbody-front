@@ -20,12 +20,13 @@ interface RoutineItem {
 }
 
 const SelectedRoutineList = ({ routines }: { routines: RoutineItem[] }) => {
+  console.log(routines);
   return (
     <div
       className="bg-backgrounds-default w-full overflow-y-scroll"
       style={{ height: 'calc(100vh - 148px - 20px)' }}
     >
-      {routines.map((list: RoutineItem) => (
+      {routines?.map((list: RoutineItem) => (
         <>
           <div
             key={list.routineDetailId}

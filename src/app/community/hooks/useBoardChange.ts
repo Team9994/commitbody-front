@@ -1,6 +1,5 @@
 import { useArticlePostCommunityMutation } from '@/app/api/community/query';
 import useInput from '@/hooks/useInput';
-import { useSession } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React, { useCallback, useState } from 'react';
 
@@ -8,7 +7,6 @@ const useBoardChange = () => {
   const router = useRouter();
   const params = useSearchParams();
   const type = params.get('type');
-  const { data: session } = useSession();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imageDrawerOpen, setImageDrawerOpen] = useState(false);
@@ -57,7 +55,6 @@ const useBoardChange = () => {
       image: selectedFile,
       visibility: markScope,
       articleCategory: categoryScope,
-      session,
     });
   };
 

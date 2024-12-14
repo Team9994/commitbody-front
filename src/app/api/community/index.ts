@@ -1,4 +1,4 @@
-import axios from 'axios';
+import clientApi from '@/lib/clientAxios';
 
 export const COMMUNITY = {
   GET_ARTICLE: '/api/v1/article',
@@ -17,26 +17,21 @@ export interface AricleDetailCommentCommunityPayload {
   commentId: number | null;
   lastId?: number;
   size?: number;
-  session: any;
 }
 
 export const getDetailCommentCommunity = async ({
   commentId,
   size,
   lastId,
-  session,
 }: AricleDetailCommentCommunityPayload) => {
   const params = {
     lastId,
     size,
   };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_COMMENT}/${commentId}/reply`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -52,7 +47,6 @@ export interface AricleCommunityPayload {
   category: 'ALL' | 'FOLLOWING' | 'POPULAR' | 'INFORMATION' | 'FEEDBACK' | 'BODY_REVIEW';
   lastId?: number;
   size: number;
-  session: any;
 }
 
 export const getArticleCommunity = async ({
@@ -60,7 +54,6 @@ export const getArticleCommunity = async ({
   category,
   size,
   lastId,
-  session,
 }: AricleCommunityPayload) => {
   const params = {
     type,
@@ -69,16 +62,12 @@ export const getArticleCommunity = async ({
     lastId,
   };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_ARTICLE}`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
-    console.log(res);
     return res.data;
   } catch (error) {
     console.error('Failed to fetch exercises:', error);
@@ -99,7 +88,6 @@ export interface ArticlePostCommunityPayload {
     | 'BODY_REVIEW'
     | '';
   visibility: 'PUBLIC' | 'FOLLOWERS_ONLY' | 'PRIVATE';
-  session: any;
   image?: File | null;
 }
 
@@ -110,7 +98,6 @@ export const postArticleCommunity = async ({
   articleCategory,
   visibility,
   image,
-  session,
 }: ArticlePostCommunityPayload) => {
   const formData = new FormData();
   const customArticleRequest = JSON.stringify({
@@ -127,14 +114,9 @@ export const postArticleCommunity = async ({
   }
 
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_ARTICLE}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      formData
     );
     return res;
   } catch (error) {
@@ -145,21 +127,12 @@ export const postArticleCommunity = async ({
 
 interface ArticleDeleteCommunityPayload {
   articleId: string;
-  session: any;
 }
 
-export const deleteArticleCommunity = async ({
-  articleId,
-  session,
-}: ArticleDeleteCommunityPayload) => {
+export const deleteArticleCommunity = async ({ articleId }: ArticleDeleteCommunityPayload) => {
   try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.DELTE_ARTICLE}/${articleId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.DELTE_ARTICLE}/${articleId}`
     );
     return res.data;
   } catch (error) {
@@ -170,23 +143,14 @@ export const deleteArticleCommunity = async ({
 
 interface ArticlePostLikeCommunityPayload {
   articleId: string;
-  session: any;
 }
 
-export const postArticleLikeCommunity = async ({
-  articleId,
-  session,
-}: ArticlePostLikeCommunityPayload) => {
+export const postArticleLikeCommunity = async ({ articleId }: ArticlePostLikeCommunityPayload) => {
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.POST_ARTICLE_LIKE}`,
       {
         articleId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
       }
     );
     return res.data;
@@ -198,26 +162,18 @@ export const postArticleLikeCommunity = async ({
 
 interface ArticlePostCommentLikeCommunityPayload {
   commentId: string;
-  session: any;
 }
 
 export const postArticleCommentLikeCommunity = async ({
   commentId,
-  session,
 }: ArticlePostCommentLikeCommunityPayload) => {
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.POST_ARTICLE_COMMENT_LIKE}`,
       {
         commentId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
       }
     );
-    console.log(res);
     return res.data;
   } catch (error) {
     console.error('Failed to fetch exercises:', error);
@@ -227,22 +183,15 @@ export const postArticleCommentLikeCommunity = async ({
 
 export interface ArticleInformGetCommunityPayload {
   articleId: string;
-  session: any;
   boardInformData?: any;
 }
 
 export const getArticleInformCommunity = async ({
   articleId,
-  session,
 }: ArticleInformGetCommunityPayload) => {
   try {
-    const res = await axios.get(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${articleId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.get(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${articleId}`
     );
     return res.data;
   } catch (error) {
@@ -254,7 +203,6 @@ export const getArticleInformCommunity = async ({
 interface ArticleCommentPostCommunityPayload {
   articleId: string;
   content: string;
-  session: any;
   parentId?: string;
   reply: boolean;
   replyNickname?: string;
@@ -263,7 +211,6 @@ interface ArticleCommentPostCommunityPayload {
 export const postArticleCommentCommunity = async ({
   articleId,
   content,
-  session,
   parentId,
   replyNickname,
 }: ArticleCommentPostCommunityPayload) => {
@@ -275,14 +222,9 @@ export const postArticleCommentCommunity = async ({
   };
 
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.POST_ARTICLE_COMMENT}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+      payload
     );
     return res.data;
   } catch (error) {
@@ -293,7 +235,6 @@ export const postArticleCommentCommunity = async ({
 
 export interface ArticleCommentInformGetCommunityPayload {
   articleId: string;
-  session: any;
   lastId?: number;
   size: number;
   selectCommentMenu: 'RECENT' | 'LIKE';
@@ -301,7 +242,6 @@ export interface ArticleCommentInformGetCommunityPayload {
 
 export const getArticleCommentInformCommunity = async ({
   articleId,
-  session,
   lastId,
   size,
   selectCommentMenu,
@@ -312,12 +252,9 @@ export const getArticleCommentInformCommunity = async ({
     sortOrder: selectCommentMenu,
   };
   try {
-    const res = await axios.get(
+    const res = await clientApi.get(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.GET_ARTICLE_COMMENT}/${articleId}/comment`,
       {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
         params,
       }
     );
@@ -330,21 +267,14 @@ export const getArticleCommentInformCommunity = async ({
 
 interface ArticleDeleteCommentCommunityPayload {
   commentId: string;
-  session: any;
 }
 
 export const deleteArticleCommentCommunity = async ({
   commentId,
-  session,
 }: ArticleDeleteCommentCommunityPayload) => {
   try {
-    const res = await axios.delete(
-      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.DLETE_ARTICLE_COMMENT}/${commentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
-      }
+    const res = await clientApi.delete(
+      `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${COMMUNITY.DLETE_ARTICLE_COMMENT}/${commentId}`
     );
     return res.data;
   } catch (error) {

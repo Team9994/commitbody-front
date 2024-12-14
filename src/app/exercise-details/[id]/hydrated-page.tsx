@@ -11,7 +11,7 @@ import Header from '@/components/layouts/Header';
 import Link from 'next/link';
 import Back from '@/components/common/Back';
 import Image from 'next/image';
-import { useDetailLikeRegister, useLikeRegister } from '@/app/api/exercise/query';
+import { useDetailLikeRegister } from '@/app/api/exercise/query';
 
 const ExerciseDetails = () => {
   const searchParams = useSearchParams();
@@ -28,16 +28,15 @@ const ExerciseDetails = () => {
   const { data: session } = useSession();
   const { postDetailLikeRegisterMutation } = useDetailLikeRegister();
 
-  const { data } = useDetailsInfo({ id: lastSegment, source: 'default', session });
+  const { data } = useDetailsInfo({ id: lastSegment, source: 'default' });
 
   const handleHeartChange = () => {
     postDetailLikeRegisterMutation.mutate({
       exerciseId: Number(lastSegment),
       source: type as 'custom' | 'default',
-      session,
     });
   };
-
+  console.log(data);
   return (
     <div>
       {lastSegment !== 'edit' && (
@@ -86,7 +85,6 @@ const ExerciseDetails = () => {
               </p>
             );
           })}
-
           <div className="w-[320px] h-[40px] rounded-6 border border-backgrounds-light text-s flex justify-between items-center px-4 mb-10 mt-5">
             <div className="leading-[18px] text-text-main ">더 자세한 동작을 알고싶다면?</div>
             <div className="leading-[18px] text-blue">동영상 보러 가기 </div>
