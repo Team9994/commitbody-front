@@ -9,6 +9,7 @@ import { getRoutineList } from '@/app/api/routine';
 export const revalidate = 0;
 export default async function Home() {
   const session = await auth();
+  console.log(session);
   if (!session?.user.name) {
     redirect('/sign');
   }
