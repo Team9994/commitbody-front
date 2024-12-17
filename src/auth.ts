@@ -93,12 +93,12 @@ export const {
             socialId: account.providerAccountId,
             fcmToken: (account as any).fcmToken || '',
           });
-          console.log(springResponse);
+
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
-            nickname: springResponse.data.data.nickname,
+            nickname: springResponse.data.data.tokenInfoDto.nickname,
             authMode: springResponse.data.data.authMode,
           };
         }

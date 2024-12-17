@@ -57,6 +57,19 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  * {
+    @apply border-border;
+    -ms-overflow-style: none; /* IE와 Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
 @layer base {
