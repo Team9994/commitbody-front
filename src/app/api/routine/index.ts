@@ -64,7 +64,7 @@ export const putUpdateRoutine = async (id: string, payload: Register_Routine_Pay
 
 export const deleteDeleteRoutine = async (id: string) => {
   try {
-    const res = await api.delete(
+    const res = await clientApi.delete(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${ROUTINE.DELETE_DELETE_ROUTINE(id)}`
     );
     return res.data;
