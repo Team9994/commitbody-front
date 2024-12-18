@@ -28,7 +28,8 @@ const useRoutine = () => {
     }
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     console.log(`${routineToDelete}가 삭제되었습니다.`);
     setRoutineToDelete(undefined);
     setActiveMenuId(undefined);
