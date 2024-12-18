@@ -93,4 +93,7 @@
   .custom-placeholder::placeholder {
     font-size: 18px;
   }
+  .zIndex {
+    z-index: 9999 !important;
+  }
 }

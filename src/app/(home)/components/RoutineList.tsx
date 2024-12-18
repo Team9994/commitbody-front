@@ -40,7 +40,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
               .reverse()
               .map((data) => (
                 <div
-                  className="bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative"
+                  className="relative bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main cursor-pointer"
                   key={data.routineId}
                   onClick={() => toggleDrawer(data.routineId)}
                 >
@@ -65,24 +65,32 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                   {activeMenuId === data.routineId && (
                     <div
                       ref={menuRef}
-                      className="absolute top-[calc(50%-12px)] z-10 right-5 shadow-main bg-backgrounds-light text-md"
+                      className="absolute top-[calc(50%-12px)] right-5 shadow-main bg-backgrounds-light text-md zIndex"
                     >
-                      <div className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub">
+                      {/* <div
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                          e.stopPropagation();
+                        }}
+                        className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
+                      >
                         수정
-                      </div>
+                      </div> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <div
                             className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
-                            onClick={() => setRoutineToDelete(data.routineId)}
+                            onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                              e.stopPropagation();
+                              setRoutineToDelete(data.routineId);
+                            }}
                           >
                             삭제
                           </div>
                         </AlertDialogTrigger>
-                        <AlertDialogOverlay className="bg-[rgba(0, 0, 0, 0.7)]" />
+                        <AlertDialogOverlay className="bg-[rgba(0, 0, 0,0.1)" />
                         <AlertDialogContent className="w-[296px] h-[148px] bg-backgrounds-sub rounded-6 p-0 flex flex-col items-center text-text-main border-none">
                           <AlertDialogHeader className="text-center">
-                            <AlertDialogTitle className="text-lg py-[19px] pb-[11px] font-semibold leading-[26px]">
+                            <AlertDialogTitle className="text-lg py-[19px] pb-[11px] font-semibold leading-[26px] text-center">
                               루틴 삭제
                             </AlertDialogTitle>
                             <AlertDialogDescription className="text-sm font-normal leading-5 text-text-main">
@@ -92,14 +100,17 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                           <div className="flex items-center h-12">
                             <AlertDialogCancel
                               className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-light text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
-                              onClick={() => setRoutineToDelete(undefined)}
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent hover:text-text-main"
+                              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+                                setRoutineToDelete(undefined);
+                              }}
                             >
                               취소
                             </AlertDialogCancel>
                             <AlertDialogAction
                               className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-accent text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent hover:font-bold"
                               onClick={confirmDelete}
                             >
                               삭제
@@ -129,7 +140,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
         </Link>
         <Drawer open={drawerToggle} onClose={() => toggleDrawer(selectedId)}>
           <div
-            className={`fixed w-full h-screen inset-0 bg-backgrounds-default opacity-70 z-40 transition-opacity duration-300 ${
+            className={`fixed w-full h-screen inset-0 bg-backgrounds-default opacity-70 transition-opacity duration-300 ${
               drawerToggle ? 'opacity-70 visible' : 'opacity-0 invisible'
             }`}
             onClick={() => toggleDrawer(selectedId)}

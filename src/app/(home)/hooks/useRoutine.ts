@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useDeleteRoutineMutation } from '@/app/api/routine/query';
 
 const useRoutine = () => {
+  const { deleteRoutineMutation } = useDeleteRoutineMutation();
   const [activeMenuId, setActiveMenuId] = useState<number | undefined>(undefined);
   const [routineToDelete, setRoutineToDelete] = useState<number | undefined>(undefined);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -28,10 +30,14 @@ const useRoutine = () => {
     }
   };
 
-  const confirmDelete = () => {
-    console.log(`${routineToDelete}가 삭제되었습니다.`);
-    setRoutineToDelete(undefined);
-    setActiveMenuId(undefined);
+  const confirmDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (routineToDelete) {
+      deleteRoutineMutation.mutate(String(routineToDelete));
+      window.location.reload();
+      setRoutineToDelete(undefined);
+      setActiveMenuId(undefined);
+    }
   };
 
   const moveRouter = (id: number, type: string) => {
