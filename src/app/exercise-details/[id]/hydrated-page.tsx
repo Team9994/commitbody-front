@@ -6,7 +6,6 @@ import Comment from '../components/Comment';
 import Record from '../components/Record';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDetailsInfo } from '@/app/api/exercise-details/query';
-import { useSession } from 'next-auth/react';
 import Header from '@/components/layouts/Header';
 import Link from 'next/link';
 import Back from '@/components/common/Back';
@@ -25,7 +24,6 @@ const ExerciseDetails = () => {
   const pathSegments = pathname.split('/');
   const lastSegment = pathSegments[pathSegments.length - 1];
 
-  const { data: session } = useSession();
   const { postDetailLikeRegisterMutation } = useDetailLikeRegister();
 
   const { data } = useDetailsInfo({ id: lastSegment, source: 'default' });
@@ -87,7 +85,14 @@ const ExerciseDetails = () => {
           })}
           <div className="w-[320px] h-[40px] rounded-6 border border-backgrounds-light text-s flex justify-between items-center px-4 mb-10 mt-5">
             <div className="leading-[18px] text-text-main ">더 자세한 동작을 알고싶다면?</div>
-            <div className="leading-[18px] text-blue">동영상 보러 가기 </div>
+            <Link
+              href={`https://www.youtube.com/results?search_query=${data?.data?.exerciseName}`}
+              className="cursor-pointer leading-[18px] text-blue"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              동영상 보러 가기
+            </Link>
           </div>
           <Comment />
         </div>

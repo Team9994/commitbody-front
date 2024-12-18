@@ -80,7 +80,7 @@ const ExerciseInfo = ({ id, type, info }: ExerciseInfoProps) => {
       <p className="text-sm leading-5 text-text-light mb-4">
         {info?.exerciseTarget} : {info?.exerciseEquipment}
       </p>
-      <div className="w-full h-[184px] bg-backgrounds-light mb-2 relative">
+      <div className="w-full h-[250px] bg-backgrounds-light mb-2 relative">
         {info?.gifUrl === '등록된 이미지 파일이 없습니다.' ? null : (
           <Image src={info.gifUrl} alt={'운동 이미지'} fill />
         )}
