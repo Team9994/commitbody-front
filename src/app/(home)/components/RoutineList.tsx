@@ -33,7 +33,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
   return (
     <>
       <div>
-        <div className="overflow-y-scroll min-h-[535px] max-h-[535px]">
+        <div className="overflow-y-scroll max-h-[535px]">
           {routineList?.length > 0 &&
             routineList
               ?.slice()
@@ -67,14 +67,14 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                       ref={menuRef}
                       className="absolute top-[calc(50%-12px)] right-5 shadow-main bg-backgrounds-light text-md zIndex"
                     >
-                      <div
+                      {/* <div
                         onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                           e.stopPropagation();
                         }}
                         className="w-[152px] h-[46px] text-text-main p-3 cursor-pointer border-b border-borders-sub"
                       >
                         수정
-                      </div>
+                      </div> */}
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <div
@@ -100,7 +100,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                           <div className="flex items-center h-12">
                             <AlertDialogCancel
                               className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-light text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent hover:text-text-main"
                               onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 setRoutineToDelete(undefined);
@@ -110,7 +110,7 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
                             </AlertDialogCancel>
                             <AlertDialogAction
                               className="w-[148px] h-full m-0 p-0 text-md font-medium bg-transparent leading-[22px] text-text-accent text-center cursor-pointer border-none
-              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent"
+              focus:outline-none focus:ring-0 active:bg-transparent hover:bg-transparent hover:font-bold"
                               onClick={confirmDelete}
                             >
                               삭제
@@ -127,7 +127,6 @@ const RoutineList = ({ routineList }: { routineList: RoutineDto[] }) => {
         <Link
           href="./routine/new"
           className="flex items-center hover:cursor-pointer bg-backgrounds-sub rounded-6 h-[76px] box-border mb-3 mx-5 p-4 text-text-main relative border-[1px] border-dashed border-borders-main"
-          style={{ zIndex: 0 }}
         >
           <p className="text-md leading-[22px] text-text-light">새로운 루틴을 추가해보세요</p>
 

@@ -21,16 +21,16 @@ const UserInfo = ({ userInfo }: { userInfo: UserInfoType }) => {
     <div className="flex items-center justify-between h-[104px] px-4 ">
       <div className="flex items-center space-x-3">
         <Image
-          src={userInfo.profile}
+          src={userInfo?.profile}
           alt="Profile"
           width={64}
           height={64}
           className="rounded-full"
         />
         <div>
-          <h2 className="text-lg font-semibold text-white">{userInfo.nickname}</h2>
+          <h2 className="text-lg font-semibold text-white">{userInfo?.nickname}</h2>
           <p className="text-sm text-gray-600">
-            팔로워 {userInfo.followerCount} · 팔로잉 {userInfo.followingCount}
+            팔로워 {userInfo?.followerCount} · 팔로잉 {userInfo?.followingCount}
           </p>
         </div>
       </div>
