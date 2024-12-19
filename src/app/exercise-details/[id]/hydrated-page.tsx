@@ -1,29 +1,31 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ExerciseInfo from '../components/ExerciseInfo';
 import SelectToggle from '../components/SelectToggle';
 import Comment from '../components/Comment';
 import Record from '../components/Record';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDetailsInfo } from '@/app/api/exercise-details/query';
 import Header from '@/components/layouts/Header';
 import Link from 'next/link';
 import Back from '@/components/common/Back';
 import Image from 'next/image';
-import { useDetailLikeRegister } from '@/app/api/exercise/query';
+import { useDeleteCustomExerciseMutation, useDetailLikeRegister } from '@/app/api/exercise/query';
 
 const ExerciseDetails = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
   const [selected, setSelected] = useState<'explain' | 'record'>(
     type === 'default' ? 'explain' : 'record'
   );
-
+  const [isActiveMenu, setIsActiveMenu] = useState<boolean>(false);
   const pathname = usePathname();
 
   const pathSegments = pathname.split('/');
   const lastSegment = pathSegments[pathSegments.length - 1];
 
+  const { deleteCustomExerciseMutation } = useDeleteCustomExerciseMutation();
   const { postDetailLikeRegisterMutation } = useDetailLikeRegister();
 
   const { data } = useDetailsInfo({ id: lastSegment, source: 'default' });
@@ -34,6 +36,21 @@ const ExerciseDetails = () => {
       source: type as 'custom' | 'default',
     });
   };
+
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (e: Event) => {
+    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+      setIsActiveMenu(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   console.log(data);
   return (
     <div>
@@ -57,21 +74,50 @@ const ExerciseDetails = () => {
                 height={24}
               />
               {type === 'custom' && (
-                <Image
-                  onClick={handleHeartChange}
-                  priority
-                  src={'/assets/menu.svg'}
-                  alt={'찜하기'}
-                  width={28}
-                  height={28}
-                  className="ml-4 rotate-90"
-                />
+                <div className="relative">
+                  <Image
+                    priority
+                    src={'/assets/menu.svg'}
+                    alt={'메뉴'}
+                    width={28}
+                    height={28}
+                    className="ml-4 rotate-90"
+                    onClick={() => setIsActiveMenu((pre) => !pre)}
+                  />
+                  {isActiveMenu && (
+                    <div
+                      ref={menuRef}
+                      className="absolute top-0 z-20 right-0 shadow-main bg-backgrounds-light text-md"
+                    >
+                      <div
+                        onClick={() => {
+                          router.push(
+                            `/custom-exercise?status=edit&exerciseId=${data?.data?.exerciseId}`
+                          );
+                        }}
+                        className="cursor-pointer w-[152px] h-[46px] text-text-main p-3 border-b border-borders-sub"
+                      >
+                        수정
+                      </div>
+                      <div
+                        onClick={() =>
+                          deleteCustomExerciseMutation.mutate({
+                            id: String(data?.data?.exerciseId),
+                          })
+                        }
+                        className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
+                      >
+                        삭제
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           }
         />
       )}
-      <ExerciseInfo id={lastSegment} type={type} info={data?.data} />
+      <ExerciseInfo info={data?.data} />
       <SelectToggle type={type} selected={selected} setSelected={setSelected} />
       {type === 'default' && selected === 'explain' && (
         <div className="w-full px-5 mt-4 mb-10">

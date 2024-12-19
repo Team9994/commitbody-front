@@ -6,14 +6,12 @@ import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import useInput from '@/hooks/useInput';
 import { useCommentPutMutation } from '@/app/api/exercise-details/query';
-import { useSession } from 'next-auth/react';
 
 const Edit = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const exerciseCommentId = searchParams.get('exerciseCommentId');
-  const { data: session } = useSession();
   const pathSegments = pathname.split('/');
   const exerciseId = pathSegments[pathSegments.length - 2];
   const { putCommentMutation } = useCommentPutMutation(exerciseId, 'default');
