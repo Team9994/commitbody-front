@@ -58,7 +58,7 @@ const ExerciseDetails = () => {
         <Header
           className={'bg-backgrounds-default'}
           left={
-            <Link href="/">
+            <Link href="/exercise-list/search">
               <Back />
             </Link>
           }
