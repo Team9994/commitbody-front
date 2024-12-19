@@ -4,6 +4,7 @@ import React from 'react';
 import useExplain from '../hooks/useExplain';
 import { CommentList } from '../types';
 import { usePathname } from 'next/navigation';
+import defaultPng from './../../../../public/assets/my.svg';
 
 const Comment = () => {
   const {
@@ -20,6 +21,7 @@ const Comment = () => {
     contentReset,
     router,
     id,
+    session,
   } = useExplain();
 
   const pathname = usePathname();
@@ -33,6 +35,12 @@ const Comment = () => {
           className="w-full h-[40px] bg-backgrounds-light focus:outline-none border-none placeholder-[#999999]"
           placeholder="댓글을 작성해보세요"
           onChange={onChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              postCommentMutation.mutate({ content, exerciseId: id });
+              contentReset();
+            }
+          }}
           value={content}
         />
         <Image
@@ -60,7 +68,10 @@ const Comment = () => {
         ?.flatMap((page) => page?.data?.commentList)
         ?.map((data: CommentList) => (
           <section key={data?.exerciseCommentId} className="flex relative w-full mb-7">
-            <div className="bg-backgrounds-sub w-6 h-6 rounded-full" />
+            <div className="relative w-6 h-6 rounded-16 overflow-hidden">
+              <Image src={session?.user?.image || defaultPng} alt="프로필 사진" fill />
+            </div>
+
             <div className="ml-2">
               <div className="text-xs mb-2">
                 <span className="mr-2 text-text-sub">{data?.nickName}</span>
@@ -85,14 +96,16 @@ const Comment = () => {
                 <p className={data?.likeStatus ? 'text-blue' : ''}>{data?.likeCount}</p>
               </div>
             </div>
-            <Image
-              className="absolute top-0 right-0 cursor-pointer"
-              src="/assets/menu.svg"
-              width={18}
-              height={18}
-              alt="menu"
-              onClick={() => handleMenuClick(data?.exerciseCommentId)}
-            />
+            {data?.writer && (
+              <Image
+                className="absolute top-0 right-0 cursor-pointer"
+                src="/assets/menu.svg"
+                width={18}
+                height={18}
+                alt="menu"
+                onClick={() => handleMenuClick(data?.exerciseCommentId)}
+              />
+            )}
 
             {data?.writer && activeMenuId === data?.exerciseCommentId && (
               <div
