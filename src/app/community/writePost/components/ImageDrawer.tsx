@@ -29,7 +29,7 @@ const ImageDrawer = ({
             imageDrawerOpen ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
-          <div className="flex justify-center items-center h-15">
+          <div className="flex justify-center items-center h-15 hover:opacity-80 cursor-pointer">
             <Image
               onClick={handleDrawerClose}
               className="absolute top-4 right-4 cursor-pointer"
@@ -42,13 +42,13 @@ const ImageDrawer = ({
 
           <label
             htmlFor="image-upload"
-            className="block text-center py-3 text-text-main border-t border-[#FFFFFF40]"
+            className="block text-center py-3 text-text-main border-t border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             사진 등록
           </label>
           <label
             htmlFor="image-upload"
-            className="block text-center py-3 text-text-main border-t border-[#FFFFFF40]"
+            className="block text-center py-3 text-text-main border-t border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             영상 등록
           </label>

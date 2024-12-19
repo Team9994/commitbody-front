@@ -1,5 +1,4 @@
 import { usePostSearchRecordMutation } from '@/app/api/search/query';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
@@ -9,7 +8,6 @@ interface UseHeaderProps {
 }
 const useHeader = ({ searchParams, search }: UseHeaderProps) => {
   const router = useRouter();
-  const { data: session } = useSession();
   const postSearchMutation = usePostSearchRecordMutation();
   const [isFocused, setIsFocused] = useState(false);
 

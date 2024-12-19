@@ -16,12 +16,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import useWrite from './hooks/useWrite';
 import CategoryScopeDrawer from './components/CategoryScopeDrawer';
-import {
-  alertPostBoard,
-  mapCategoryToQueryCategory,
-  mapQueryCategoryToCategory,
-  mapQueryMarkScopeToMarkScope,
-} from '../utils';
+import { alertPostBoard, mapQueryCategoryToCategory, mapQueryMarkScopeToMarkScope } from '../utils';
 
 const WritePost = () => {
   const {

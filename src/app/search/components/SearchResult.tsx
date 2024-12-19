@@ -27,6 +27,7 @@ const SearchResult = () => {
     refetch();
   };
 
+  console.log(data);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-2 px-5 py-3 overflow-x-scroll scrollbar-hide">
