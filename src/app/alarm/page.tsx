@@ -9,8 +9,6 @@ const Alarm = () => {
   const router = useRouter();
   const { data } = useAlarm();
 
-  console.log(data.data?.notifications);
-  console.log(data.data?.notifications.map);
   return (
     <div className="min-h-screen bg-backgrounds-default text-text-main">
       <Header
