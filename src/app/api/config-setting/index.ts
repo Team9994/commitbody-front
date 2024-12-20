@@ -50,7 +50,7 @@ export const getNotification = async () => {
 
 export const postNotification = async () => {
   try {
-    const res = await axios.post(
+    const res = await clientApi.post(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${CONFIG.POST_NOTIFICATION}`,
       { check: true }
     );

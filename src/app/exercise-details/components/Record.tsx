@@ -30,7 +30,7 @@ const Record = ({ info }: RecordType) => {
         </div>
 
         <div className="flex flex-col justify-center text-center bg-[#324151] rounded-6 min-w-25 h-16">
-          <p className="text-xs text-text-sub leading-[18px] mb-1">총 볼륨</p>
+          <p className="text-xs text-text-sub leading-[18px] mb-1">총 횟수</p>
           <p>
             <strong className="text-text-main text-lg leading-[26px]">
               {info?.totalValue || 0}
@@ -50,7 +50,7 @@ const Record = ({ info }: RecordType) => {
         </div>
 
         <div className="flex flex-col justify-center text-center bg-[#324151] rounded-6 min-w-25 h-16">
-          <p className="text-xs text-text-sub leading-[18px] mb-1">주간 볼륨</p>
+          <p className="text-xs text-text-sub leading-[18px] mb-1">주간 횟수</p>
           <p>
             <strong className="text-text-main text-lg leading-[26px]">
               {info?.weekValue || 0}
@@ -62,7 +62,7 @@ const Record = ({ info }: RecordType) => {
 
       <div className="mb-10 bg-backgrounds-sub rounded-6 px-4 mx-5">
         <div className="flex items-center pt-4 pb-2">
-          <span className="text-sm text-text-sub leading-[18px] px-2 mr-2">주간 볼륨</span>
+          <span className="text-sm text-text-sub leading-[18px] px-2 mr-2">주간 횟수</span>
           <strong className="text-text-main text-lg leading-[26px]">{info?.weekValue || 0}</strong>
           <span className="text-s text-text-sub leading-[18px]">kg</span>
         </div>

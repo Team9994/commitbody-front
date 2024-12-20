@@ -19,7 +19,7 @@ const Footer = () => {
     <nav className="bg-[#292C33] max-w-[500px] w-full mx-auto font-medium fixed bottom-0 left-0 right-0 h-[58px] text-[10px] rounded-t-[16px]">
       <ul className="flex justify-around h-full items-center">
         {navItems.map((item) => {
-          const isActive = path === item.href;
+          const isActive = decodeURIComponent(path) === item.href;
           return (
             <li key={item.href} className="flex flex-col items-center">
               <Link

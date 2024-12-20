@@ -1,12 +1,15 @@
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
-interface Question {
-  id: string;
+// Question 타입 정의
+export interface Question {
+  articleId: string;
+  articleCategory: string;
   title: string;
-  likes: number;
-  comments: number;
-  views: number;
+  commentCount: number;
+  time: string;
+  likeCount: number;
   imageUrl: string;
 }
 
@@ -14,104 +17,39 @@ interface QuestionListProps {
   questions: Question[];
 }
 
-const HeartIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-  </svg>
-);
-
-const CommentIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-  </svg>
-);
-
-const EyeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-    <circle cx="12" cy="12" r="3"></circle>
-  </svg>
-);
-
-const QuestionList: React.FC<QuestionListProps> = ({ questions }) => {
-  const mock_questions = [
-    {
-      id: '1',
-      title: '질문 1',
-      likes: 10,
-      comments: 2,
-      views: 3,
-      imageUrl: '/assets/heart_on.svg',
-    },
-    {
-      id: '2',
-      title: '질문 2',
-      likes: 10,
-      comments: 2,
-      views: 3,
-      imageUrl: '/assets/heart_on.svg',
-    },
-  ];
+const QuestionList = ({ questions }: QuestionListProps) => {
+  const router = useRouter();
   return (
-    <div className="p-4  text-white">
-      <ul className="space-y-4">
-        {mock_questions.map((question) => (
-          <li key={question.id} className="border-b border-gray-700 pb-4 flex">
-            <div className="flex flex-col flex-grow">
-              <h3 className="text-lg mb-2">{question.title}</h3>
-              <div className="flex space-x-4 text-sm text-gray-400">
-                <span className="flex items-center">
-                  <HeartIcon />
-                  <span className="ml-1">{question.likes}</span>
-                </span>
-                <span className="flex items-center">
-                  <CommentIcon />
-                  <span className="ml-1">{question.comments}</span>
-                </span>
-                <span className="flex items-center">
-                  <EyeIcon />
-                  <span className="ml-1">{question.views}</span>
-                </span>
+    <div className="p-4 text-white">
+      <ul className="mb-20">
+        {questions.map((question) => (
+          <li
+            onClick={() => router.push(`/community/${question?.articleId}?type=question`)}
+            key={question.articleId}
+            className="flex justify-between items-center py-3 border-b border-black cursor-pointer"
+          >
+            <div className="flex-grow">
+              <div className="inline-block rounded-[4px] bg-backgrounds-sub px-2 py-0.5 text-text-light text-xs">
+                {question.articleCategory === 'INFORMATION' && '정보'}
+              </div>
+              <h4 className="font-bold text-md text-text-main my-2">{question.title}</h4>
+              <div className="flex text-text-light text-[11px]">
+                <Image src={'/assets/search.svg'} alt={'View Count'} width={16} height={16} />
+                <span className="mr-2">{question.likeCount || 0}</span>
+                <Image
+                  src={'/assets/speechBubble.svg'}
+                  alt={'Comment Count'}
+                  width={16}
+                  height={16}
+                />
+                <span>{question.commentCount || 0}</span>
+                <span className="ml-2">{question.time}</span>
               </div>
             </div>
-            <div className="flex-shrink-0 mr-4">
-              <Image
-                src={question.imageUrl}
-                alt="Question thumbnail"
-                width={80}
-                height={80}
-                className="rounded-md object-cover"
-              />
+            <div>
+              {question.imageUrl && question.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
+                <Image src={question.imageUrl} width={68} height={68} alt="Question Thumbnail" />
+              )}
             </div>
           </li>
         ))}

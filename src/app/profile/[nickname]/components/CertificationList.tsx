@@ -1,7 +1,8 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
-interface Certification {
-  id: string;
+export interface Certification {
+  articleId: string;
   imageUrl: string;
 }
 
@@ -9,27 +10,25 @@ interface CertificationListProps {
   certifications: Certification[];
 }
 
-const CertificationList: React.FC<CertificationListProps> = () => {
-  const mock_certifications = [
-    { id: '1', imageUrl: '/assets/heart_on.svg' },
-    { id: '2', imageUrl: '/assets/heart_on.svg' },
-    { id: '3', imageUrl: '/assets/heart_on.svg' },
-    { id: '4', imageUrl: '/assets/heart_on.svg' },
-    { id: '5', imageUrl: '/assets/heart_on.svg' },
-  ];
+const CertificationList = ({ certifications }: CertificationListProps) => {
+  console.log(certifications);
   return (
-    <div className="p-4">
-      <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
-        {mock_certifications.map((cert) => (
-          <div key={cert.id} className="aspect-square relative">
-            <Image
-              src={'/assets/heart_on.svg'}
-              alt="운동 인증"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md"
-            />
-          </div>
+    <div>
+      <div className="grid grid-cols-3 gap-2">
+        {certifications?.map((cert) => (
+          <Link key={cert?.articleId} href={`/community/${cert?.articleId}?type=certification`}>
+            <div
+              className="aspect-square relative cursor-pointer"
+              style={{
+                width: '100%',
+                height: 'auto',
+                aspectRatio: '1',
+                objectFit: 'cover',
+              }}
+            >
+              <Image src={cert?.imageUrl} alt="운동 인증" fill />
+            </div>
+          </Link>
         ))}
       </div>
     </div>

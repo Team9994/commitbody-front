@@ -194,7 +194,7 @@ const Community = () => {
                             {article.imageUrl &&
                               article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
                                 <Image
-                                  src={article.imageUrl}
+                                  src={article.imageUrl || ''}
                                   width={68}
                                   height={68}
                                   alt="게시글 썸네일"

@@ -34,12 +34,12 @@ const UserInfo = ({ userInfo }: { userInfo: UserInfoType }) => {
           </p>
         </div>
       </div>
-      <button
+      {/* <button
         className="px-4 py-2 text-text-light bg-backgrounds-sub rounded-md"
         onClick={handleEditProfile}
       >
         프로필 수정
-      </button>
+      </button> */}
     </div>
   );
 };
