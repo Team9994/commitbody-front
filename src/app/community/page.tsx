@@ -70,7 +70,7 @@ const Community = () => {
                 <Link href="/find-user">
                   <Image src={'/assets/profilePlus.svg'} alt={'친구추가'} width={28} height={28} />
                 </Link>
-                <Link href="/notification" className="flex items-center">
+                <Link href="/alarm" className="flex items-center">
                   <Image src={'/assets/bell.svg'} alt={'알림'} width={17} height={21} />
                 </Link>
               </div>
@@ -194,7 +194,7 @@ const Community = () => {
                             {article.imageUrl &&
                               article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
                                 <Image
-                                  src={article.imageUrl}
+                                  src={article.imageUrl || ''}
                                   width={68}
                                   height={68}
                                   alt="게시글 썸네일"

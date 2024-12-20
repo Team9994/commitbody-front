@@ -12,6 +12,7 @@ const FindUserContent = () => {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('q') || '';
   const [search, setSearch] = useState(initialSearch);
+  const [focus, setFocus] = useState(false);
 
   const {
     data: findUserData,
@@ -62,18 +63,23 @@ const FindUserContent = () => {
         className="relative z-20"
       />
       <div className="relative my-4 mx-5 bg-backgrounds-light rounded-6 h-10">
-        <Image
-          onClick={() => handlePostSearch()}
-          className="absolute left-3 top-2 cursor-pointer"
-          src="/assets/search.svg"
-          alt="돋보기"
-          width={24}
-          height={24}
-        />
+        {!focus && (
+          <Image
+            onClick={() => handlePostSearch()}
+            className="absolute left-3 top-2 cursor-pointer"
+            src="/assets/search.svg"
+            alt="돋보기"
+            width={24}
+            height={24}
+          />
+        )}
+
         <Input
-          className="pl-10 placeholder:text-base placeholder:text-text-light bg-backgrounds-light text-white rounded-md border border-transparent focus:outline-none focus:ring-0 focus:border-transparent"
+          className={`${focus ? 'pl-4' : 'pl-10'} cursor-pointer placeholder:text-base placeholder:text-text-light bg-backgrounds-light text-white rounded-md border border-transparent focus:outline-none focus:ring-0 focus:border-transparent transition-all`}
           placeholder="검색"
           onChange={handleChange}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
           type="text"
           style={{ boxShadow: 'none' }}
           autoCorrect="off"
@@ -85,7 +91,7 @@ const FindUserContent = () => {
       )}
       {!isLoading ? (
         findUserData?.data?.members?.map((user) => (
-          <div className="flex items-center px-5 py-3" key={user.memberId}>
+          <div className="flex items-center px-5 py-3 cursor-pointer" key={user.memberId}>
             <Image
               src={user.profile}
               width={48}
