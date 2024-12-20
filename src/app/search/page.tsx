@@ -25,16 +25,19 @@ const Search = () => {
           <Image priority src={'/assets/back.svg'} alt={'뒤로가기'} width={24} height={24} />
         </div>
         <div className="relative flex flex-grow bg-backgrounds-light items-center rounded-6 h-10 my-4">
-          <Image
-            onClick={handlePostSearch}
-            className="absolute left-3 top-2 cursor-pointer"
-            src="/assets/search.svg"
-            alt="돋보기"
-            width={24}
-            height={24}
-          />
+          {!isFocused && (
+            <Image
+              onClick={handlePostSearch}
+              className="absolute left-3 top-2 cursor-pointer"
+              src="/assets/search.svg"
+              alt="돋보기"
+              width={24}
+              height={24}
+            />
+          )}
+
           <Input
-            className="w-full pl-10 placeholder:text-base placeholder:text-text-light bg-backgrounds-light text-white rounded-md border border-transparent focus:outline-none focus:ring-0 focus:border-transparent"
+            className={`w-full ${isFocused ? 'pl-4' : 'pl-10'} placeholder:text-base placeholder:text-text-light bg-backgrounds-light text-white rounded-md border border-transparent focus:outline-none focus:ring-0 focus:border-transparent transition-all`}
             placeholder="검색"
             value={search}
             onChange={handleChange}

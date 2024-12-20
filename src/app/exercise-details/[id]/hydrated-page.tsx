@@ -51,7 +51,6 @@ const ExerciseDetails = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-  console.log(data);
   return (
     <div>
       {lastSegment !== 'edit' && (

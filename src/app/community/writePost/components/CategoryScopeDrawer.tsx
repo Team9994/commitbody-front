@@ -27,7 +27,7 @@ const CategoryScopeDrawer = ({
           onClick={handleCategoryDrawerClose}
         ></div>
         <div
-          className={`fixed bg-backgrounds-sub h-[260px] w-full text-text-main rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
+          className={`fixed bg-backgrounds-sub h-[260px] max-w-[500px] mx-auto w-full text-text-main rounded-tl-[28px] rounded-tr-[28px] overflow-y-auto z-50 bottom-0 left-0 right-0 transition-transform duration-300 ease-in-out transform ${
             categoryDrawerOpen ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
@@ -45,25 +45,25 @@ const CategoryScopeDrawer = ({
 
           <div
             onClick={() => handleCategoryChange('ALL')}
-            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             전체
           </div>
           <div
             onClick={() => handleCategoryChange('INFORMATION')}
-            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             정보
           </div>
           <div
             onClick={() => handleCategoryChange('FEEDBACK')}
-            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             운동 피드백
           </div>
           <div
             onClick={() => handleCategoryChange('BODY_REVIEW')}
-            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40]"
+            className="text-center py-3 text-text-main border-t-[0.5px] border-[#FFFFFF40] hover:opacity-80 cursor-pointer"
           >
             몸평
           </div>

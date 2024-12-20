@@ -4,6 +4,7 @@ import ArticleInform from '../components/ArticleInform';
 import Back from '@/components/common/Back';
 import ArticleComment from '../components/ArticleComment';
 import HeaderMenu from '../components/HeaderMenu';
+import Link from 'next/link';
 
 const exerciseWriteDetail = ({ params }: { params: { id: string } }) => {
   return (
@@ -12,7 +13,9 @@ const exerciseWriteDetail = ({ params }: { params: { id: string } }) => {
         className="bg-backgrounds-default relative"
         left={
           <div>
-            <Back />
+            <Link href="/community">
+              <Back />
+            </Link>
           </div>
         }
         right={

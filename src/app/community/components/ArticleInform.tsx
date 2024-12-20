@@ -3,13 +3,14 @@ import { auth } from '@/auth';
 import Image from 'next/image';
 import React from 'react';
 import ArticleLike from './ArticleLike';
+import AutoBack from './AutoBack';
+import FollowBtn from './FollowBtn';
 interface ArticleInformProps {
   id: string;
 }
 
 const ArticleInform = async ({ id }: ArticleInformProps) => {
   const session = await auth();
-
   const res = await fetch(
     `${process.env.SPRING_BACKEND_URL}${COMMUNITY.GET_DETAIL_ARTICLE}/${id}`,
     {
@@ -27,6 +28,11 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
   }
 
   const data = await res.json();
+  console.log(data);
+  if (data.data.member.blockStatus) {
+    alert('차단한 사용자입니다. 이전 페이지로 이동합니다.');
+    return <AutoBack />;
+  }
 
   return (
     <>
@@ -44,11 +50,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
             <p className="text-[11px] text-text-light">{data.data.time}</p>
           </div>
         </div>
-        {!data.data.postOwner ? (
-          <div className="flex justify-center items-center w-[81px] h-7 bg-[#1F3750] text-blue text-sm rounded-[4px]">
-            {data.data.followStatus}
-          </div>
-        ) : null}
+        {!data.data.postOwner ? <FollowBtn data={data} /> : null}
       </div>
       {data.data.title && (
         <div className="flex px-5 py-4 items-center">
@@ -58,7 +60,7 @@ const ArticleInform = async ({ id }: ArticleInformProps) => {
           <div>{data.data.title}</div>
         </div>
       )}
-      {data.data.imageUrl !== '등록된 이미지가 없습니다.' && (
+      {data.data.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
         <div className="w-full h-[360px] relative ">
           <Image alt="인증 사진" src={data.data.imageUrl} fill />
         </div>
