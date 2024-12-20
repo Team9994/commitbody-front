@@ -8,12 +8,11 @@ export default function ReactQueryProvider({ children }: PropsWithChildren) {
     defaultOptions: {
       queries: {
         retry: 0,
-        staleTime: 1000 * 20,
-        gcTime: 1000 * 60 * 5,
+        staleTime: 1000 * 20, // 20초 동안 stale 하지 않음
+        gcTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
       },
     },
   });
-
   return (
     <QueryClientProvider client={queryClient}>
       {children}
