@@ -27,7 +27,6 @@ const SearchResult = () => {
     refetch();
   };
 
-  console.log(data);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex gap-2 px-5 py-3 overflow-x-scroll scrollbar-hide">
@@ -65,7 +64,7 @@ const SearchResult = () => {
                       <span className="ml-2">{article.member?.nickname || '익명'}</span>
                     </div>
                   </div>
-                  {article.imageUrl && article.imageUrl !== '등록된 이미지가 없습니다.' && (
+                  {article.imageUrl && article.imageUrl !== '등록된 이미지 파일이 없습니다.' && (
                     <Image
                       src={article.imageUrl}
                       width={68}

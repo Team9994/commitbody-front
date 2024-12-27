@@ -2,12 +2,11 @@
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'; // or 'next/router' if in the pages directory
-import React from 'react';
-import { useAlarm } from '../api/alarm/query';
+import React, { Suspense } from 'react';
+import AlarmList from './components/AlarmList';
 
 const Alarm = () => {
   const router = useRouter();
-  const { data } = useAlarm();
 
   return (
     <div className="min-h-screen bg-backgrounds-default text-text-main">
@@ -21,9 +20,9 @@ const Alarm = () => {
         right={<div className="opacity-0">무</div>}
         className="relative z-20"
       />
-      {data.data?.notifications.length === 0 && (
-        <p className="text-center mt-20 text-text-light">알림이 없습니다.</p>
-      )}
+      <Suspense fallback={'loading...'}>
+        <AlarmList />
+      </Suspense>
     </div>
   );
 };

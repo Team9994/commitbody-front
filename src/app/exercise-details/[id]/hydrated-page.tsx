@@ -30,6 +30,7 @@ const ExerciseDetails = () => {
 
   const { data } = useDetailsInfo({ id: lastSegment, source: 'default' });
 
+  console.log(data);
   const handleHeartChange = () => {
     postDetailLikeRegisterMutation.mutate({
       exerciseId: Number(lastSegment),
@@ -67,7 +68,11 @@ const ExerciseDetails = () => {
               <Image
                 onClick={handleHeartChange}
                 priority
-                src={data?.data?.interestStatus ? '/assets/heart_on.svg' : '/assets/heart_off.svg'}
+                src={
+                  data?.data?.exerciseDto.interest
+                    ? '/assets/heart_on.svg'
+                    : '/assets/heart_off.svg'
+                }
                 alt={'찜하기'}
                 width={24}
                 height={24}
@@ -91,7 +96,7 @@ const ExerciseDetails = () => {
                       <div
                         onClick={() => {
                           router.push(
-                            `/custom-exercise?status=edit&exerciseId=${data?.data?.exerciseId}`
+                            `/custom-exercise?status=edit&exerciseId=${data?.data?.exerciseDto.exerciseId}`
                           );
                         }}
                         className="cursor-pointer w-[152px] h-[46px] text-text-main p-3 border-b border-borders-sub"
@@ -101,7 +106,7 @@ const ExerciseDetails = () => {
                       <div
                         onClick={() =>
                           deleteCustomExerciseMutation.mutate({
-                            id: String(data?.data?.exerciseId),
+                            id: String(data?.data?.exerciseDto.exerciseId),
                           })
                         }
                         className="w-[152px] h-[46px] text-text-accent p-3 cursor-pointer"
@@ -131,7 +136,7 @@ const ExerciseDetails = () => {
           <div className="w-[320px] h-[40px] rounded-6 border border-backgrounds-light text-s flex justify-between items-center px-4 mb-10 mt-5">
             <div className="leading-[18px] text-text-main ">더 자세한 동작을 알고싶다면?</div>
             <Link
-              href={`https://www.youtube.com/results?search_query=${data?.data?.exerciseName}`}
+              href={`https://www.youtube.com/results?search_query=${data?.data?.exerciseDto.exerciseName}`}
               className="cursor-pointer leading-[18px] text-blue"
               target="_blank"
               rel="noopener noreferrer"

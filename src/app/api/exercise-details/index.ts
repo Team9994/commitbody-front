@@ -1,7 +1,6 @@
 import { API } from '@/types';
-import { GetCommentPayload, GetDetailsInfoType } from './type';
+import { ExerciseData, GetCommentPayload } from './type';
 import clientApi from '@/lib/clientAxios';
-import { api } from '@/lib/axios';
 
 const EXERCISE = {
   GET_COMMENT: '/api/v1/comment-exercise',
@@ -121,9 +120,9 @@ export interface GetDetailsInfoPayload {
 export const getDetailsInfo = async ({
   id,
   source,
-}: GetDetailsInfoPayload): Promise<API<GetDetailsInfoType>> => {
+}: GetDetailsInfoPayload): Promise<API<ExerciseData>> => {
   try {
-    const res = await clientApi.get<API<GetDetailsInfoType>>(
+    const res = await clientApi.get<API<ExerciseData>>(
       `${process.env.NEXT_PUBLIC_SPRING_BACKEND_URL}${EXERCISE.GET_DETAILS_INFO}/${id}?source=${source}`
     );
     return res.data;

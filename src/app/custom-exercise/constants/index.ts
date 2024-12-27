@@ -45,3 +45,19 @@ export const EXERCISE_LIST = {
 
 export type CategoryKey = keyof typeof EXERCISE_LIST;
 export default EXERCISE_LIST;
+
+export const EXERCISE_LIST_INFO = {
+  ALL: '전체',
+  DUMBBELL: '덤벨',
+  BODYWEIGHT: '맨몸',
+  CABLE: '케이블',
+  BARBELL: '바벨',
+  MACHINE: '머신',
+  BAND: '밴드',
+  WEIGHT: '중량',
+  SMITHMACHINE: '스미스 머신',
+  STRETCHING: '스트레칭',
+  CARDIO: '유산소 운동',
+};
+
+export type EXERCISE_LIST_INFO_KEY = keyof typeof EXERCISE_LIST_INFO;
