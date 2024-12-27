@@ -1,3 +1,5 @@
+import { EXERCISE_LIST_INFO_KEY } from '@/app/custom-exercise/constants';
+
 export interface GetCommentPayload {
   id: string;
   source: 'custom' | 'default';
@@ -5,27 +7,35 @@ export interface GetCommentPayload {
   size: number;
 }
 
-export interface Day {
-  [key: string]: number;
-}
-
-export interface Record {
-  [key: string]: any;
-}
-
-export interface GetDetailsInfoType {
-  calculateRankPercentage: number;
-  day: Day;
-  exerciseEquipment: string;
-  exerciseId: number;
+export interface ExerciseData {
+  exerciseDto: ExerciseDto;
+  reportDto: ReportDto;
   exerciseMethods: string[];
+  recordSetsDtos: Record<string, RecordSet[]>;
+}
+
+interface ExerciseDto {
+  exerciseId: number;
   exerciseName: string;
-  exerciseTarget: string;
-  exerciseType: string;
   gifUrl: string;
-  interestStatus: boolean;
-  maxValue: number;
-  records: Record[];
-  totalValue: number;
-  weekValue: number;
+  exerciseType: string;
+  exerciseTarget: string;
+  exerciseEquipment: EXERCISE_LIST_INFO_KEY;
+  interest: boolean;
+}
+
+interface ReportDto {
+  maxRep: number;
+  totalRep: number;
+  weekRep: number;
+  weekReports: WeekReport[];
+}
+
+interface WeekReport {
+  dayOfWeek: string; // "TUESDAY" 등 요일 문자열
+  data: number; // 횟수 데이터
+}
+
+interface RecordSet {
+  reps: number; // 반복 횟수
 }
