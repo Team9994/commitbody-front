@@ -70,7 +70,7 @@ const ProgressRoutineList = (props: ProgressRoutineListProps) => {
       startTime: startTime!.toISOString(),
       endTime: endTime.toISOString(),
       exercises: props.routineDetails.exercises.map((exercise, index) => ({
-        recordDetailId: exercise.routineDetailId,
+        recordDetailId: exercise.exerciseId,
         endTime: new Date().toISOString(),
         recordName: props.routineDetails.routineName,
         orders: exercise.orders,

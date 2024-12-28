@@ -1,7 +1,6 @@
 import Image from 'next/image';
 
 const SelectedRoutineList = ({ routines }: { routines: [] }) => {
-  console.log(routines);
   return (
     <div
       className="bg-backgrounds-default w-full overflow-y-scroll"
