@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 const useRoutineNew = () => {
   const { routines } = useRoutineStore();
   const { value: routineName, onChange } = useInput('');
-  const { data: session } = useSession();
   const router = useRouter();
 
   const saveRoutine = async () => {

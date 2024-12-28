@@ -32,10 +32,6 @@ export const getRoutineDetail = async (id: string) => {
 
 export const postRoutine = async (payload: any) => {
   try {
-    console.log('Attempting to make POST request...');
-    console.log('POST URL:', ROUTINE.POST_REGISTER_ROUTINE);
-    console.log('Payload:', payload);
-
     const res = await clientApi.post(ROUTINE.POST_REGISTER_ROUTINE, payload);
     console.log('Request successful:', res.data);
     return res.data;

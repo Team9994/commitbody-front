@@ -12,9 +12,10 @@ const RoutineProgress = async ({ routineId }: RoutineProgressProps) => {
   // console.log('Routine ID:', routineId);
 
   const response = await getRoutineDetail(routineId);
+  console.log(response);
   const routineDetails = response?.data?.routineDtos[0];
 
-  // console.log(routineDetails.exercises);
+  console.log(routineDetails);
   return (
     <div>
       <ProgressRoutineList routineDetails={routineDetails} />
