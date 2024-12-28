@@ -3,20 +3,21 @@
 import React, { Suspense } from 'react';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import RecentSearch from './components/RecentSearch';
 import useHeader from './hooks/useHeader';
 import SearchResult from './components/SearchResult';
+import useInput from '@/hooks/useInput';
 
 const Search = () => {
-  const searchParams = useSearchParams();
-  const search = searchParams.get('q') || '';
-
-  const { isFocused, handleChangeFocus, handlePostSearch, handleBack, handleChange, handleFocus } =
-    useHeader({
-      searchParams,
-      search,
-    });
+  const {
+    value,
+    onChange,
+    isFocused,
+    handleChangeFocus,
+    handlePostSearch,
+    handleBack,
+    handleFocus,
+  } = useHeader();
 
   return (
     <div className="flex flex-col bg-backgrounds-default h-screen text-text-main overflow-hidden">
@@ -39,8 +40,8 @@ const Search = () => {
           <Input
             className={`w-full ${isFocused ? 'pl-4' : 'pl-10'} placeholder:text-base placeholder:text-text-light bg-backgrounds-light text-white rounded-md border border-transparent focus:outline-none focus:ring-0 focus:border-transparent transition-all`}
             placeholder="검색"
-            value={search}
-            onChange={handleChange}
+            value={value}
+            onChange={onChange}
             onFocus={handleFocus}
             type="text"
             style={{ boxShadow: 'none' }}

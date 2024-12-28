@@ -1,63 +1,51 @@
 import { usePostSearchRecordMutation } from '@/app/api/search/query';
+import useInput from '@/hooks/useInput';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-interface UseHeaderProps {
-  searchParams: any;
-  search: string;
-}
-const useHeader = ({ searchParams, search }: UseHeaderProps) => {
+interface UseHeaderProps {}
+
+const useHeader = () => {
   const router = useRouter();
   const postSearchMutation = usePostSearchRecordMutation();
   const [isFocused, setIsFocused] = useState(false);
+  const { value, onChange, reset } = useInput();
 
   const handleFocus = () => {
     setIsFocused(true);
-    const newParams = new URLSearchParams(searchParams);
-    newParams.set('mode', 'search');
-    router.replace(`?${newParams.toString()}`);
   };
 
   const handleChangeFocus = () => {
     setIsFocused((pre) => !pre);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const newParams = new URLSearchParams(searchParams);
-
-    if (value) {
-      newParams.set('q', value);
-    } else {
-      newParams.delete('q');
-    }
-    router.replace(`?${newParams.toString()}`);
-  };
-
   const handleBack = () => {
-    const newParams = new URLSearchParams(searchParams);
-
-    const paramsString = newParams.toString();
-
-    if (paramsString) {
+    if (value) {
+      reset();
       router.push(`/search`);
-      newParams.delete('q');
-      newParams.delete('mode');
       setIsFocused(false);
     } else {
       router.push('/community');
     }
   };
   const handlePostSearch = () => {
-    if (!search) {
+    if (!value) {
       alert('검색어를 입력해주세요!');
       return;
     }
 
-    postSearchMutation.mutate({ title: search });
+    postSearchMutation.mutate({ title: value });
     setIsFocused(false);
   };
-  return { isFocused, handleChangeFocus, handlePostSearch, handleBack, handleChange, handleFocus };
+  return {
+    isFocused,
+    handleChangeFocus,
+    handlePostSearch,
+    handleBack,
+    value,
+    onChange,
+    handleFocus,
+  };
 };
 
 export default useHeader;
