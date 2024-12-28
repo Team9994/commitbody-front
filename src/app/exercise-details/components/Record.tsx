@@ -42,6 +42,7 @@ const Record = ({ info }: RecordType) => {
 
   return (
     <div>
+      {/* Weekly summary cards */}
       <div className="flex gap-3 mt-4 mb-5 overflow-x-scroll scrollbar-hide px-5">
         <div className="flex flex-col justify-center text-center bg-[#324151] rounded-6 min-w-25 h-16">
           <p className="text-xs text-text-sub leading-[18px] mb-1">1RM</p>

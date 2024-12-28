@@ -9,7 +9,6 @@ import Image from 'next/image';
 
 const RoutineNew = () => {
   const { routineName, onChange, routines, saveRoutine } = useRoutineNew();
-  console.log(routines);
   return (
     <div className="relative w-full max-w-[500px]">
       <Header

@@ -34,9 +34,20 @@ const useRoutineStore = create(
           })
         ),
       getRoutineCount: () => get().routines.length,
+      clearRoutines: () =>
+        set({
+          routines: [],
+          selectedExerciseIds: new Set(),
+        }),
     }),
     { name: 'routine-store' }
   )
 );
+
+export const useRoutineInputStore = create((set) => ({
+  routineName: '',
+  setInput: (value) => set({ routineName: value }),
+  onChange: (event) => set({ routineName: event.target.value }),
+}));
 
 export default useRoutineStore;

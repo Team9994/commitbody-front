@@ -1,12 +1,10 @@
 import { postRoutine } from '@/app/api/routine';
-import useInput from '@/hooks/useInput';
-import useRoutineStore from '@/store/routine';
-import { useSession } from 'next-auth/react';
+import useRoutineStore, { useRoutineInputStore } from '@/store/routine';
 import { useRouter } from 'next/navigation';
 
 const useRoutineNew = () => {
-  const { routines } = useRoutineStore();
-  const { value: routineName, onChange } = useInput('');
+  const { routines, clearRoutines } = useRoutineStore();
+  const { routineName, onChange, setInput } = useRoutineInputStore();
   const router = useRouter();
 
   const saveRoutine = async () => {
@@ -25,6 +23,8 @@ const useRoutineNew = () => {
     console.log(requestBody);
     try {
       const response = await postRoutine(requestBody);
+      clearRoutines();
+      setInput('');
       router.push('/');
     } catch (error) {
       console.log(error);
