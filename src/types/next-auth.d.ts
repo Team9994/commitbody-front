@@ -17,5 +17,6 @@ declare module 'next-auth' {
     refreshToken: string;
     customToken: string;
     nickname: string;
+    memberId: string;
   }
 }

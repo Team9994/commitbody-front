@@ -48,13 +48,13 @@ const DrawerContent = ({
         </div>
         {/* 운동 시작버튼 */}
         <div className="flex justify-center w-full px-5 my-4 gap-2">
-          <RoutineDrawerBtn
+          {/* <RoutineDrawerBtn
             text="편집"
             width={104}
             height={52}
             backgroundColor="backgrounds-sub"
             onClick={() => moveRouter(selectedId, 'edit')}
-          />
+          /> */}
           <RoutineDrawerBtn
             text="운동 시작"
             width={208}

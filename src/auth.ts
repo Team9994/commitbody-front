@@ -1,5 +1,5 @@
 import axios from 'axios';
-import NextAuth, { Session, User } from 'next-auth';
+import NextAuth, { Session } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import KakaoProvider from 'next-auth/providers/kakao';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -9,6 +9,7 @@ type ExtendedSession = Session & {
   refreshToken?: string;
   accessTokenExpires?: number;
   nickname?: string;
+  memberId?: string;
 };
 
 const createErrorMessage = (error: any) => {
@@ -86,6 +87,7 @@ export const {
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
             nickname: springResponse.data.data.tokenInfoDto?.nickname,
+            memberId: springResponse.data.data.tokenInfoDto?.memberId,
           };
         } else if (account?.provider === 'kakao') {
           const springResponse = await axios.post(`${process.env.SPRING_BACKEND_URL}/api/v1/auth`, {
@@ -93,13 +95,14 @@ export const {
             socialId: account.providerAccountId,
             fcmToken: (account as any).fcmToken || '',
           });
-
+          console.log(springResponse.data.data);
           return {
             ...token,
             accessToken: springResponse.data.data.accessToken,
             refreshToken: springResponse.data.data.refreshToken,
             nickname: springResponse.data.data.tokenInfoDto.nickname,
             authMode: springResponse.data.data.authMode,
+            memberId: springResponse.data.data.tokenInfoDto.memberId,
           };
         }
       }
@@ -113,6 +116,7 @@ export const {
         session.refreshToken = token.refreshToken as string;
         session.nickname = token.nickname as string;
         session.accessTokenExpires = token.accessTokenExpires as number;
+        session.memberId = token.memberId as string;
       }
       return session;
     },
