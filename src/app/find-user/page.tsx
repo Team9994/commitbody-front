@@ -91,7 +91,11 @@ const FindUserContent = () => {
       )}
       {!isLoading ? (
         findUserData?.data?.members?.map((user) => (
-          <div className="flex items-center px-5 py-3 cursor-pointer" key={user.memberId}>
+          <div
+            onClick={() => router.push(`/profile/${user.nickname}`)}
+            className="flex items-center px-5 py-3 cursor-pointer"
+            key={user.memberId}
+          >
             <Image
               src={user.profile}
               width={48}

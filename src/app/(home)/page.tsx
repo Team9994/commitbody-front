@@ -15,6 +15,7 @@ export default async function Home() {
   if (session?.nickname === undefined) {
     redirect('/sign/additional-info');
   }
+
   const routineList = (await getRoutineList()) ?? [];
 
   return (

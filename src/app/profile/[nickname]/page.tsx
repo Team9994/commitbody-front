@@ -13,18 +13,16 @@ import QuestionList, { Question } from './components/QuestionList';
 const HydratedMypage = ({ params }: { params: { nickname: string } }) => {
   const { data: userInfo } = useGetUserInfo({ nickname: params.nickname });
   const [selected, setSelected] = useState<'certification' | 'question'>('certification');
-  console.log(userInfo);
+
   const {
     data: articleQuery,
-    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetching,
   } = useUserArticle({
     type: selected === 'certification' ? 'EXERCISE' : 'INFO_QUESTION',
-    id: userInfo?.memberId,
+    id: userInfo?.memberDto?.memberId,
   });
-
   const observerRef = useInfiniteScroll(
     () => {
       if (hasNextPage && !isFetching) {
@@ -109,7 +107,7 @@ const HydratedMypage = ({ params }: { params: { nickname: string } }) => {
         className="relative z-20"
         onLeftClick="back"
       />
-      <UserInfo userInfo={userInfo} />
+      {userInfo && <UserInfo userInfo={userInfo} />}
       <SelectToggle selected={selected} setSelected={setSelected} />
       {selected === 'certification' && <CertificationList certifications={certifications} />}
       {selected === 'question' && <QuestionList questions={questions} />}
