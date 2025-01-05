@@ -12,8 +12,7 @@ import { usePostFollowerMutation } from '../api/follower/query';
 
 const Following_Follower = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialSearch = searchParams.get('q') || '';
+
   const [menuSelected, setMenuSelected] = useState<'follower' | 'following'>('follower');
   const [findUsertData, setFindUserData] = useState<Follow[] | []>([]);
   const { PostFollowerMutation } = usePostFollowerMutation();
@@ -47,18 +46,18 @@ const Following_Follower = () => {
   //   }
   // };
 
-  const debouncedUpdateQuery = useCallback(
-    debounce((value) => {
-      const newParams = new URLSearchParams(searchParams);
-      if (value) {
-        newParams.set('q', value);
-      } else {
-        newParams.delete('q');
-      }
-      router.replace(`?${newParams.toString()}`);
-    }, 500),
-    [searchParams, router]
-  );
+  // const debouncedUpdateQuery = useCallback(
+  //   debounce((value) => {
+  //     const newParams = new URLSearchParams(searchParams);
+  //     if (value) {
+  //       newParams.set('q', value);
+  //     } else {
+  //       newParams.delete('q');
+  //     }
+  //     router.replace(`?${newParams.toString()}`);
+  //   }, 500),
+  //   [searchParams, router]
+  // );
 
   return (
     <div className="flex flex-col bg-backgrounds-default h-screen text-text-main overflow-hidden">
