@@ -1,10 +1,10 @@
 'use client';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useCallback, useEffect, useState } from 'react';
-import { debounce } from 'lodash';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
 import Header from '@/components/layouts/Header';
 import Image from 'next/image';
-import { Input } from '@/components/ui/input';
+
 import { useSession } from 'next-auth/react';
 import SelectToggle from './components/SelectToggle';
 import { Follow, getFollower, getFollowing } from '../api/follower';
@@ -12,8 +12,7 @@ import { usePostFollowerMutation } from '../api/follower/query';
 
 const Following_Follower = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialSearch = searchParams.get('q') || '';
+
   const [menuSelected, setMenuSelected] = useState<'follower' | 'following'>('follower');
   const [findUsertData, setFindUserData] = useState<Follow[] | []>([]);
   const { PostFollowerMutation } = usePostFollowerMutation();
@@ -39,26 +38,6 @@ const Following_Follower = () => {
       })();
     }
   }, [session?.memberId, menuSelected, clickFollow]);
-
-  // const handlePostSearch = () => {
-  //   if (!search) {
-  //     alert('검색어를 입력해주세요!');
-  //     return;
-  //   }
-  // };
-
-  const debouncedUpdateQuery = useCallback(
-    debounce((value) => {
-      const newParams = new URLSearchParams(searchParams);
-      if (value) {
-        newParams.set('q', value);
-      } else {
-        newParams.delete('q');
-      }
-      router.replace(`?${newParams.toString()}`);
-    }, 500),
-    [searchParams, router]
-  );
 
   return (
     <div className="flex flex-col bg-backgrounds-default h-screen text-text-main overflow-hidden">
