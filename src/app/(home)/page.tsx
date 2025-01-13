@@ -12,7 +12,7 @@ export default async function Home() {
   if (!session?.user.name) {
     redirect('/sign');
   }
-  if (session?.nickname === undefined) {
+  if (session?.nickname === undefined || session?.nickname===null) {
     redirect('/sign/additional-info');
   }
 
